@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LogiLearnApp</string>
+    <string name="app_name">LogiLearn</string>
     <string name="title_activity_login">login</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -44,11 +44,15 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
+    <string name="prompt_password">Contraseña</string>
+    <string name="action_sign_in">Inicia sesión o regístrate</string>
+    <string name="action_sign_in_short">Inicia Sesión</string>
+    <string name="welcome">"Bienvenido/a de nuevo!"</string>
+    <string name="invalid_username">Nombre de usuario no válido</string>
+    <string name="invalid_password">La contraseña debe de tener >5 caracteres</string>
+    <string name="login_failed">"Inicio de sesión fallido"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="todav_a_no_te_has_registrado_haz_click_aqu">¿Todavía no te has registrado? Haz click aquí</string>
+    <string name="todav_a_no_te_has_registrado_haz_click_aquí" />
 </resources>

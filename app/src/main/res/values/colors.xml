@@ -14,4 +14,6 @@
     <color name="red">#F35752</color>
     <color name="red_dark">#bc221d</color>
     <color name="red_light">#ffced3</color>
+
+    <color name="transparent_color">#80000000</color>
 </resources>

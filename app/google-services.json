@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "17752479340",
+    "project_id": "logilearn-c4d84",
+    "storage_bucket": "logilearn-c4d84.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17752479340:android:a462feb482a85e0b57ea49",
+        "android_client_info": {
+          "package_name": "com.example.logilearnapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbv6zQQ2ChvkZBGBRc58m4jBSQVkAAj0M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

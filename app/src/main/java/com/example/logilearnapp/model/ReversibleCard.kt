@@ -1,6 +1,6 @@
 package com.example.logilearnapp.model
 
-class ReversibleCard(input : String, private var output : String) : Card(input) {
+class ReversibleCard(title:String, input : String, private var output : String) : Card(title,input) {
 
 
 }
