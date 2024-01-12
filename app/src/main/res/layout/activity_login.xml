@@ -25,5 +25,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/viewer"
-        android:text="Todavía no te has registrado? haz click"/>
+        android:text="@string/puente_a_registro"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

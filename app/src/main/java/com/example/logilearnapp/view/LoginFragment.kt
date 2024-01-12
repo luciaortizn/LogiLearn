@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.example.logilearnapp.MainActivity
 import com.example.logilearnapp.R
 
@@ -37,16 +38,26 @@ class LoginFragment : Fragment() {
     Es una forma segura de obtener el contexto de la actividad desde
     un fragmento, y se utiliza comúnmente en lugar de this cuando necesitas operar
      con el contexto de la actividad.*/
-    fun switchToMainP(view: View) {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        startActivity(intent)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
+    }
+    //intent
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val loginbtn: Button = view.findViewById(R.id.loginBtn)
+        // Configurar el clic del botón
+        loginbtn.setOnClickListener {
+            // Crear un Intent para la otra actividad
+            val intent = Intent(activity, MainActivity::class.java)
+
+            // Iniciar la otra actividad
+            startActivity(intent)
+        }
     }
 
     companion object {
