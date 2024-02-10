@@ -28,7 +28,7 @@ class Login : AppCompatActivity() {
        // auth = Firebase.auth
 
         val fragment = RegisterFragment()
-        val textView: TextView = findViewById(R.id.textoRegistrarse)
+       /* val textView: TextView = findViewById(R.id.textoRegistrarse)
         //lo meto en metodo param fragment, desde fragment accedo al metodo
         textView.setOnClickListener{
 
@@ -42,10 +42,12 @@ class Login : AppCompatActivity() {
             transaction.commit()
 
 
-        }
-        fun cambiarFragment( fragment: Fragment){
+        }*/
 
-            textView.setOnClickListener{
+        fun cambiarFragment( fragment: Fragment){
+            /*
+
+              textView.setOnClickListener{
 
                 val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
 
@@ -57,13 +59,15 @@ class Login : AppCompatActivity() {
                 transaction.commit()
 
             }
+            * */
+
         }
 
     }
 
     override fun onStart() {
         super.onStart()
-        var currentUser = auth.currentUser;
+       // var currentUser = auth.currentUser;
         //updateUI(currentUser);
     }
 }

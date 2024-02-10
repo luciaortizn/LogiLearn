@@ -71,7 +71,9 @@ dependencies {
     //implementation(libs.androidx.compose.material3)
     implementation("com.google.accompanist:accompanist-adaptive:0.26.2-beta")
     // https://mvnrepository.com/artifact/com.google.android.material/material parece que es el que tiene más usos
-    implementation("com.google.android.material:material:1.10.0")
+   // implementation("com.google.android.material:material:1.11.0")
+   implementation("com.google.android.material:material:1.10.0")
+
     // Fragment (de momento no usados)
     /*
     *  implementation ("androidx.fragment:fragment-ktx:1.6.2")

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.CardView">
+    tools:context=".view.CardViewFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -12,7 +12,8 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3" />
+        app:spanCount="3"
+        tools:layout="@layout/folder_list_item"/>
     <!--span count es el nª de elementos por fila -->
 
 </FrameLayout>

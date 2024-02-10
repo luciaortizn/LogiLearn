@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/miFolder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--esto hay que cambiarlo a Card de M3-->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/folder_name_text_view"
+        android:layout_width="250dp"
+        android:layout_height="280dp"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:outlineSpotShadowColor="@color/cardview_light_background">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="194dp"
+                app:srcCompat="@color/black"
+                android:scaleType="centerCrop"
+                android:contentDescription="img"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="See Stats"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="let's see how well you're doing"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text=""
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>

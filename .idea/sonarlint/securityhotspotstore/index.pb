@@ -10654,3 +10654,7 @@ Q.idea/sonarlint/securityhotspotstore/1/3/130d771d533cafdc52cc4e44323730ae030153
 Q.idea/sonarlint/securityhotspotstore/1/3/13e73814b192b8aa491d6d9e2e3e5c2a254f46c1,4\e\4e87b17cf361b1053b6422e0c5a0abbca713c422
 Å
 Q.idea/sonarlint/securityhotspotstore/1/3/13794dbc7af5e418394912b12673ff02ad9e5d89,a\d\adc26c88a5062c7cacc6b8c4d7726af89ebc982f
+p
+@app/src/main/java/com/example/logilearnapp/view/BlankFragment.kt,a\a\aa34b8bb3cc575316cbaba3d3225a64f1b3c9c6d
+s
+Capp/src/main/java/com/example/logilearnapp/view/CardViewFragment.kt,1\2\129df2631f863c5b784042870cf36c3dec2cc014

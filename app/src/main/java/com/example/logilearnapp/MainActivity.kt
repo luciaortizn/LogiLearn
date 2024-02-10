@@ -3,7 +3,7 @@ package com.example.logilearnapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.logilearnapp.databinding.ActivityMainBinding
-import com.example.logilearnapp.view.adapter.CardAdapter
+
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {

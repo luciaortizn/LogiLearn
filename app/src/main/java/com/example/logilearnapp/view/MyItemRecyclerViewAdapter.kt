@@ -2,9 +2,12 @@ package com.example.logilearnapp.view
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.logilearnapp.R
 import com.example.logilearnapp.model.Card
+import com.example.logilearnapp.model.Folder
 
 
 /**
@@ -12,10 +15,43 @@ import com.example.logilearnapp.model.Card
  * TODO: Replace the implementation with code for your data type.
  */
 
-class MyItemRecyclerViewAdapter(private val values:List<Card>){}
-     /*
+class MyItemRecyclerViewAdapter(private val folderList:List<Folder>):
+RecyclerView.Adapter<MyItemRecyclerViewAdapter.FolderViewHolder>(){
+    inner class FolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val folderNameTextView: TextView = itemView.findViewById(R.id.folder_name_text_view)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
+
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.folder_list_item, parent, false)
+
+        return FolderViewHolder(itemView)
+
+    }
+
+    override fun getItemCount(): Int {
+        TODO("Not yet implemented")
+        return folderList.size.toInt()
+        /* inner class ViewHolder(binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
+            val idView: TextView = binding.itemNumber
+            val contentView: TextView = binding.content
+
+            override fun toString(): String {
+                return super.toString() + " '" + contentView.text + "'"
+            }
+        * */
+
+    }
+
+    //para cada elemento  en la lista de folder se establece texto en la textView de la vista asociada
+    override fun onBindViewHolder(holder: FolderViewHolder, position: Int) {
+        val folderName = folderList[position]
+        holder.folderNameTextView.text = folderName.toString()
+    }
+}
 
 
+/*
 
         private val values: List<PlaceholderItem>)
     : RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder>() {

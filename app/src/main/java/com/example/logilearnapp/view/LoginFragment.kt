@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.MainActivity
 import com.example.logilearnapp.R
 
@@ -78,5 +80,23 @@ class LoginFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+    //val textView: TextView = find
+    fun cambiarFragment( fragment: Fragment, txtView: TextView, Login: View){
+
+        txtView.setOnClickListener{
+            /*
+             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+
+            //reemplazar con el nuevo fragment
+            transaction.replace(R.id.viewer, fragment)
+
+            //no se que es back stack
+            transaction.addToBackStack(null)
+            transaction.commit()
+
+            * */
+
+        }
     }
 }
