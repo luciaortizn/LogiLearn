@@ -56,4 +56,7 @@
     <string name="todav_a_no_te_has_registrado_haz_click_aqu">¿Todavía no te has registrado? Haz click aquí</string>
     <string name="todav_a_no_te_has_registrado_haz_click_aquí" />
     <string name="puente_a_registro">Todavía no te has registrado? haz click</string>
+    <string name="home">Home</string>
+    <string name="buscar">Buscar</string>
+    <string name="carpetas">Carpetas</string>
 </resources>

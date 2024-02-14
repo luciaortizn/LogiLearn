@@ -1278,8 +1278,6 @@ w
 G.idea/sonarlint/issuestore/1/2/12b81d07a1dc56e90a3f569cafb37f9bdf9b94fa,0\4\04cdc0998212c74f95cf96a04d9cf1dbffe3cd2e
 q
 Aapp/src/main/java/com/example/logilearnapp/view/NavBarFragment.kt,5\c\5c68564c84e253f3ddcbdbecca334ec9883b5592
-k
-;app/src/main/java/com/example/logilearnapp/view/CardView.kt,d\d\dddbfc2eca40fb9eff750bebe63df6e7c6da11be
 s
 Capp/src/main/java/com/example/logilearnapp/view/RegisterFragment.kt,7\1\717d209caeec131773ef4abec2925f9bc7596ec1
 p
@@ -1430,8 +1428,6 @@ Q.idea/sonarlint/securityhotspotstore/8/b/8b05b50a051cc3a349bfa827ef10b0030d742f
 Q.idea/sonarlint/securityhotspotstore/d/d/dd4b81fa255c69df627a2078fbfcea9dcf334e45,2\d\2d7437f8e311e22da35213bfefbdbbcd5a3ce755
 Å
 Q.idea/sonarlint/securityhotspotstore/8/b/8b1db7afa08cedfecd9cdd60a86605f363169f41,1\8\1802d20a3e461dfe8ebd7cc77fca3cd1e715094d
-Å
-Q.idea/sonarlint/securityhotspotstore/d/d/dddbfc2eca40fb9eff750bebe63df6e7c6da11be,d\6\d60abb12a3fb959abf9ec2af1b3b6dda3d4cdd46
 w
 G.idea/sonarlint/issuestore/6/4/64ee55bbf2af1da9fb48f4a2e910df1c27e766b7,d\a\da2d000a227a910235de807250d77f82f48c8647
 Å
@@ -10658,3 +10654,7 @@ p
 @app/src/main/java/com/example/logilearnapp/view/BlankFragment.kt,a\a\aa34b8bb3cc575316cbaba3d3225a64f1b3c9c6d
 s
 Capp/src/main/java/com/example/logilearnapp/view/CardViewFragment.kt,1\2\129df2631f863c5b784042870cf36c3dec2cc014
+o
+?app/src/main/java/com/example/logilearnapp/EmptyEditableCard.kt,0\8\081fc66a421e241eb402e6cd9178aeba14de8f7d
+Å
+Q.idea/sonarlint/securityhotspotstore/f/f/ffef972feee3e9228b1c9d426e0868c2bf4923de,7\0\701a622ae4ccbf69b5707e3a4a841cba41ef786d
