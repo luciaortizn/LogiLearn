@@ -4,16 +4,16 @@
         android:id="@+id/item_1"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
-        android:title="Home"/>
+        android:title="@string/home"/>
     <item
         android:id="@+id/item_2"
         android:enabled="true"
         android:icon="@drawable/baseline_search_24"
-        android:title="Buscar"/>
+        android:title="@string/buscar"/>
     <item
         android:id="@+id/item_3"
         android:enabled="true"
-        android:icon="@drawable/baseline_folder_24"
-        android:title="Carpetas"/>
+        android:icon="@drawable/outline_folder_24"
+        android:title="@string/carpetas"/>
     <!--falta su clase fragment y su viewmodel fragment-->
 </menu>

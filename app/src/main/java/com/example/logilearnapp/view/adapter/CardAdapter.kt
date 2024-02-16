@@ -1,14 +1,5 @@
 package com.example.logilearnapp.view.adapter
 
-import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-import com.example.logilearnapp.R
-
-import com.example.logilearnapp.model.Card
-import com.example.logilearnapp.view.MyItemRecyclerViewAdapter
 /**
 class CardAdapter(private val cards: List<Card>): RecyclerView.Adapter<CardAdapter.CardViewHolder>(){
 

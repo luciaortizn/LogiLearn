@@ -13,6 +13,7 @@ import com.example.logilearnapp.databinding.ActivityMainBinding
 import com.example.logilearnapp.model.Card
 import com.example.logilearnapp.model.Folder
 import com.example.logilearnapp.model.Label
+import com.example.logilearnapp.view.adapter.MyItemRecyclerViewAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

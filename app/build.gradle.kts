@@ -54,9 +54,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.0")
     implementation("com.google.firebase:firebase-auth:22.3.0")
 
+
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
 
     //base de datos
     // Import the BoM for the Firebase platform
@@ -91,5 +94,7 @@ dependencies {
     * */
     //diseño de la UI de firebase para inicio de sesión
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
+
+
 
 }
