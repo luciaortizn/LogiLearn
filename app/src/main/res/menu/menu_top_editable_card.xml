@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <!--
+    -->
+
+    <item
+        android:id="@+id/item_imagen"
+        android:enabled="true"
+        android:icon="@drawable/outline_image_24"
+        android:title="Importar imagen"
+        app:showAsAction="ifRoom"/>
+
+
+    <item
+        android:id="@+id/item_carpeta"
+        android:enabled="true"
+        android:icon="@drawable/outline_folder_24"
+        android:title="Añadir a carpeta"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/item_etiqueta"
+        android:enabled="true"
+        android:icon="@drawable/outline_label_24"
+        android:title="Añadir etiqueta"
+        app:showAsAction="never"/>
+
+
+</menu>

@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.logilearnapp.MainActivity
 import com.example.logilearnapp.R
 
 class SplashActivity : AppCompatActivity() {

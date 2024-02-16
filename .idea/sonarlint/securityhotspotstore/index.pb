@@ -4200,8 +4200,6 @@ w
 G.idea/sonarlint/issuestore/7/5/757c9d525ddea29297d266156106df7fc00fd5d0,a\1\a150c43aec1ef1b7704919c496d19fc88a96bf5d
 w
 G.idea/sonarlint/issuestore/d/9/d92d9364796352342328ba627d1081d4614d1048,4\1\418eb3cdfe6ca787619183491048112e71533f4f
-w
-G.idea/sonarlint/issuestore/d/6/d60abb12a3fb959abf9ec2af1b3b6dda3d4cdd46,0\1\017642bb104e02af3602b29cf47973a697ec42b9
 Å
 Q.idea/sonarlint/securityhotspotstore/b/0/b04ed95802ce35b2d6c4d6c304baa1c1e52e4ddc,b\3\b3a9ee096ccfdf9b9dac826e9adcc26505f03f44
 Å
@@ -4868,8 +4866,6 @@ Q.idea/sonarlint/securityhotspotstore/6/a/6af295c45fdde3ad9aac4e219935b8cce9cb04
 Q.idea/sonarlint/securityhotspotstore/6/a/6a4b01d224d72d7b61d86eb4a5cfdab4fa384580,2\e\2eea719eae8a6bbc00dde647dc3d6b6fb001795c
 Å
 Q.idea/sonarlint/securityhotspotstore/6/8/68ab08d75bc21001cf014561de2cd33303ada991,2\1\214f76e081ece0a23e1bbe616402a81acb70a86d
-Å
-Q.idea/sonarlint/securityhotspotstore/d/6/d60abb12a3fb959abf9ec2af1b3b6dda3d4cdd46,e\1\e168c8f268caa7e12fd76c2e7bd784dd8cb573f1
 w
 G.idea/sonarlint/issuestore/0/2/028a26cf889dd33089a4570cc14732510a497cde,5\e\5e495ffd06b753b5c4be28e47dd1fffe7ba4a6a4
 Å
@@ -7467,8 +7463,6 @@ Q.idea/sonarlint/securityhotspotstore/e/2/e281aacd7dfb54a490478618003521b89fcff5
 Å
 Q.idea/sonarlint/securityhotspotstore/e/1/e108c8d02092ee09fe12e368e1f9805e09ba8355,4\1\412599e48f5fd19860790f50dc49a5eab0b5551a
 Å
-Q.idea/sonarlint/securityhotspotstore/e/1/e168c8f268caa7e12fd76c2e7bd784dd8cb573f1,f\1\f1096ee8001613b8e716022d40a12e0d36430ba1
-Å
 Q.idea/sonarlint/securityhotspotstore/e/1/e105292baa435ab5e2e8869e0f1ffb8fd9d77455,d\d\dd20c80628ccc4589951622d0a2726084069ffd8
 Å
 Q.idea/sonarlint/securityhotspotstore/e/2/e2f0108dda04eec75506f6c2d60ae59d8afed98e,7\0\7017476095fc55cc12814204c0a9b720567066f5
@@ -7764,8 +7758,6 @@ w
 G.idea/sonarlint/issuestore/0/1/010d1a4abaf3d58696f4757ac91c15fd6bf61b9c,c\0\c008911b42af33177dfb02380bf5439b82a284fe
 w
 G.idea/sonarlint/issuestore/0/1/01e1877190d3ed9989fc7d67dfaf4d4d9f956257,8\0\8020bf0cdfdb0cc3249f0b9bccdcf8552adb8def
-w
-G.idea/sonarlint/issuestore/0/1/017642bb104e02af3602b29cf47973a697ec42b9,1\c\1c7f96f379df435bc65a7931bf8f32c28ad44f3d
 w
 G.idea/sonarlint/issuestore/0/1/015e91505a36f50054cde2f394d8a868ff91b21c,b\c\bc7a028c11d5d1822fa5d4e1cad64fccbecc2156
 w
@@ -10119,8 +10111,6 @@ G.idea/sonarlint/issuestore/e/1/e1626eeabfdc67bf6c1bee73a8c9446c25a3893f,9\4\94
 w
 G.idea/sonarlint/issuestore/e/1/e108c8d02092ee09fe12e368e1f9805e09ba8355,a\2\a2054605789a04e9222bf132e9324b39c69430e0
 w
-G.idea/sonarlint/issuestore/e/1/e168c8f268caa7e12fd76c2e7bd784dd8cb573f1,9\4\94e5af58d641e3549192ca5ab2e6647537438535
-w
 G.idea/sonarlint/issuestore/0/7/0758e50974a9dea2803a8978e4f6c79c8f1a1599,a\c\ac727a1522ddf0d7cba5fa1beb4825753e8ed909
 w
 G.idea/sonarlint/issuestore/e/3/e326f616456cd23da4e9c08e77b29e616f645df6,e\8\e892f209cd768872e5a87e59a218cfde47020049
@@ -10431,8 +10421,6 @@ Q.idea/sonarlint/securityhotspotstore/0/1/0116250fa05f579265e907c63868dc215d50f2
 Å
 Q.idea/sonarlint/securityhotspotstore/0/1/0165a86332400aa32f747449681d6c08058c0e2b,7\c\7c2f905f080495204676330692224fe9ee6a0903
 Å
-Q.idea/sonarlint/securityhotspotstore/0/1/017642bb104e02af3602b29cf47973a697ec42b9,5\e\5e989e4de77ff518961ece0a6a4c0772e0d96086
-Å
 Q.idea/sonarlint/securityhotspotstore/0/1/015e91505a36f50054cde2f394d8a868ff91b21c,d\0\d03e4517b6a558abf759a77eb0c9759054c99a81
 Å
 Q.idea/sonarlint/securityhotspotstore/0/0/004a6fd2c00b5ebb0e0ebaaad31107ae1001628b,6\7\67189ada1f090615bedf4640e855ca3ffd5ef760
@@ -10658,3 +10646,15 @@ o
 ?app/src/main/java/com/example/logilearnapp/EmptyEditableCard.kt,0\8\081fc66a421e241eb402e6cd9178aeba14de8f7d
 Å
 Q.idea/sonarlint/securityhotspotstore/f/f/ffef972feee3e9228b1c9d426e0868c2bf4923de,7\0\701a622ae4ccbf69b5707e3a4a841cba41ef786d
+m
+=app/src/main/java/com/example/logilearnapp/ExampleFragment.kt,e\7\e7bb549a4cd13aa3407f74b15129c4a6a572da1c
+l
+<app/src/main/java/com/example/logilearnapp/SearchFragment.kt,c\5\c56138cc07d7fb369de9d86573cdd561bbcd20dd
+j
+:app/src/main/java/com/example/logilearnapp/HomeFragment.kt,a\c\ac80f5840df1e7aa1f8bad2c5b9ab2265f95dae4
+k
+;app/src/main/java/com/example/logilearnapp/view/ui/Login.kt,d\b\dbab5354945b09740c13db98b746e7632271f2cf
+s
+Capp/src/main/java/com/example/logilearnapp/view/ui/LoginFragment.kt,8\4\8458dfa66131f3f5bb7fa36fb8b5d9f20e4ca569
+Ñ
+Tapp/src/main/java/com/example/logilearnapp/view/adapter/MyItemRecyclerViewAdapter.kt,2\7\2732402361125a65c2d96ca91c737a6952ad1e0b

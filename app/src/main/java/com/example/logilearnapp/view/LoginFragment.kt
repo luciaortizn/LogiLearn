@@ -2,13 +2,12 @@ package com.example.logilearnapp.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.Fragment
 import com.example.logilearnapp.MainActivity
 import com.example.logilearnapp.R
 
@@ -82,7 +81,7 @@ class LoginFragment : Fragment() {
             }
     }
     //val textView: TextView = find
-    fun cambiarFragment( fragment: Fragment, txtView: TextView, Login: View){
+    fun cambiarFragment(fragment: Fragment, txtView: TextView, Login: View){
 
         txtView.setOnClickListener{
             /*

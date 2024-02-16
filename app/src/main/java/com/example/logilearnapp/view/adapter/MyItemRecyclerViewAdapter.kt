@@ -1,4 +1,4 @@
-package com.example.logilearnapp.view
+package com.example.logilearnapp.view.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.logilearnapp.R
-import com.example.logilearnapp.model.Card
 import com.example.logilearnapp.model.Folder
 
 

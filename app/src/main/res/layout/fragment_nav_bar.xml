@@ -7,13 +7,14 @@
     <!-- la posición del nav es relativa a la de otros elementos-->
 <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
+    android:backgroundTint="@color/blue"
     android:layout_height="70dp">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:layout_collapseMode="pin"
-        android:background="@color/transparent_color">
+        app:layout_collapseMode="pin">
+       <!-- android:background="@color/transparent_color"-->
 
         <!-- Título de la Toolbar -->
         <TextView

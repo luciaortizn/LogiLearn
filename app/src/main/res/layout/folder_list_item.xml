@@ -7,20 +7,21 @@
     <!--esto hay que cambiarlo a Card de M3-->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/folder_name_text_view"
-        android:layout_width="250dp"
-        android:layout_height="280dp"
+        android:layout_width="190dp"
+        android:layout_height="200dp"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
         android:layout_gravity="center"
         android:outlineSpotShadowColor="@color/cardview_light_background">
+        <!--esta "cardview" muestra las carpetas-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="194dp"
+                android:layout_height="120dp"
                 app:srcCompat="@color/black"
                 android:scaleType="centerCrop"
                 android:contentDescription="img"
