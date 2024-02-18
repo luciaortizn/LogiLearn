@@ -59,6 +59,7 @@ class LoginFragment : Fragment() {
             // Iniciar la otra actividad
             startActivity(intent)
         }
+
     }
 
     companion object {

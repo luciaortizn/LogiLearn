@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/item_1"
+        android:id="@+id/navigation_home_item"
         android:enabled="true"
         android:icon="@drawable/baseline_home_24"
         android:title="@string/home"/>
     <item
-        android:id="@+id/item_2"
+        android:id="@+id/navigation_buscar_item"
         android:enabled="true"
         android:icon="@drawable/baseline_search_24"
         android:title="@string/buscar"/>
     <item
-        android:id="@+id/item_3"
+        android:id="@+id/navigation_carpeta_item"
         android:enabled="true"
         android:icon="@drawable/outline_folder_24"
         android:title="@string/carpetas"/>
