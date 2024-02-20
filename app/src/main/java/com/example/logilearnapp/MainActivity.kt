@@ -2,11 +2,13 @@ package com.example.logilearnapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.databinding.ActivityMainBinding
 import com.example.logilearnapp.view.CardViewFragment
+import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +44,31 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
+        //meter en método
+
+          val topBar: MaterialToolbar = findViewById(R.id.toolbar)
+        topBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_favorites-> {
+                    //añqdir a carpeta
+                    Toast.makeText(this, "favoritos", Toast.LENGTH_SHORT).show()
+                    replaceFragment(FavoritesFragment())
+                    // Handle edit text press
+                    true
+                }
+                R.id.navigation_profile -> {
+                    // Handle favorite icon press
+                    Toast.makeText(this, "perfil", Toast.LENGTH_SHORT).show()
+                    replaceFragment(ProfileFragment())
+                    //añadir etiqueta
+                    true
+                }
+                else -> false
+            }
+        }
+
+
+
 
     }
 

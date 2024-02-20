@@ -29,7 +29,7 @@ RecyclerView.Adapter<MyItemRecyclerViewAdapter.FolderViewHolder>(){
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+
         return folderList.size.toInt()
         /* inner class ViewHolder(binding: FragmentItemBinding) : RecyclerView.ViewHolder(binding.root) {
             val idView: TextView = binding.itemNumber
