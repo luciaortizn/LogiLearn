@@ -3,12 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="70dp"
     tools:context=".FavoritesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+   <androidx.core.widget.NestedScrollView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+       <!--cuando haya contenido hacer la visibilidad invisible-->
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:orientation="vertical"
+           android:layout_gravity="center"
+
+           android:layout_height="match_parent">
+           <ImageView
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:minWidth="60dp"
+               android:minHeight="60dp"
+               android:backgroundTint="@color/blue_light"
+               android:src="@drawable/baseline_folder_copy_24">
+
+           </ImageView>
+           <TextView
+               android:layout_gravity="center"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="¡Aquí verás tus carpetas favoritas!">
+           </TextView>
+       </LinearLayout>
+
+
+   </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

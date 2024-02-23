@@ -30,72 +30,24 @@ class EmptyEditableCard : AppCompatActivity() {
                     // Handle edit text press
                     true
                 }
+
                 R.id.item_etiqueta -> {
                     // Handle favorite icon press
                     Toast.makeText(this, "Etiqueta", Toast.LENGTH_SHORT).show()
                     //añadir etiqueta
                     true
                 }
+
                 R.id.item_imagen -> {
                     Toast.makeText(this, "Imagen", Toast.LENGTH_SHORT).show()
                     //proporcionar acceso a su galería
                     // Handle more item (inside overflow menu) press
                     true
                 }
+
                 else -> false
             }
         }
     }
-
-       /*
-       *  topBar.menu.forEach { item: MenuItem ->
-            when (item.itemId) {
-                R.id.item_imagen -> {
-
-                    // Handle edit text press
-                    true
-                }
-
-                R.id.item_carpeta -> {
-                    // Handle favorite icon press
-
-                    true
-                }
-
-                R.id.item_etiqueta -> {
-
-                    // Handle more item (inside overflow menu) press
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-       * */
-
-    //para manejar los menús
-
-
-    // val topAppBar: MenuItem = findViewById(R.id.topAppBar)
-    //ojo con el menuitem
-    /*topAppBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.item_carpeta -> {
-                    //añqdir a carpeta
-                    // Handle edit text press
-                    true
-                }
-                R.id.item_etiqueta -> {
-                    // Handle favorite icon press
-                    //añadir etiqueta
-                    true
-                }
-                R.id.item_imagen -> {
-                    //proporcionar acceso a su galería
-                    // Handle more item (inside overflow menu) press
-                    true
-                }
-                else -> false
-            }}
-        * */ }
+}
 

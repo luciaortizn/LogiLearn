@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,8 +37,10 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
+
 
     companion object {
         /**
@@ -55,5 +60,15 @@ class ProfileFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    fun replaceFragment(fragment: Fragment ){
+        //child fragmentmanager para fragments
+        val fragmentManager:FragmentManager  = childFragmentManager
+        val fragmentTransaction : FragmentTransaction = fragmentManager.beginTransaction()
+        //realmente tengo que reemplazar el viewer
+        //luego reemplazar el otro
+        fragmentTransaction.replace(R.id.viewerFragment, fragment)
+        fragmentTransaction.commit()
     }
 }
