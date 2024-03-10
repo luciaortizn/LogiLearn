@@ -5,18 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:layout_marginTop="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment">
     <!--aquí hay un menú para volver atrás poner el nombre y poco guardar-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:backgroundTint="@color/blue"
+        android:backgroundTint="@color/blue_light"
         android:paddingBottom="50dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarCard"
+            android:id="@+id/topAppBarCard_profile"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:minHeight="?attr/actionBarSize"

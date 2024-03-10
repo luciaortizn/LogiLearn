@@ -1,4 +1,4 @@
-package com.example.logilearnapp
+package com.example.logilearnapp.ui.common
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.Toast
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import com.example.logilearnapp.EmptyEditableCard
+import com.example.logilearnapp.ProfileFragment
+import com.example.logilearnapp.R
+import com.example.logilearnapp.ui.favorites.FavoritesFragment
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
@@ -31,13 +39,15 @@ class HomeFragment : Fragment() {
 
 
     }
-
+     lateinit var rootview: View
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        rootview = inflater.inflate(R.layout.fragment_home, container, false)
+
+        return rootview
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,6 +60,28 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, EmptyEditableCard::class.java)
             // Iniciar la otra actividad
             startActivity(intent)
+        }
+        //navegación de topmenu
+        val topBar: MaterialToolbar =rootview.findViewById<MaterialToolbar>(R.id.toolbar)
+        topBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+            R.id.navigation_favorites -> {
+                //requireContext() en fragments
+
+                Toast.makeText(requireContext(), "favoritos", Toast.LENGTH_SHORT).show()
+               replaceFragment(requireActivity(), FavoritesFragment())
+
+                true
+            }
+            R.id.navigation_profile -> {
+                // Handle favorite icon press
+                Toast.makeText(requireContext(), "perfil", Toast.LENGTH_SHORT).show()
+               replaceFragment(requireActivity(), ProfileFragment())
+                //añadir etiqueta
+                true
+            }
+            else -> false
+        }
         }
     }
 
@@ -69,4 +101,12 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {
+        //necesita el activity actual para poder acceder a su contenido
+        val fragmentManager: FragmentManager = activity.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.viewerFragment, fragment)
+        fragmentTransaction.commit()
+    }
+
 }

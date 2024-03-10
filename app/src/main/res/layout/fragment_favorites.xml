@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="70dp"
-    tools:context=".FavoritesFragment">
+    tools:context=".ui.favorites.FavoritesFragment">
 
     <!-- TODO: Update blank fragment layout -->
    <androidx.core.widget.NestedScrollView
@@ -24,7 +24,7 @@
                android:minWidth="60dp"
                android:minHeight="60dp"
                android:backgroundTint="@color/blue_light"
-               android:src="@drawable/baseline_folder_copy_24">
+               android:src="@drawable/baseline_favorite_24">
 
            </ImageView>
            <TextView

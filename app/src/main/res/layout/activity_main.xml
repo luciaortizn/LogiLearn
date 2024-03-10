@@ -10,8 +10,8 @@
     android:layout_height="wrap_content"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-
-    <com.google.android.material.appbar.AppBarLayout
+<!--
+ <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:backgroundTint="@color/blue"
         android:layout_height="70dp">
@@ -21,46 +21,21 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_collapseMode="pin"
             app:menu="@menu/upper_navigation_menu">
-            <!-- android:background="@color/transparent_color"-->
 
-            <!-- Título de la Toolbar -->
-            <!--
+    <TextView
+        android:id="@id/txtAppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LogiLearn"
+        android:textColor="@color/material_on_background_emphasis_high_type"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
-            -->
-            <TextView
-                android:id="@id/txtAppName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LogiLearn"
-                android:textColor="@color/material_on_background_emphasis_high_type"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
 
-            <!-- Iconos de la Toolbar
-             <ImageView
+</com.google.android.material.appbar.MaterialToolbar>
+</com.google.android.material.appbar.AppBarLayout>
+-->
 
-                android:padding="10dp"
-                android:id="@+id/profile_item"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/baseline_person_24"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="TODO"/>
-            <ImageView
-
-                android:padding="10dp"
-                android:id="@+id/favorite_item"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/baseline_favorite_border_24"
-                android:layout_gravity="end"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="TODO"/>
-             -->
-
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
 
 
 </RelativeLayout>

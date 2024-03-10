@@ -3,62 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/miFolder"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    app:cardCornerRadius="20dp"
+    android:layout_marginVertical="10dp"
+    android:layout_marginHorizontal="10dp"
+    app:cardElevation="20dp"
+    android:layout_height="wrap_content">
     <!--esto hay que cambiarlo a Card de M3-->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/folder_name_text_view"
-        android:layout_width="190dp"
-        android:layout_height="200dp"
-        android:checkable="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_gravity="center"
-        android:outlineSpotShadowColor="@color/cardview_light_background">
-        <!--esta "cardview" muestra las carpetas-->
-        <LinearLayout
-            android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleFolder"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                app:srcCompat="@color/black"
-                android:scaleType="centerCrop"
-                android:contentDescription="img"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+            android:text="Title"
+            android:textSize="17sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+        </TextView>
+        <ImageView
+            android:id="@+id/imgFolder"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/baseline_favorite_border_24"
+            android:layout_marginStart="20dp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toEndOf="@id/titleFolder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/haz_click_para_a_adir_o_quitar_la_carpeta_de_favoritos"
+            android:focusable="true">
+        </ImageView>
 
-                <!-- Title, secondary and supporting text -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="See Stats"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="let's see how well you're doing"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text=""
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textColor="?android:attr/textColorSecondary"
-                    />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
 </com.google.android.material.card.MaterialCardView>

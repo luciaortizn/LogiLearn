@@ -1,10 +1,11 @@
-package com.example.logilearnapp.view
+package com.example.logilearnapp.ui.common
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.example.logilearnapp.R
+import com.example.logilearnapp.ui.auth.Login
 
 class SplashActivity : AppCompatActivity() {
 

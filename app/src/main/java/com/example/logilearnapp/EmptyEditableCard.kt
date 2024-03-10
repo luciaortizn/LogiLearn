@@ -18,7 +18,8 @@ class EmptyEditableCard : AppCompatActivity() {
         val navIcon: Icon// findViewById<>()
         val topBar: MaterialToolbar = findViewById(R.id.topAppBarCard)
         //hace que el botón x se produzca un retroceso en la activity
-        topBar.setNavigationOnClickListener {
+        topBar.setNavigationOnClickListener{
+
             onBackPressedDispatcher.onBackPressed()
         }
 

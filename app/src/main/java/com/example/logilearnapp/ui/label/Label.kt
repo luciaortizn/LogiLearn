@@ -1,4 +1,4 @@
-package com.example.logilearnapp.model
+package com.example.logilearnapp.ui.label
 
 import androidx.compose.ui.graphics.Color
 

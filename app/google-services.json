@@ -12,7 +12,12 @@
           "package_name": "com.example.logilearnapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "17752479340-japbjqse4f99vla8aruoii9ua960j8i9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBbv6zQQ2ChvkZBGBRc58m4jBSQVkAAj0M"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17752479340-japbjqse4f99vla8aruoii9ua960j8i9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

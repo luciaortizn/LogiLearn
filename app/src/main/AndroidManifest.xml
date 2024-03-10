@@ -17,7 +17,7 @@
             android:name=".EmptyEditableCard"
             android:exported="false" />
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".ui.common.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,10 +26,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.Register"
+            android:name=".ui.auth.Register"
             android:exported="false" />
         <activity
-            android:name=".view.Login"
+            android:name=".ui.auth.Login"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

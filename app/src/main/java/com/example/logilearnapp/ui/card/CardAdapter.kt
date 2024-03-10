@@ -1,4 +1,4 @@
-package com.example.logilearnapp.view.adapter
+package com.example.logilearnapp.ui.card
 
 /**
 class CardAdapter(private val cards: List<Card>): RecyclerView.Adapter<CardAdapter.CardViewHolder>(){

@@ -22,7 +22,7 @@
             android:layout_height="wrap_content">
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Busca tarjetas" />
@@ -35,5 +35,29 @@
             app:layout_anchor="@id/search_bar">
             <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
         </com.google.android.material.search.SearchView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            android:minHeight="60dp"
+
+            android:backgroundTint="@color/blue_light"
+            android:src="@drawable/baseline_library_books_24">
+        </ImageView>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aquí aparecerán todas las tarjetas">
+        </TextView>
+    </LinearLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

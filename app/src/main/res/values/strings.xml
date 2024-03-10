@@ -54,8 +54,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="todav_a_no_te_has_registrado_haz_click_aqu">¿Todavía no te has registrado? Haz click aquí</string>
-    <string name="todav_a_no_te_has_registrado_haz_click_aquí" />
-    <string name="puente_a_registro">Todavía no te has registrado? haz click</string>
+    <string name="puente_a_registro">Regístrate aquí</string>
     <string name="home">Home</string>
     <string name="buscar">Buscar</string>
     <string name="carpetas">Carpetas</string>
@@ -149,4 +148,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="traducir">Traducir</string>
+    <string name="haz_click_para_a_adir_o_quitar_la_carpeta_de_favoritos">haz click para añadir o quitar la carpeta de favoritos</string>
 </resources>

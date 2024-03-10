@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.CardViewFragment">
+    tools:context=".ui.folder.CardViewFragment">
 
     <TextView
         android:padding="10dp"
@@ -71,16 +71,46 @@
             app:layout_constraintHorizontal_bias="0.926"
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
+<!--
+ <LinearLayout
+        android:layout_marginTop="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="60dp"
+            android:minHeight="60dp"
+            android:backgroundTint="@color/blue_light"
+            android:src="@drawable/baseline_folder_copy_24">
 
-    <androidx.recyclerview.widget.RecyclerView
+        </ImageView>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Aquí verás tus carpetas!">
+        </TextView>
+    </LinearLayout>
+
+-->
+
+ <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="30dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:layout="@layout/folder_list_item" />
+        app:spanCount="1">
+ </androidx.recyclerview.widget.RecyclerView>
+       <!-- tools:layout="@layout/folder_list_item"-->
 
 
     <!--span count es el nª de elementos por fila -->

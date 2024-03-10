@@ -1,14 +1,13 @@
-package com.example.logilearnapp.view
+package com.example.logilearnapp.ui.auth
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.logilearnapp.MainActivity
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -33,6 +32,7 @@ class LoginFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
+
     //funcion para cambiar a otra pagina
     /*requireContext() es un método proporcionado por la clase
     Fragment que devuelve el contexto asociado al fragmento.
@@ -46,11 +46,13 @@ class LoginFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
+
     //intent
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginbtn: Button = view.findViewById(R.id.loginBtn)
+        /*
+        *  val loginbtn: Button = view.findViewById(R.id.loginBtn)
         // Configurar el clic del botón
         loginbtn.setOnClickListener {
             // Crear un Intent para la otra actividad
@@ -59,6 +61,13 @@ class LoginFragment : Fragment() {
             // Iniciar la otra actividad
             startActivity(intent)
         }
+        val registerText: TextView = view.findViewById(R.id.textoRegistrarse)
+
+        registerText.setOnClickListener {
+            replaceFragment(requireActivity(), RegisterFragment())
+        }
+        * */
+
 
     }
 
@@ -81,22 +90,12 @@ class LoginFragment : Fragment() {
                 }
             }
     }
-    //val textView: TextView = find
-    fun cambiarFragment(fragment: Fragment, txtView: TextView, Login: View){
 
-        txtView.setOnClickListener{
-            /*
-             val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
-            //reemplazar con el nuevo fragment
-            transaction.replace(R.id.viewer, fragment)
-
-            //no se que es back stack
-            transaction.addToBackStack(null)
-            transaction.commit()
-
-            * */
-
-        }
+    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {
+        //necesita el activity actual para poder acceder a su contenido
+        val fragmentManager: FragmentManager = activity.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.viewerFragment, fragment)
+        fragmentTransaction.commit()
     }
 }

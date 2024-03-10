@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.logilearnapp.ui.common.HomeFragment
+import com.google.android.material.appbar.MaterialToolbar
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,6 +33,8 @@ class ProfileFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+
     }
 
     override fun onCreateView(
@@ -39,6 +44,17 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_profile, container, false)
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val topBar: MaterialToolbar = view.findViewById(R.id.topAppBarCard_profile)
+        topBar.setNavigationOnClickListener {
+
+           replaceFragment(requireActivity(), HomeFragment())
+        }
+
+
     }
 
 
@@ -62,12 +78,10 @@ class ProfileFragment : Fragment() {
             }
     }
 
-    fun replaceFragment(fragment: Fragment ){
-        //child fragmentmanager para fragments
-        val fragmentManager:FragmentManager  = childFragmentManager
-        val fragmentTransaction : FragmentTransaction = fragmentManager.beginTransaction()
-        //realmente tengo que reemplazar el viewer
-        //luego reemplazar el otro
+    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {
+        //necesita el activity actual para poder acceder a su contenido
+        val fragmentManager: FragmentManager = activity.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
     }
