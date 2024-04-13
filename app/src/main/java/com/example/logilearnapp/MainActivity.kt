@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.databinding.ActivityMainBinding
 import com.example.logilearnapp.ui.common.HomeFragment
 import com.example.logilearnapp.ui.folder.CardViewFragment
+import com.example.logilearnapp.ui.search.SearchFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         binding  = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(HomeFragment())
+        //variable para la api key
+
+        var apiKey ="x9mi4zwbf3wkb7xx2n1pa26t8shz7v8bmtv1ojwnevuanb4dq";
         //viewer es el fragment que tiene la navegación
         binding.bottomNavigation.setOnItemSelectedListener { menuItem->
             when (menuItem.itemId) {

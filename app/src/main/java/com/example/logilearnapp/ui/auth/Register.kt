@@ -3,6 +3,7 @@ package com.example.logilearnapp.ui.auth
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -17,8 +18,10 @@ class Register : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
     private lateinit var firebaseDatabase: FirebaseDatabase
+    //realtime database
     private lateinit var databaseReference: DatabaseReference
 
+    //database auth
     private lateinit var mAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,9 @@ class Register : AppCompatActivity() {
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("user")
-
+        Toast.makeText(this@Register, databaseReference.child("email").key.toString(), Toast.LENGTH_SHORT).show()
         mAuth = FirebaseAuth.getInstance()
+
 
         binding.registerBtn.setOnClickListener{
 
@@ -41,29 +45,26 @@ class Register : AppCompatActivity() {
             val confirmPassword = binding.rePassField.editText?.text.toString()
             registerUser(email, name, surname, password, confirmPassword)
 
-
-
         }
         /**
-        binding.changeLogIn.setOnClickListener {
+        binding.registerBtn.setOnClickListener {
             val intent = Intent(this@Register, Login::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+           // overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
             finish()
 
-        }**/
+        }*/
     }
     fun registerUser(email:String, name:String,surname:String ,password: String, rePassword: String){
          val validationResult =validateFields(email, name, surname, password, rePassword)
         if (validationResult == ValidationResult.SUCCESS) {
 
-
+            //ingresar los datos del usuario
             databaseReference.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()){
                         val id = databaseReference.push().key
-                        //ver esta mierda
                         //falta encriptarla
                         val userData = com.example.logilearnapp.UserData(id, email, name, surname,password)
 
@@ -147,7 +148,7 @@ class Register : AppCompatActivity() {
             ValidationResult.WEAK_PASSWORD -> "Password does not meet the minimum requirements."
 
             //aquí hay que ver cuál es
-            else -> "Please check your entries."
+            else -> "There is space between one of your fields"
         }
 
         alertDialogBuilder.setMessage(errorMessage)

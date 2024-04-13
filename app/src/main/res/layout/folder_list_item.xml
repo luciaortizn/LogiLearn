@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="10dp"
     app:cardElevation="20dp"
     android:layout_height="wrap_content">
-    <!--esto hay que cambiarlo a Card de M3-->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

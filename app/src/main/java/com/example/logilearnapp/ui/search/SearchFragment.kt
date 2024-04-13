@@ -1,10 +1,11 @@
-package com.example.logilearnapp
+package com.example.logilearnapp.ui.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.logilearnapp.R
 
 class SearchFragment : Fragment() {
 
