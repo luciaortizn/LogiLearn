@@ -161,12 +161,21 @@
         android:layout_marginBottom="125dp"
         android:outlineSpotShadowColor="@color/cardview_light_background">
         <Button
+        style="?attr/materialIconButtonStyle"
+        android:id="@+id/iconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="cambiar el idioma"
+        app:icon="@drawable/outline_language_24"
+        />
+        <Button
             style="?attr/materialIconButtonStyle"
-            android:id="@+id/iconButton"
+            android:id="@+id/addToCardButton"
             android:layout_width="wrap_content"
+            android:layout_marginLeft="30dp"
             android:layout_height="wrap_content"
-            android:contentDescription="cambiar el idioma"
-            app:icon="@drawable/outline_language_24"
+            android:contentDescription="añadir el texto a cards"
+            app:icon="@drawable/baseline_add_24"
             />
         <LinearLayout
 
@@ -176,7 +185,6 @@
             android:orientation="vertical">
 
             <EditText
-
                 android:id="@+id/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -185,7 +193,9 @@
                 android:inputType="text"
                 android:minHeight="70dp"
                 android:singleLine="false"
-                android:text="Hola"
+                android:maxLength="50"
+                android:hint="Introduce algo..."
+                android:backgroundTint="@color/fui_transparent"
                 android:typeface="normal"
                 app:layout_constraintBottom_toTopOf="@id/Translate"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -202,42 +212,77 @@
                 android:overScrollMode="ifContentScrolls">
 
                 <Button
-                    android:id="@+id/Translate"
+                    android:id="@+id/Translate_button"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
+
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:gravity="center_horizontal"
                     android:inputType="text"
                     android:padding="15dp"
-                    android:text="@string/traducir"
+                    android:text="Trans"
                     android:textSize="16dp" />
 
                 <Button
-                    android:id="@+id/Synonym"
+                    android:id="@+id/Synonym_button"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="120dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="24dp"
                     android:gravity="center_horizontal"
                     android:inputType="text"
                     android:padding="15dp"
-                    android:text="Sinónimo"
+                    android:text="Sin"
                     android:textSize="16dp" />
+
+                <Button
+                    android:id="@+id/Definition_button"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:text="Def"
+                    android:textSize="16sp" />
+                <Button
+                    android:id="@+id/Example_button"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:clickable="true"
+                    android:gravity="center_horizontal"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:text="Ex"
+                    android:textSize="16sp" />
             </LinearLayout>
             <!--debería poner una barra de búsqueda de resultados que no tengan por qué guardarse-->
             <EditText
-                android:id="@+id/Translation"
+                android:id="@+id/Result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="Traducción..."
                 android:gravity="start"
                 android:inputType="text"
+                android:hint="Aquí aparecen tus resultados..."
+
+                android:backgroundTint="@color/fui_transparent"
                 android:minHeight="70dp"
                 android:singleLine="false"
-                android:text="Hello"
                 android:typeface="normal"
                 />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="Resultados ">
+
+            </TextView>
         </LinearLayout>
 
 
