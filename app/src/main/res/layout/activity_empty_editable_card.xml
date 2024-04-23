@@ -27,7 +27,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Añade etiquetas, carpetas y más"
+        android:contentDescription="@string/a_ade_etiquetas_carpetas_y_m_s"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <!-- Scrollable content -->
@@ -37,15 +37,15 @@
             tools:context=".EmptyEditableCard">
 
             <EditText
-
+                android:inputType="text"
                 android:id="@+id/SetTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:autofillHints="Título"
-                android:gravity="left|start"
+                android:gravity="start"
                 android:minHeight="50dp"
-                android:text="Title"
+                android:hint="@string/escribe_un_t_tulo"
                 app:layout_constraintBottom_toTopOf="@id/Input"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -59,18 +59,18 @@
                 android:id="@+id/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="Traduce algo..."
-                android:gravity="left|start"
+                android:hint="@string/input"
+                android:gravity="start"
                 android:inputType="text"
                 android:minHeight="200dp"
                 android:singleLine="false"
-                android:text="Texto a trducir/FlashCard cara"
                 android:typeface="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintBottom_toTopOf="@id/Translate"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                android:autofillHints="">
 
             </EditText>
 
@@ -80,37 +80,36 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:inputType="text"
                 android:padding="15dp"
                 android:text="@string/traducir"
                 android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/Translation"
+                app:layout_constraintBottom_toTopOf="@id/Result"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <EditText
-                android:id="@+id/Translation"
+                android:id="@+id/Result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:autofillHints="Traducción..."
                 android:gravity="start"
+                android:hint="@string/resultado"
                 android:inputType="text"
                 android:minHeight="200dp"
                 android:singleLine="false"
-                android:text="Texto Traducido/Vuelta Flashcard"
                 android:typeface="normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:autofillHints="" />
             <!--añadir Chipgroup -->
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
     <!--botón que guarda la tarjeta-->
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/save_card_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

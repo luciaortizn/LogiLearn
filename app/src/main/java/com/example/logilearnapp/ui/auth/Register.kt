@@ -32,7 +32,6 @@ class Register : AppCompatActivity() {
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("user")
-        Toast.makeText(this@Register, databaseReference.child("email").key.toString(), Toast.LENGTH_SHORT).show()
         mAuth = FirebaseAuth.getInstance()
 
 

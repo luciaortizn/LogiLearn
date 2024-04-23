@@ -116,4 +116,8 @@
     <string name="haz_click_para_a_adir_o_quitar_la_carpeta_de_favoritos">haz click para añadir o quitar la carpeta de favoritos</string>
     <string name="aqu_aparecen_tus_resultados">Aquí aparecen tus resultados...</string>
     <string name="esto_es_un_buscador_de_cards">Esto es un buscador de cards</string>
+    <string name="a_ade_etiquetas_carpetas_y_m_s">Añade etiquetas, carpetas y más</string>
+    <string name="escribe_un_t_tulo">Escribe un título</string>
+    <string name="resultado">Resultado...</string>
+    <string name="input">Input...</string>
 </resources>

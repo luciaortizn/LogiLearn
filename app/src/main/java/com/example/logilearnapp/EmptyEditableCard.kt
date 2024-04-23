@@ -1,17 +1,24 @@
 package com.example.logilearnapp
-
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
+import android.widget.EditText
 import android.widget.Toast
-import androidx.core.view.forEach
-import androidx.core.view.get
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class EmptyEditableCard : AppCompatActivity() {
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    //realtime database
+    private lateinit var databaseReference: DatabaseReference
+   private lateinit var save_btn: ExtendedFloatingActionButton
+   private lateinit var input_text: EditText
+   private lateinit var result_text: EditText
+   private lateinit var title_text: EditText
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_empty_editable_card)
@@ -47,6 +54,21 @@ class EmptyEditableCard : AppCompatActivity() {
                 }
 
                 else -> false
+            }
+        }
+
+        //gestión del botón de guardar y la llamada a la base de datos
+        save_btn = findViewById(R.id.save_card_button)
+        title_text = findViewById(R.id.SetTitle)
+        input_text = findViewById(R.id.Input)
+        result_text = findViewById(R.id.Result)
+        save_btn.setOnClickListener(){
+            if(title_text.text.isNotEmpty() && input_text.text.isNotEmpty() && result_text.text.isNotEmpty()){
+                firebaseDatabase = FirebaseDatabase.getInstance()
+                databaseReference = firebaseDatabase.reference.child("user")
+                //obtener las shares preferences y compararlo con los usuarios de la bd
+                //añado la carta a "cards" con child( card (child atributos))
+                Toast.makeText(this, "Se guarda la card", Toast.LENGTH_SHORT).show()
             }
         }
     }
