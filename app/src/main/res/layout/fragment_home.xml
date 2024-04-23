@@ -38,16 +38,19 @@
         android:id="@+id/carpetas_recientes_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Carpetas recientes"
-        android:paddingLeft="20dp"
+        android:text="Diccionario"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:paddingStart="20dp"
         android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="23dp">
+        android:textSize="23sp">
 
     </TextView>
+    <!--
     <LinearLayout
-
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -55,240 +58,302 @@
         android:padding="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/carpetas_recientes_txt"
-        app:layout_constraintBottom_toTopOf="@id/folder_name_text_view">
+        app:layout_constraintTop_toBottomOf="@id/carpetas_recientes_txt">
 
-        <!--colección de recientes-->
-        <!--1-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/folder_caruosel"
-            android:layout_width="wrap_content"
-            android:layout_height="95dp"
-            android:minWidth="100dp"
-            android:checkable="true"
-            style="?attr/materialCardViewElevatedStyle"
-            android:layout_marginRight="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:outlineSpotShadowColor="@color/cardview_light_background">
-            <!--esta "cardview" muestra las carpetas-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
 
-                    <!-- Title, secondary and supporting text -->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Vocabulario"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/baseline_favorite_border_24"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="?android:attr/textColorSecondary"
-                        />
-                </LinearLayout>
-
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-        <!--2-->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/folder_caruosel1"
-            android:layout_width="wrap_content"
-            android:layout_height="95dp"
-            android:checkable="true"
-            android:minWidth="100dp"
-            android:clickable="true"
-            style="?attr/materialCardViewElevatedStyle"
-            android:focusable="true"
-            android:outlineSpotShadowColor="@color/cardview_light_background">
-            <!--esta "cardview" muestra las carpetas-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <!-- Title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Verbos"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="40dp"
-                        android:minHeight="40dp"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/baseline_favorite_border_24"
-                        android:textAppearance="?attr/textAppearanceBodyMedium"
-                        android:textColor="?android:attr/textColorSecondary"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
     <com.google.android.material.card.MaterialCardView
-        style="?attr/materialCardViewFilledStyle"
-        android:id="@+id/folder_name_text_view"
-        android:layout_width="match_parent"
-        android:padding="30dp"
-        android:layout_height="350dp"
+        android:id="@+id/folder_caruosel"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:minWidth="100dp"
         android:checkable="true"
+        style="?attr/materialCardViewElevatedStyle"
+        android:layout_marginRight="20dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_gravity="center_horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="125dp"
         android:outlineSpotShadowColor="@color/cardview_light_background">
-        <Button
-        style="?attr/materialIconButtonStyle"
-        android:id="@+id/iconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="cambiar el idioma"
-        app:icon="@drawable/outline_language_24"
-        />
-        <Button
-            style="?attr/materialIconButtonStyle"
-            android:id="@+id/addToCardButton"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_height="wrap_content"
-            android:contentDescription="añadir el texto a cards"
-            app:icon="@drawable/baseline_add_24"
-            />
-        <LinearLayout
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vocabulario"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/baseline_favorite_border_24"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/folder_caruosel1"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
+        android:checkable="true"
+        android:minWidth="100dp"
+        android:clickable="true"
+        style="?attr/materialCardViewElevatedStyle"
+        android:focusable="true"
+        android:outlineSpotShadowColor="@color/cardview_light_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verbos"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="40dp"
+                    android:minHeight="40dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/baseline_favorite_border_24"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="?android:attr/textColorSecondary"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout> -->
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/carpetas_recientes_txt"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/Input"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="Traduce algo..."
-                android:gravity="left|start"
-                android:inputType="text"
-                android:minHeight="70dp"
-                android:singleLine="false"
-                android:maxLength="50"
-                android:hint="Introduce algo..."
                 android:backgroundTint="@color/fui_transparent"
-                android:typeface="normal"
-                app:layout_constraintBottom_toTopOf="@id/Translate"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent">
+                android:clickable="true"
+                android:focusable="true">
 
-            </EditText>
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
 
-            <LinearLayout
+                    app:menu="@menu/dictionary_search_menu"
+                    android:hint="Busca palabras..."
+                    app:defaultMarginsEnabled="true"
+                    />
+
+            </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.search.SearchView
+                android:id="@+id/search_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:orientation="horizontal"
-                android:overScrollMode="ifContentScrolls">
+                android:layout_height="wrap_content"
+                android:hint="Busca palabras..."
+                app:animateMenuItems="true"
+                app:layout_anchor="@id/search_bar">
+                <ScrollView
+                    android:layout_width="match_parent"
+                   android:scrollIndicators="right"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbars="vertical"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="70dp"
+                        android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/Translate_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="100dp"
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/definitions"
+                            style="?attr/materialCardViewElevatedStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:backgroundTint="@color/blue_light"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:minWidth="100dp"
+                            android:minHeight="40dp"
+                            android:outlineSpotShadowColor="@color/blue">
 
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center_horizontal"
-                    android:inputType="text"
-                    android:padding="15dp"
-                    android:text="Trans"
-                    android:textSize="16dp" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="20dp"
+                                android:text="Definiciones"
+                                android:textSize="20dp">
+                            </TextView>
+                            <TextView
+                                android:id="@+id/definitions_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="25dp"
+                                android:autofillHints="Definiciones..."
+                                android:backgroundTint="@color/fui_transparent"
+                                android:gravity="start"
+                                android:hint="definiciones..."
+                                android:inputType="textMultiLine"
+                                android:minHeight="40dp"
+                                android:padding="20dp"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:typeface="normal" />
+                        </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/examples"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:layout_margin="10dp"
+                            android:backgroundTint="@color/blue_light"
+                            android:minHeight="40dp"
+                            android:minWidth="100dp"
+                            android:clickable="true"
+                            style="?attr/materialCardViewElevatedStyle"
+                            android:focusable="true"
+                            android:outlineSpotShadowColor="@color/cardview_light_background">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="20dp"
+                                android:textSize="20dp"
+                                android:text="Ejemplos">
+                            </TextView>
+                            <TextView
+                                android:id="@+id/examples_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:autofillHints="Ejemplos..."
+                                android:backgroundTint="@color/fui_transparent"
+                                android:gravity="start"
+                                android:layout_marginTop="25dp"
+                                android:minHeight="40dp"
+                                android:hint="ejemplos..."
+                                android:inputType="textMultiLine"
+                                android:padding="20dp"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:typeface="normal" />
+                        </com.google.android.material.card.MaterialCardView>
 
-                <Button
-                    android:id="@+id/Synonym_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:gravity="center_horizontal"
-                    android:inputType="text"
-                    android:padding="15dp"
-                    android:text="Sin"
-                    android:textSize="16dp" />
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/related_words"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:minHeight="40dp"
+                            android:layout_margin="10dp"
+                            android:backgroundTint="@color/blue_light"
+                            android:minWidth="100dp"
+                            android:clickable="true"
+                            style="?attr/materialCardViewElevatedStyle"
+                            android:focusable="true"
+                            android:outlineSpotShadowColor="@color/cardview_light_background">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="20dp"
+                                android:textSize="20dp"
+                                android:text="Palabras similares">
+                            </TextView>
+                            <TextView
+                                android:id="@+id/related_words_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:autofillHints="Palabras similares..."
+                                android:backgroundTint="@color/fui_transparent"
+                                android:gravity="start"
+                                android:layout_marginTop="25dp"
+                                android:minHeight="40dp"
+                                android:hint="palabras similares"
+                                android:inputType="textMultiLine"
+                                android:padding="20dp"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:typeface="normal" />
+                        </com.google.android.material.card.MaterialCardView>
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/pronunciation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
 
-                <Button
-                    android:id="@+id/Definition_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:clickable="true"
-                    android:gravity="center_horizontal"
-                    android:inputType="text"
-                    android:padding="15dp"
-                    android:text="Def"
-                    android:textSize="16sp" />
-                <Button
-                    android:id="@+id/Example_button"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:clickable="true"
-                    android:gravity="center_horizontal"
-                    android:inputType="text"
-                    android:padding="15dp"
-                    android:text="Ex"
-                    android:textSize="16sp" />
-            </LinearLayout>
+                            android:minWidth="100dp"
+                            android:minHeight="40dp"
+                            android:layout_margin="10dp"
+                            android:backgroundTint="@color/blue_light"
+                            android:padding="20dp"
+                            android:clickable="true"
+                            style="?attr/materialCardViewElevatedStyle"
+                            android:focusable="true"
+                            android:outlineSpotShadowColor="@color/cardview_light_background">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="20dp"
+                                android:textSize="20dp"
+                                android:text="Pronunciación">
+                            </TextView>
+                            <TextView
+                                android:id="@+id/pronunciation_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:autofillHints="Pronunciación..."
+                                android:backgroundTint="@color/fui_transparent"
+                                android:gravity="start"
+                                android:layout_marginTop="25dp"
+                                android:minHeight="40dp"
+                                android:hint="pronunciación"
+                                android:inputType="textMultiLine"
+                                android:padding="20dp"
+                                android:singleLine="false"
+                                android:textColor="@color/black"
+                                android:typeface="normal" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                </ScrollView>
+                <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+            </com.google.android.material.search.SearchView>
             <!--debería poner una barra de búsqueda de resultados que no tengan por qué guardarse-->
-            <EditText
-                android:id="@+id/Result"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="Traducción..."
-                android:gravity="start"
-                android:inputType="text"
-                android:hint="Aquí aparecen tus resultados..."
-
-                android:backgroundTint="@color/fui_transparent"
-                android:minHeight="70dp"
-                android:singleLine="false"
-                android:typeface="normal"
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="Resultados ">
-
-            </TextView>
-        </LinearLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
-
-
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"

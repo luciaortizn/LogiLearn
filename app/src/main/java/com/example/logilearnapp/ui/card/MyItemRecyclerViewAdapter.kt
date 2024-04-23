@@ -13,11 +13,11 @@ import com.example.logilearnapp.ui.folder.Folder
  * [RecyclerView.Adapter] that can display a [PlaceholderItem].
  * TODO: Replace the implementation with code for your data type.
  */
-
+/*
 class MyItemRecyclerViewAdapter(private val folderList:List<Folder>):
 RecyclerView.Adapter<MyItemRecyclerViewAdapter.FolderViewHolder>(){
     inner class FolderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val folderNameTextView: TextView = itemView.findViewById(R.id.folder_name_text_view)
+     //   val folderNameTextView: TextView = itemView.findViewById(R.id.folder_name_text_view)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FolderViewHolder {
@@ -48,7 +48,7 @@ RecyclerView.Adapter<MyItemRecyclerViewAdapter.FolderViewHolder>(){
         holder.folderNameTextView.text = folderName.toString()
     }
 }
-
+*/
 
 /*
 

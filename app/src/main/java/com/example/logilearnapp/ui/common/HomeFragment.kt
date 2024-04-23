@@ -3,12 +3,14 @@ package com.example.logilearnapp.ui.common
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
+import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -18,15 +20,18 @@ import com.example.logilearnapp.EmptyEditableCard
 import com.example.logilearnapp.ProfileFragment
 import com.example.logilearnapp.R
 import com.example.logilearnapp.data.Definition
-import com.example.logilearnapp.data.WordOfTheDayResponse
+import com.example.logilearnapp.data.Example
+import com.example.logilearnapp.data.RelatedWord
 import com.example.logilearnapp.ui.favorites.FavoritesFragment
 import com.example.logilearnapp.viewmodel.HomeViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.time.Duration
+import com.google.android.material.search.SearchBar
+
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBE
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -39,10 +44,13 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
 
 private lateinit var viewModel : HomeViewModel
-private lateinit var result: EditText
-private lateinit var input: EditText
+private lateinit var definitionsText: TextView
+private lateinit var examplesText: TextView
+private lateinit var relatedWordsText: TextView
+private lateinit var pronunciationText: TextView
+private val cardMap = mutableMapOf<String, MaterialCardView>()
+private lateinit var sv : com.google.android.material.search.SearchView
 
-private lateinit var definitionButton : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -66,46 +74,118 @@ private lateinit var definitionButton : Button
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-        result = view.findViewById(R.id.Result)
-        definitionButton = view.findViewById(R.id.Definition_button)
-        input = view.findViewById(R.id.Input)
-        //mover de sitio el api key
-        val apiKey = "x9mi4zwbf3wkb7xx2n1pa26t8shz7v8bmtv1ojwnevuanb4dq";
 
-        definitionButton.setOnClickListener() {
-            //Toast.makeText(requireContext(),"has pulsado", Toast.LENGTH_SHORT).show();
+        val apiKey = "x9mi4zwbf3wkb7xx2n1pa26t8shz7v8bmtv1ojwnevuanb4dq"
+        sv = view.findViewById(R.id.search_view)
+        definitionsText= view.findViewById(R.id.definitions_text)
+        examplesText = view.findViewById(R.id.examples_text)
+        relatedWordsText = view.findViewById(R.id.related_words_text)
+        pronunciationText  =view.findViewById(R.id.pronunciation_text)
+        cardMap["Definiciones"] = view.findViewById(R.id.definitions)
+        cardMap["Sinónimos"] = view.findViewById(R.id.related_words)
+        cardMap["Ejemplos"] = view.findViewById(R.id.examples)
+        cardMap["Pronunciación"] = view.findViewById(R.id.pronunciation)
 
+        val sb : SearchBar = view.findViewById(R.id.search_bar)
 
-            viewModel.getDefinitions( apiKey,  input.text.toString().trim()) { definitions ->
-                // Maneja el resultado aquí en el hilo principal
-                definitions?.let { definitionsList ->
-
-
-                    Log.d("API RESPONSE", definitionsList.toString())
-
-                    if (definitionsList.isNotEmpty()) {
-                        val firstDefinition: Definition = definitionsList[0]
-                        val definitionText = firstDefinition.text
-                        result.setText(definitionText)
-                    } else {
-                        result.setText("No se encontraron definiciones")
-                    }
-
-                } ?: run {
-                    result.setText("Error al obtener la definición")
+        sv.inflateMenu(R.menu.dictionary_search_menu)
+        sv.setOnMenuItemClickListener{menuItem ->
+            val title = menuItem.title.toString()
+            // Ocultar la tarjeta correspondiente al ítem del menú seleccionado
+            cardMap.values.forEach { card ->
+                if (cardMap.entries.firstOrNull { it.key == title }?.value == card) {
+                    card.visibility = MaterialCardView.VISIBLE
+                } else {
+                    card.visibility = MaterialCardView.GONE
                 }
-
             }
-            viewModel.getRandomWord(apiKey){ wordOfTheDayResponse ->
-               wordOfTheDayResponse?.let{obj ->
-                   Toast.makeText(requireContext(), obj.word, Toast.LENGTH_SHORT).show()
+            return@setOnMenuItemClickListener true
+        }
+       sv.editText.setOnEditorActionListener { v, actionId, event ->
+           val text: String = v?.text.toString();
+           sv.setText(text)
+           viewModel.getDefinitions( apiKey, text.trim()) { definitions ->
+               // Maneja el resultado aquí en el hilo principal
+               definitions?.let { definitionsList ->
+                   if (definitionsList.isNotEmpty()) {
+                       //no es así, hago foreach para la que no tiene atributo text?
+                       val firstDefinition: Definition = definitionsList[1]
+                       var definitionText = "Type: " + firstDefinition.partOfSpeech  +". \n"
+                       if(firstDefinition.text!=null ){
+                           definitionText += firstDefinition.text
+                       }
+                       definitionsText.text =removeBracketsAndContent(definitionText)
+                   } else {
+                       definitionsText.text = "No se encontraron definiciones"
+                   }
 
-
+               } ?: run {
+                   definitionsText.text = "No hay resultados"
                }
 
-            }
+           }
+           viewModel.getRelatedWords( apiKey, text.trim()) { relatedWords ->
+               // Maneja el resultado aquí en el hilo principal
+               relatedWords?.let { relatedWordList ->
+                   if (relatedWordList.isNotEmpty()) {
+                       var allrelated :String = ""
+                       for (lists in relatedWordList){
+                           when (lists.relationshipType) {
+                               "same-context" -> {
+                                   allrelated += "\nSame Context: \n"
+                                   for (word in lists.words) {
+                                       allrelated += "$word, "
+                                   }
+                               }
+                               "synonym" -> {
+                                   allrelated += "\nSynonyms: \n"
+                                   for (word in lists.words) {
+                                       allrelated += "$word, "
+                                   }
+                               }
+                               "has_topic" -> {
+                                   allrelated += "\nTopic: \n"
+                                   for (word in lists.words) {
+                                       allrelated += "$word, "
+                                   }
+                               }
+                               else -> {
+                               }
+                           }
+                       }
+                       relatedWordsText.text = allrelated
 
-        }
+                   } else {
+                       relatedWordsText.text = "No se encontraron"
+                   }
+
+               } ?: run {
+                   relatedWordsText.text = " "
+               }
+
+           }
+           viewModel.getExamples( apiKey, text.trim()){ examplesObject ->
+               examplesObject?.let { ex ->
+
+                   val firstExample: String = ex.examples[1].text
+                   examplesText.text = removeBracketsAndContent(firstExample)
+
+               } ?: run {
+                   examplesText.text = "Error"
+               }
+           }
+
+           viewModel.getPronunciations( apiKey, text.trim()){ p ->
+              p?.let { pronunciations ->
+                   val firstExample: String = pronunciations[0].raw
+                  pronunciationText.text = removeBracketsAndContent(firstExample)
+
+               } ?: run {
+                  pronunciationText.text = "Error"
+               }
+           }
+           true
+       }
 
         val fab : FloatingActionButton = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener {
@@ -161,6 +241,11 @@ private lateinit var definitionButton : Button
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
+    }
+    private fun removeBracketsAndContent(input: String): String {
+        // Utilizamos una expresión regular para encontrar y reemplazar el contenido entre <>
+        val pattern = Regex("<[^>]*>")
+        return input.replace(pattern, "") // Reemplazamos el contenido entre <> con una cadena vacía
     }
 
 }
