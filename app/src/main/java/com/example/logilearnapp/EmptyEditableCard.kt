@@ -1,13 +1,19 @@
 package com.example.logilearnapp
+import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class EmptyEditableCard : AppCompatActivity() {
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -66,10 +72,68 @@ class EmptyEditableCard : AppCompatActivity() {
             if(title_text.text.isNotEmpty() && input_text.text.isNotEmpty() && result_text.text.isNotEmpty()){
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 databaseReference = firebaseDatabase.reference.child("user")
-                //obtener las shares preferences y compararlo con los usuarios de la bd
-                //añado la carta a "cards" con child( card (child atributos))
-                Toast.makeText(this, "Se guarda la card", Toast.LENGTH_SHORT).show()
+                val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+                val userId = sharedPreferences.getString("id", "")
+                Toast.makeText(this, "tu nombre es $userId ", Toast.LENGTH_SHORT).show()
+                val databaseReference = FirebaseDatabase.getInstance().reference.child("user")
+
+                databaseReference.orderByChild("id").equalTo(userId).addListenerForSingleValueEvent(object :
+                    ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (userSnapshot in dataSnapshot.children) {
+
+
+                                val id = databaseReference.child(userId.toString()).child("cards").push().key
+                                //falta encriptarla
+                               // val userData = com.example.logilearnapp.UserData(id, email, name, surname,password)
+
+
+                                val userData = userSnapshot.getValue(UserData::class.java)
+                                if (userData != null) {
+                                    val cardData = HashMap<String, Any>()
+                                    cardData["title"] = title_text.text.toString()
+                                    cardData["input"] = input_text.text.toString()
+                                    cardData["result"] = result_text.text.toString()
+
+                                    // Obtenemos una referencia al nodo del usuario actual
+                                    val currentUserRef = databaseReference.child(userId.toString()).child("cards")
+
+                                    // Añadimos el nodo "card" con sus campos hijos al mismo nivel que el nodo "id"
+                                    // databaseReference.child(id!!).setValue(userData)
+                                    currentUserRef.child(id!!).setValue(cardData)
+                                        .addOnCompleteListener { task ->
+                                            if (task.isSuccessful) {
+                                                // La operación de escritura fue exitosa
+                                                // Puedes realizar cualquier acción adicional aquí
+                                            } else {
+                                                // Ocurrió un error al escribir en la base de datos
+                                                // Manejar el error según sea necesario
+                                            }
+                                        }
+
+
+                                }
+                            }
+
+
+                        } else {
+                            // el usuario no se encuentra se muestra alert
+
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+
+                    }
+                })
+
+                //te lleva al home fragment
+
+            }else{
+                Toast.makeText(this, "No has rellenado todos los campos", Toast.LENGTH_SHORT).show()
             }
+
         }
     }
 }
