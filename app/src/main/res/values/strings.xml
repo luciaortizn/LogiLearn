@@ -120,4 +120,11 @@
     <string name="escribe_un_t_tulo">Escribe un título</string>
     <string name="resultado">Resultado...</string>
     <string name="input">Input...</string>
+    <string name="result">result</string>
+    <string name="busca_tarjetas">Busca tarjetas</string>
+    <string name="a_adir_a_carpeta">Añadir a carpeta</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="a_ade_un_nombre">Añade un nombre</string>
+    <string name="crear_carpeta">Crear carpeta</string>
 </resources>

@@ -2,6 +2,6 @@ package com.example.logilearnapp.ui.card
 
 import com.example.logilearnapp.ui.folder.Folder
 
-open class Card(private var title:String, private var input:String, private var folder: Folder) {
+data class Card(var id:String, var title:String, var input:String,var result:String) {
 
 }

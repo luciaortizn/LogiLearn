@@ -25,18 +25,36 @@
                 android:layout_marginTop="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Busca tarjetas" />
+                android:hint="@string/busca_tarjetas" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.search.SearchView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="Busca tarjetas"
-            app:layout_anchor="@id/search_bar">
+            app:layout_anchor="@id/search_bar"
+            android:id="@+id/search_view">
             <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
         </com.google.android.material.search.SearchView>
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_card"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:scrollbars="vertical"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="1"
+        android:clickable="true"
+        android:focusable="true"
+        android:layoutDirection="ltr"
+        android:layout_marginBottom="60dp">
+    </androidx.recyclerview.widget.RecyclerView>
+    <LinearLayout
+        android:id="@+id/layout_no_cards_displayed"
+        android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical">
@@ -47,7 +65,6 @@
             android:layout_height="wrap_content"
             android:minWidth="60dp"
             android:minHeight="60dp"
-
             android:backgroundTint="@color/blue_light"
             android:src="@drawable/baseline_library_books_24">
         </ImageView>

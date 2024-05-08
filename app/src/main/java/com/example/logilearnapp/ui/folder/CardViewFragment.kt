@@ -25,6 +25,8 @@ private lateinit var  recyclerView: RecyclerView
 private lateinit var folderList:ArrayList<Folder>
 lateinit var imageList:Array<Int>
 lateinit var titleList:Array<String>
+lateinit var idCardList:Array<String>
+lateinit var idFolderList:Array<String>
 
 
 class CardViewFragment : Fragment() {
@@ -63,7 +65,13 @@ class CardViewFragment : Fragment() {
             R.drawable.baseline_favorite_24,
             R.drawable.baseline_favorite_border_24,
             R.drawable.baseline_favorite_border_24
+        )
 
+        idCardList = arrayOf(
+           "", "", "", "", ""
+        )
+        idFolderList = arrayOf(
+            "", "", "", "", ""
         )
         titleList = arrayOf(
             "Verbs",
@@ -117,7 +125,7 @@ class CardViewFragment : Fragment() {
     //Se obtienen los datos que se van a mostrar en el recyclerview y recorren y añaden a la lista que tiene un array para cada elemento
     private fun getData() {
         for (i in imageList.indices){
-            val folder= Folder(imageList[i], titleList[i])
+            val folder= Folder(idFolderList[i],imageList[i] , titleList[i], idCardList[i])
             folderList.add(folder)
         }
         recyclerView.adapter = FolderAdapter(folderList)
@@ -131,7 +139,7 @@ class CardViewFragment : Fragment() {
         }
 
         // Actualiza la lista con la nueva imagen
-        folderList[position] = Folder(nuevaImagen, folder.dataTitle)
+        folderList[position] = Folder("",nuevaImagen, folder.dataTitle,"" )
         Toast.makeText(context,"Se ha modificado",Toast.LENGTH_SHORT).show()
         // Notifica al adaptador sobre el cambio
         recyclerView.adapter?.notifyItemChanged(position)

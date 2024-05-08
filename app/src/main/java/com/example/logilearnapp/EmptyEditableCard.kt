@@ -51,13 +51,13 @@ class EmptyEditableCard : AppCompatActivity() {
                     //añadir etiqueta
                     true
                 }
-
+                /**
                 R.id.item_imagen -> {
                     Toast.makeText(this, "Imagen", Toast.LENGTH_SHORT).show()
                     //proporcionar acceso a su galería
                     // Handle more item (inside overflow menu) press
                     true
-                }
+                }**/
 
                 else -> false
             }
@@ -74,7 +74,6 @@ class EmptyEditableCard : AppCompatActivity() {
                 databaseReference = firebaseDatabase.reference.child("user")
                 val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
                 val userId = sharedPreferences.getString("id", "")
-                Toast.makeText(this, "tu nombre es $userId ", Toast.LENGTH_SHORT).show()
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("user")
 
                 databaseReference.orderByChild("id").equalTo(userId).addListenerForSingleValueEvent(object :
@@ -83,19 +82,18 @@ class EmptyEditableCard : AppCompatActivity() {
                         if (dataSnapshot.exists()) {
                             for (userSnapshot in dataSnapshot.children) {
 
-
+                                //mete el id como key:
                                 val id = databaseReference.child(userId.toString()).child("cards").push().key
-                                //falta encriptarla
-                               // val userData = com.example.logilearnapp.UserData(id, email, name, surname,password)
 
+                               // val userData = com.example.logilearnapp.UserData(id, email, name, surname,password)
 
                                 val userData = userSnapshot.getValue(UserData::class.java)
                                 if (userData != null) {
                                     val cardData = HashMap<String, Any>()
+                                    cardData["id"]= id.toString()
                                     cardData["title"] = title_text.text.toString()
                                     cardData["input"] = input_text.text.toString()
                                     cardData["result"] = result_text.text.toString()
-
                                     // Obtenemos una referencia al nodo del usuario actual
                                     val currentUserRef = databaseReference.child(userId.toString()).child("cards")
 
@@ -104,11 +102,11 @@ class EmptyEditableCard : AppCompatActivity() {
                                     currentUserRef.child(id!!).setValue(cardData)
                                         .addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
-                                                // La operación de escritura fue exitosa
-                                                // Puedes realizar cualquier acción adicional aquí
+                                                Toast.makeText(this@EmptyEditableCard, "Información guardada.",Toast.LENGTH_SHORT).show()
+                                                val intent = Intent(this@EmptyEditableCard, MainActivity::class.java)
+                                                startActivity(intent)
                                             } else {
-                                                // Ocurrió un error al escribir en la base de datos
-                                                // Manejar el error según sea necesario
+                                               Toast.makeText(this@EmptyEditableCard, "Error, inténtalo más tarde.",Toast.LENGTH_SHORT).show()
                                             }
                                         }
 

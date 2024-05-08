@@ -1,21 +1,32 @@
 package com.example.logilearnapp
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.set
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.ui.common.HomeFragment
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+
 
 /**
  * A simple [Fragment] subclass.
@@ -53,8 +64,6 @@ class ProfileFragment : Fragment() {
 
            replaceFragment(requireActivity(), HomeFragment())
         }
-
-
     }
 
 
@@ -84,5 +93,44 @@ class ProfileFragment : Fragment() {
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
+    }
+    private fun getUserData(name_input: TextInputEditText,surname_input: TextInputEditText, email_input: TextInputEditText,password_input: TextInputEditText ) {
+        val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("id", "")
+
+        val userRef = FirebaseDatabase.getInstance().reference.child("user").child(userId!!)
+
+        userRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val name = snapshot.child("name").getValue(String::class.java)
+                var surname = snapshot.child("surname").getValue(String::class.java)
+                var email = snapshot.child("email").getValue(String::class.java)
+                var password = snapshot.child("password").getValue(String::class.java)
+
+                if (name != null && surname != null) {
+                    var new_editable  = Editable.Factory.getInstance().newEditable(name)
+                    name_input.text = new_editable
+                    new_editable = Editable.Factory.getInstance().newEditable(surname)
+                    surname_input.text = new_editable
+                    new_editable = Editable.Factory.getInstance().newEditable(email)
+                    email_input.text = new_editable
+                    new_editable = Editable.Factory.getInstance().newEditable(password)
+                    password_input.text = new_editable
+
+                    //aquí muestro los datos que ya están
+                  //  binding.textFirstName.text = firstName
+                  //  binding.textUsername.text = formattedUsername
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("DatabaseError", "Error: ${error.message}")
+            }
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
     }
 }

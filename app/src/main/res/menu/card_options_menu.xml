@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_addToFolder_card"
+        android:enabled="true"
+        android:title="@string/a_adir_a_carpeta"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/item_edit_card"
+        android:enabled="true"
+        android:title="@string/editar"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/item_delete_card"
+        android:enabled="true"
+        android:title="@string/eliminar"
+        app:showAsAction="never"/>
+
+</menu>
