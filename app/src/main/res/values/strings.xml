@@ -127,4 +127,6 @@
     <string name="eliminar">Eliminar</string>
     <string name="a_ade_un_nombre">Añade un nombre</string>
     <string name="crear_carpeta">Crear carpeta</string>
+    <string name="vaya_todav_a_no_tienes_ning_na_carpeta">¡Vaya! Todavía no tienes ningúna carpeta</string>
+    <string name="editar_carpeta">Editar carpeta</string>
 </resources>

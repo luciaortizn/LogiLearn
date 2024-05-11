@@ -10,8 +10,8 @@ class Folder (private var name:String, private var cardList: MutableList<Card>, 
 }modificar parámetros: folders: title lista de cardIDs, label, favorite
 * */
 
-data class Folder(val id:String,val dataImage: Int, var dataTitle: String, var cardId:String){
-    constructor() : this("",0, "", "")
+data class Folder(val id:String, var isFavorite:String, var dataTitle: String, var cardId: ArrayList<String>){
+    constructor() : this("","false", "", ArrayList())
 }
 
 

@@ -21,6 +21,7 @@
 
     </TextView>
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputLayoutAddFolder"
         android:layout_width="match_parent"
         android:layout_gravity="start"
         android:layout_height="wrap_content">

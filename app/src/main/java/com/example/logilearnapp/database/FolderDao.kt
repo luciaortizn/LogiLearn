@@ -7,6 +7,7 @@ import com.example.logilearnapp.ui.folder.Folder
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
 import com.google.protobuf.Value
 
@@ -24,10 +25,9 @@ class FolderDao {
                         val folderId = folderSnapshot.key // Obtener el ID de la carpeta
                         for(idSnapshot in folderSnapshot.children){
                             val folderTitle = idSnapshot.child("title").getValue(String::class.java)
-
-                            val folderDataImage = 1 //de momento hasta saber como manejarlo
-
-                            val folderCardId = idSnapshot.child("cardId").getValue(String::class.java)
+                            val folderDataImage = idSnapshot.child("isFavorite").getValue(String::class.java)
+                            // manejo de lista de CARD-ID
+                            val folderCardId = idSnapshot.child("cardId").getValue(object : GenericTypeIndicator<ArrayList<String>>() {})
                             // Aquí puedes obtener más atributos de la carpeta según tu estructura de datos
                             if (folderId != null && folderTitle != null && folderCardId!= null  && folderDataImage != null  ) {
                                 val folder = Folder(folderId, folderDataImage, folderTitle, folderCardId) // Crear un objeto Folder
@@ -60,19 +60,23 @@ class FolderDao {
                         val userData = userSnapshot.getValue(com.example.logilearnapp.UserData::class.java)
                         if(userData!=null){
                             val folderData = HashMap<String, Any>()
-                            folderData["id"] = id.toString()
-                            folderData["dataImage"] = folder.dataImage
-                            folderData["dataTitle"] = folder.dataTitle
-                            folderData["cardId"] = folder.cardId
+                            //manejo repetidos
+                            if(!folderData.isEmpty() || !folder.dataTitle.equals("repetido")){
+                                folderData["id"] = id.toString()
+                                folderData["isFavorite"] = folder.isFavorite
+                                folderData["dataTitle"] = folder.dataTitle
+                                val cardIdArray = folder.cardId.toTypedArray()
+                                folderData["cardId"] = cardIdArray
+                                val currentUserRef = databaseReference.child(userId.toString()).child("folders")
+                                currentUserRef.child(id!!).setValue(folderData).addOnCompleteListener{ task ->
+                                    if(task.isSuccessful){
+                                        //  ??? start intent o set toast...
+                                    }else{
 
-                            val currentUserRef = databaseReference.child(userId.toString()).child("folders")
-                            currentUserRef.child(id!!).setValue(folderData).addOnCompleteListener{ task ->
-                                if(task.isSuccessful){
-                                 //  ??? start intent o set toast...
-                                }else{
-
+                                    }
                                 }
                             }
+
                         }
                     }
                 }
@@ -80,6 +84,50 @@ class FolderDao {
 
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
+            }
+        })
+    }
+    fun addNewCardIdValue(databaseReference: DatabaseReference, userId: String, newCardId: String, folderId:String) {
+        val foldersRef = databaseReference.child("user").child("id").child(userId).child("folders").child(folderId).child("cardId")
+        // Verificar si el newCardId ya existe en la lista
+        foldersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentCardIds: ArrayList<String> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
+                if (currentCardIds.contains(newCardId)) {
+                    println("Error: El cardId ya existe en la lista.")
+                } else {
+                    currentCardIds.add(newCardId)
+                    foldersRef.setValue(currentCardIds).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+
+                        } else {
+
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar error de cancelación
+            }
+        })
+    }
+    fun deleteCardId(databaseReference: DatabaseReference, userId: String, cardIdToDelete: String, folderId:String) {
+        databaseReference.child("user").child("id").child(userId).child("folders").child(folderId).child("cardId").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // Obtener la lista actual de cardId
+                val currentCardIds: ArrayList<String> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
+                currentCardIds.remove(cardIdToDelete)
+                databaseReference.child("user").child("id").equalTo(userId).ref.child("folders").child("cardId").setValue(currentCardIds).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                    } else {
+
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+
             }
         })
     }

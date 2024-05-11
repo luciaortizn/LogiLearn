@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/item_again"
+        android:enabled="true"
+        android:iconTint="@color/red_dark"
+        android:icon="@drawable/baseline_library_books_24"
+        app:showAsAction="always"
+        android:title="Again" />
+    <item
+        android:id="@+id/item_hard"
+        android:enabled="true"
+        android:iconTint="@color/red_dark"
+        android:icon="@drawable/baseline_library_books_24"
+        app:showAsAction="always"
+        android:title="Easy" />
+    <item
+        android:id="@+id/item_good"
+        android:enabled="true"
+        android:iconTint="@color/red_dark"
+        android:icon="@drawable/baseline_library_books_24"
+        app:showAsAction="always"
+        android:title="Good" />
+    <item
+        android:id="@+id/item_easy"
+        android:enabled="true"
+        android:iconTint="@color/red_dark"
+        android:icon="@drawable/baseline_library_books_24"
+        app:showAsAction="always"
+        android:title="Easy" />
+</menu>

@@ -23,9 +23,9 @@ private const val ARG_PARAM2 = "param2"
  */
 private lateinit var  recyclerView: RecyclerView
 private lateinit var folderList:ArrayList<Folder>
-lateinit var imageList:Array<Int>
+lateinit var imageList:Array<String>
 lateinit var titleList:Array<String>
-lateinit var idCardList:Array<String>
+lateinit var idCardList:ArrayList<ArrayList<String>>
 lateinit var idFolderList:Array<String>
 
 
@@ -59,17 +59,16 @@ class CardViewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        imageList = arrayOf(
-            R.drawable.baseline_favorite_border_24,
-            R.drawable.baseline_favorite_24,
-            R.drawable.baseline_favorite_24,
-            R.drawable.baseline_favorite_border_24,
-            R.drawable.baseline_favorite_border_24
+        imageList = arrayOf("true", "false", "true", "false" , "true")
+
+         idCardList  = arrayListOf(
+            arrayListOf("", "", "", "", ""),
+            arrayListOf("", "", "", "", ""),
+            arrayListOf("", "", "", "", ""),
+            arrayListOf("", "", "", "", ""),
+            arrayListOf("", "", "", "", "")
         )
 
-        idCardList = arrayOf(
-           "", "", "", "", ""
-        )
         idFolderList = arrayOf(
             "", "", "", "", ""
         )
@@ -88,7 +87,7 @@ class CardViewFragment : Fragment() {
         getData()
 
 
-        val adapter = FolderAdapter(folderList)
+        val adapter = FolderAdapter(folderList, requireContext())
         adapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
             override fun onImageClick(position: Int, view: View) {
                 //cambia de imagen y por tanto también de la lista favoritos
@@ -98,8 +97,6 @@ class CardViewFragment : Fragment() {
                 requireActivity().recreate()
             }
         } )
-
-
 
 
     }
@@ -128,18 +125,21 @@ class CardViewFragment : Fragment() {
             val folder= Folder(idFolderList[i],imageList[i] , titleList[i], idCardList[i])
             folderList.add(folder)
         }
-        recyclerView.adapter = FolderAdapter(folderList)
+        recyclerView.adapter = FolderAdapter(folderList, requireContext())
     }
     private fun cambiarImagen(position: Int) {
         val folder = folderList[position]
-        val nuevaImagen = if (folder.dataImage == R.drawable.baseline_favorite_border_24) {
+        var isFav = folder.isFavorite
+        val nuevaImagen = if (isFav == "false") {
             R.drawable.baseline_favorite_24
+           isFav = "true"
         } else {
             R.drawable.baseline_favorite_border_24
+           isFav = "false"
         }
 
         // Actualiza la lista con la nueva imagen
-        folderList[position] = Folder("",nuevaImagen, folder.dataTitle,"" )
+        folderList[position] = Folder("" , isFav, folder.dataTitle,folder.cardId )
         Toast.makeText(context,"Se ha modificado",Toast.LENGTH_SHORT).show()
         // Notifica al adaptador sobre el cambio
         recyclerView.adapter?.notifyItemChanged(position)

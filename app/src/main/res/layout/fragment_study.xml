@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="40dp"
+    android:layout_gravity="center_vertical"
+
+    android:layout_height="match_parent"
+    tools:context=".ui.study.StudyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:text="Modo estudio" />
+    <TextView
+        android:id="@+id/numOfCardShowed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:textSize="20sp"
+        android:text="1/20" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:textAlignment="center"
+        android:outlineSpotShadowColor="@color/cardview_shadow_end_color"
+        android:layout_height="300dp">
+        <LinearLayout
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:text="Input">
+            </TextView>
+
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="30dp"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:contentDescription="Obtener resultado"
+            android:padding="10dp"
+            android:text="Resolver">
+
+        </com.google.android.material.button.MaterialButton>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:menu="@menu/study_options_menu">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,9 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -21,8 +23,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
         return ViewHolderClass(itemView)
     }
-
-
     fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
 
@@ -32,9 +32,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
         val currentItem = dataList?.get(position)
         holder.rvInput.text = currentItem?.input
         holder.rvResult.text = currentItem?.result
-        //layout de editar
-
-
         holder.rvMenu.setOnMenuItemClickListener{ menuItem ->
             when (menuItem.itemId) {
                 R.id.item_addToFolder_card -> {
@@ -46,10 +43,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                     MaterialAlertDialogBuilder(context)
                         .setTitle("Editar card")
                         .setView(dialogView)
-                        //setView, setSingle choice items...
-                        .setNeutralButton("") { dialog, which ->
-                            // Respond to neutral button press
-                        }
                         .setNegativeButton("Cancelar") { dialog, which ->
                             //alogView.rem
                             dialog.cancel()
@@ -74,7 +67,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                 }
                 R.id.item_delete_card -> {
                     deleteItem(currentItem)
-                    //añadir etiqueta
                     true
                 }
                 else -> false
@@ -90,7 +82,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
         }
 
     }
-
     override fun getItemCount(): Int {
         return dataList!!.size
     }
@@ -139,7 +130,7 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
         val dialogView = LayoutInflater.from(context).inflate(R.layout.add_folder_layout, null)
         val textNoFolders  = dialogView.findViewById<TextView>(R.id.txtMessageNoFolders)
         if(folderTitles.isEmpty()){
-            textNoFolders.text = "¡Vaya! Todavía no tienes ningúna carpeta"
+            textNoFolders.text = context.getString(R.string.vaya_todav_a_no_tienes_ning_na_carpeta)
             //modifico la longitud del array ya que no tiene contenido
             folders = arrayOf()
         }else{
@@ -150,20 +141,26 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
             .setView(dialogView)
 
             .setSingleChoiceItems(folders, selectedItem) { dialog, which ->
-                selectedItem = which //añadir id de
+                selectedItem = which
+                //si folder existe
                 val nombre = selectedItem.toString()
-                //add card to folder
                 val currentId =  currentItem!!.id
-                //val id:String,val dataImage: Int, var dataTitle: String, var cardId:String
 
             }
             .setPositiveButton("Guardar cambios") { dialog, which ->
                 // Handle positive button click
                 if (selectedItem != -1) {
-                    // Seleccionar carpeta
+                    // Seleccionar carpeta y añadir a folder EXISTENTE
                     val selectedFolder = folders[selectedItem]
                     Toast.makeText(context, "Seleccionaste: $selectedFolder", Toast.LENGTH_SHORT).show()
                 }else{
+                    val listToAdd  = ArrayList<String>() //lista para el folder NUEVO
+                    listToAdd.add(currentItem!!.id)
+                    val name = dialogView.findViewById<TextInputLayout>(R.id.inputLayoutAddFolder)
+                    //add new folder
+                    val folderToAdd = Folder("","false",name.editText.toString(), listToAdd)
+                    folderdao.addFolder(firebaseDatabase.reference, id,folderToAdd)
+                    //seleccionar carpeta nueva
                     Toast.makeText(context, "Se ha creado la carpeta", Toast.LENGTH_SHORT).show()
                     textNoFolders.text =""
                 }
