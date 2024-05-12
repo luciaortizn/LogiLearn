@@ -129,4 +129,11 @@
     <string name="crear_carpeta">Crear carpeta</string>
     <string name="vaya_todav_a_no_tienes_ning_na_carpeta">¡Vaya! Todavía no tienes ningúna carpeta</string>
     <string name="editar_carpeta">Editar carpeta</string>
+    <string name="en_gb">EN-GB</string>
+    <string name="en_us">EN-US</string>
+    <string name="esp">ESP</string>
+    <string name="fr">FR</string>
+    <string name="it">IT</string>
+    <string name="ja">JA</string>
+    <string name="ko">KO</string>
 </resources>

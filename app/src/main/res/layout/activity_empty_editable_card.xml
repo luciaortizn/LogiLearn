@@ -68,25 +68,51 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintBottom_toTopOf="@id/Translate"
+                app:layout_constraintBottom_toTopOf="@id/layoutTranslate"
                 app:layout_constraintStart_toStartOf="parent"
                 android:autofillHints="">
 
             </EditText>
-
-            <Button
-                android:id="@+id/Translate"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_width="120dp"
+            <LinearLayout
+                android:id="@+id/layoutTranslate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:padding="15dp"
-                android:text="@string/traducir"
-                android:textSize="16dp"
+                android:orientation="horizontal"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/Result"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
+
+                <Button
+                    android:layout_gravity="left"
+                    android:id="@+id/Translate"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:padding="15dp"
+                    android:text="@string/traducir"
+                    android:textSize="16dp"
+                   />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/menu"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                    android:layout_width="240dp"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                     android:contentDescription="Idiomas a elegir">
+
+                    <AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Selecciona un idioma"
+                        android:inputType="none"
+                        app:simpleItems="@array/simple_items" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/Result"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="simple_items">
+        <item name="DE">Alemán (DE)</item>
+        <item name="KO">Coreano (KO)</item>
+        <item name="ES">Español (ES)</item>
+        <item name="FR">Francés (FR)</item>
+        <item name="EN-GB"> Inglés (EN-GB) </item>
+        <item name="EN-US"> Inglés (EN-US) </item>
+        <item name="IT">Italiano (IT)</item>
+        <item name="JA">Japonés (JA)</item>
+    </string-array>
+</resources>
