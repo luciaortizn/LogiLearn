@@ -2,31 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:visible="true"
         android:id="@+id/item_again"
         android:enabled="true"
-        android:iconTint="@color/red_dark"
-        android:icon="@drawable/baseline_library_books_24"
-        app:showAsAction="always"
-        android:title="Again" />
+        app:actionLayout="@layout/custom_icon_repeat_layout"
+        android:orderInCategory="100"
+        android:title="Again"
+        app:showAsAction="always" />
     <item
-        android:id="@+id/item_hard"
+        android:id="@+id/item_meh"
         android:enabled="true"
-        android:iconTint="@color/red_dark"
-        android:icon="@drawable/baseline_library_books_24"
-        app:showAsAction="always"
-        android:title="Easy" />
-    <item
-        android:id="@+id/item_good"
-        android:enabled="true"
-        android:iconTint="@color/red_dark"
-        android:icon="@drawable/baseline_library_books_24"
-        app:showAsAction="always"
-        android:title="Good" />
+        android:orderInCategory="100"
+        app:actionLayout="@layout/custom_icon_meh_layout"
+        android:title="Good"
+        app:showAsAction="always" />
     <item
         android:id="@+id/item_easy"
         android:enabled="true"
-        android:iconTint="@color/red_dark"
-        android:icon="@drawable/baseline_library_books_24"
-        app:showAsAction="always"
-        android:title="Easy" />
+        android:orderInCategory="100"
+        app:actionLayout="@layout/custom_icon_easy_layout"
+        android:title="Easy"
+        app:showAsAction="always" />
 </menu>

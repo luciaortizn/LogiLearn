@@ -138,4 +138,8 @@
     <string name="ko">KO</string>
     <string name="obt_n_informaci_n_sobre_c_mo_usar_el_diccionario">Obtén información sobre cómo usar el diccionario</string>
     <string name="busca_algo">Busca algo...</string>
+    <string name="modo_estudio">Modo estudio</string>
+    <string name="f_cil">Fácil</string>
+    <string name="imagen_de_una_cara_sonriente">Imagen de una cara sonriente</string>
+    <string name="repetir">Repetir</string>
 </resources>

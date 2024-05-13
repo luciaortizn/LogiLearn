@@ -4,13 +4,16 @@
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="40dp"
     android:layout_gravity="center_vertical"
-
     android:layout_height="match_parent"
     tools:context=".ui.study.StudyFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/study_mode_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/fui_transparent"
+        app:menu="@menu/study_mode_menu"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +21,7 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:text="Modo estudio" />
+        android:text="@string/modo_estudio" />
     <TextView
         android:id="@+id/numOfCardShowed"
         android:layout_width="match_parent"
@@ -43,6 +46,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
+                android:id="@+id/front_card_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -52,8 +56,29 @@
                 android:text="Input">
             </TextView>
 
+            <!-- Separador Horizontal -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/black"/>
 
-        </LinearLayout>
+            <!-- Segundo TextView -->
+            <TextView
+                android:id="@+id/back_card_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_weight="1"
+                android:text="Result">
+        </TextView>
+
+</LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
     <View
@@ -67,6 +92,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/getResultBtn"
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_gravity="center"
@@ -78,10 +104,17 @@
         </com.google.android.material.button.MaterialButton>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_vote_items"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_icons"
+            android:minHeight="120dp"
+            android:minWidth="200dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:menu="@menu/study_options_menu">

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/meh_icon_layout"
+    style="@android:style/Widget.ActionButton"
+    android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:minHeight="40dp"
+        android:minWidth="40dp"
+        android:id="@+id/image_view_meh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/emoticon_happy_outline"
+        android:contentDescription="@string/imagen_de_una_cara_sonriente" />
+
+    <TextView
+
+        android:id="@+id/tvMeh"
+        android:textSize="15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Meh" />
+</LinearLayout>

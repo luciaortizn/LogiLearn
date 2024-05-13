@@ -6,11 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
+import com.example.logilearnapp.ui.study.StudyFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.database.DatabaseReference
@@ -69,6 +74,11 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
         holder.rvTitle.text = currentItem.dataTitle
 
+        holder.rvTitle.setOnClickListener{
+            // se cambia de fragmento
+            replaceFragment(holder.itemView.context as FragmentActivity, StudyFragment())
+        }
+
         holder.rvImage.setOnClickListener{
                 view -> imageClickListener?.onImageClick(position,view)
 
@@ -126,5 +136,12 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
             }.create().show()
 
+    }
+    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {
+        //necesita el activity actual para poder acceder a su contenido
+        val fragmentManager: FragmentManager = activity.supportFragmentManager
+        val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.viewerFragment, fragment)
+        fragmentTransaction.commit()
     }
 }
