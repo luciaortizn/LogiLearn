@@ -12,7 +12,6 @@ interface DeeplApiService {
         @POST("translate")
         fun translate(
             @Header("Authorization") authorization: String,
-            @Header("User-Agent") userAgent: String,
             @Header("Content-Type") contentType: String,
             @Body requestBody: TranslateRequest
         ): Call<TranslateResponse>

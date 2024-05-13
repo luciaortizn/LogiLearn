@@ -4,13 +4,11 @@ import android.content.Intent
 import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.logilearnapp.api.ConfigUtils
-import com.example.logilearnapp.api.TranslationCallback
 import com.example.logilearnapp.data.TranslateRequest
 import com.example.logilearnapp.viewmodel.EmptyEditableCardViewModel
 import com.google.android.material.appbar.MaterialToolbar
@@ -67,18 +65,9 @@ class EmptyEditableCard : AppCompatActivity() {
                     //añadir etiqueta
                     true
                 }
-                /**
-                R.id.item_imagen -> {
-                Toast.makeText(this, "Imagen", Toast.LENGTH_SHORT).show()
-                //proporcionar acceso a su galería
-                // Handle more item (inside overflow menu) press
-                true
-                }**/
-
                 else -> false
             }
         }
-
 
         save_btn.setOnClickListener() {
             if (title_text.text.isNotEmpty() && input_text.text.isNotEmpty() && result_text.text.isNotEmpty()) {
@@ -154,8 +143,6 @@ class EmptyEditableCard : AppCompatActivity() {
                         }
                     })
 
-                //te lleva al home fragment
-
             } else {
                 Toast.makeText(this, "No has rellenado todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -170,18 +157,20 @@ class EmptyEditableCard : AppCompatActivity() {
             val selectedItem = parent.getItemAtPosition(position).toString()
             val itemCountry = getRequiredLanguageName(selectedItem)
             //aquí obtengo el id del elemento de la lista de idiomas
-            Toast.makeText(this@EmptyEditableCard,itemCountry , Toast.LENGTH_SHORT).show()
             //(requestBody: TranslateRequest,callback: TranslationCallback, apiKey:String
-            val requestBody = TranslateRequest(input_text.text.toString(), itemCountry.toString())
+            val requestBody = TranslateRequest(listOf<String>( input_text.text.toString()), itemCountry.toString())
+
             if(input_text.text.isNotEmpty()){
                 translationBtn.setOnClickListener(){
                     viewModel.postTranslation(requestBody, { it: String? ->
                         // Maneja la traducción recibida
                         it?.let { translation ->
-                            // Actualiza el texto del EditText con la traducción recibida
-                            result_text.setText(translation)
+                            if(translation.isEmpty() || translation.isNullOrBlank()){
+                                result_text.setText("")
+                            }else {
+                                result_text.setText(translation)
+                            }
                         } ?: run {
-                            // Maneja el caso en el que no se pudo obtener la traducción
                             Toast.makeText(this@EmptyEditableCard, "Error al obtener la traducción", Toast.LENGTH_SHORT).show()
                         }
                     }, ConfigUtils.getDeeplApiKey(this).toString())
@@ -191,7 +180,7 @@ class EmptyEditableCard : AppCompatActivity() {
         }
 
     }
-    fun getRequiredLanguageName(selectedText:String):String?{
+    private fun getRequiredLanguageName(selectedText:String):String?{
         val regex = Regex("\\((.*?)\\)")
         val matchResult = regex.find(selectedText)
         return matchResult?.groupValues?.get(1)

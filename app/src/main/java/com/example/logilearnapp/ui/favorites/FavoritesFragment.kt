@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.viewmodel.EmptyEditableCardViewModel
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +26,10 @@ class FavoritesFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var  recyclerView: RecyclerView
+    lateinit var layoutNoFavoriteFolders: LinearLayout
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,5 +65,15 @@ class FavoritesFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutNoFavoriteFolders = view.findViewById(R.id.noFavoriteFoldersLayout)
+        recyclerView = view.findViewById(R.id.recycler_view_favorites)
+        val numCol = 1
+        val layoutManager = GridLayoutManager(context, numCol)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
     }
 }
