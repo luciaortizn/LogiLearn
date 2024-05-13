@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.common.HomeFragment">
     <!--carousel de cards añadidas recietemente-->
-    <!-- TODO: Update blank fragment layout -->
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -34,21 +33,38 @@
 
 
     <!--simula carusel horizontal de carpetas recientes-->
-    <TextView
+    <LinearLayout
         android:id="@+id/carpetas_recientes_txt"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Diccionario"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:paddingStart="20dp"
+        android:orientation="horizontal"
         android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="23sp">
-
-    </TextView>
-
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diccionario"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:paddingStart="30dp"
+            android:textSize="23sp">
+        </TextView>
+        <Button
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:id="@+id/dictInfo"
+            android:contentDescription="@string/obt_n_informaci_n_sobre_c_mo_usar_el_diccionario"
+            android:layout_width="48dp"
+            android:foregroundGravity="center"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/outline_info_24"
+            />
+    </LinearLayout>
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"
             android:layout_width="match_parent"
@@ -73,7 +89,7 @@
                     android:focusable="true"
 
                     app:menu="@menu/dictionary_search_menu"
-                    android:hint="Busca palabras..."
+                    android:hint="@string/busca_algo"
                     app:defaultMarginsEnabled="true"
                     />
 
@@ -253,6 +269,7 @@
             <!--debería poner una barra de búsqueda de resultados que no tengan por qué guardarse-->
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
     <LinearLayout
+        android:id="@+id/layout_other_content_home"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"

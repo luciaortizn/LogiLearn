@@ -136,4 +136,6 @@
     <string name="it">IT</string>
     <string name="ja">JA</string>
     <string name="ko">KO</string>
+    <string name="obt_n_informaci_n_sobre_c_mo_usar_el_diccionario">Obtén información sobre cómo usar el diccionario</string>
+    <string name="busca_algo">Busca algo...</string>
 </resources>

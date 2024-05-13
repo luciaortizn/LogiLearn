@@ -1,17 +1,15 @@
 package com.example.logilearnapp.ui.common
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.SearchView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -20,12 +18,12 @@ import com.example.logilearnapp.EmptyEditableCard
 import com.example.logilearnapp.ProfileFragment
 import com.example.logilearnapp.R
 import com.example.logilearnapp.data.Definition
-import com.example.logilearnapp.data.Example
-import com.example.logilearnapp.data.RelatedWord
 import com.example.logilearnapp.ui.favorites.FavoritesFragment
 import com.example.logilearnapp.viewmodel.HomeViewModel
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.search.SearchBar
 
@@ -50,7 +48,8 @@ private lateinit var relatedWordsText: TextView
 private lateinit var pronunciationText: TextView
 private val cardMap = mutableMapOf<String, MaterialCardView>()
 private lateinit var sv : com.google.android.material.search.SearchView
-
+private lateinit var otherLayout: LinearLayout
+private lateinit var dictInfoBtn: MaterialButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -73,6 +72,8 @@ private lateinit var sv : com.google.android.material.search.SearchView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        otherLayout = view.findViewById(R.id.layout_other_content_home)
+        dictInfoBtn = view.findViewById(R.id.dictInfo)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         val apiKey = "x9mi4zwbf3wkb7xx2n1pa26t8shz7v8bmtv1ojwnevuanb4dq"
@@ -89,6 +90,17 @@ private lateinit var sv : com.google.android.material.search.SearchView
         val sb : SearchBar = view.findViewById(R.id.search_bar)
 
         sv.inflateMenu(R.menu.dictionary_search_menu)
+
+        dictInfoBtn.setOnClickListener(){
+            showInfoDialog("Información sobre el diccionario", "Explora una amplia variedad de palabras con nuestro diccionario en inglés y filtros personalizados.\t \nPuedes buscar: \n - Definiciones \n - Sinónimos,\n - Ejemplos \n - Pronunciaciones \nPara  usar el traductor, haz click en el botón '+'. ", "Entendido")
+        }
+
+       sv.editText
+            .setOnEditorActionListener { v, actionId, event ->
+                sb.setText(sv.text)
+                sv.hide()
+                false
+            }
         sv.setOnMenuItemClickListener{menuItem ->
             val title = menuItem.title.toString()
             // Ocultar la tarjeta correspondiente al ítem del menú seleccionado
@@ -217,6 +229,7 @@ private lateinit var sv : com.google.android.material.search.SearchView
             else -> false
         }
         }
+
     }
 
     companion object {
@@ -246,6 +259,19 @@ private lateinit var sv : com.google.android.material.search.SearchView
         // Utilizamos una expresión regular para encontrar y reemplazar el contenido entre <>
         val pattern = Regex("<[^>]*>")
         return input.replace(pattern, "") // Reemplazamos el contenido entre <> con una cadena vacía
+    }
+    private fun showInfoDialog(title:String,message:String,positiveButton:String ){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { dialog, which ->
+                dialog.cancel()
+                dialog.dismiss()
+
+            }.create().show()
+
+
+
     }
 
 }
