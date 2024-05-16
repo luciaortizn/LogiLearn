@@ -142,4 +142,6 @@
     <string name="f_cil">Fácil</string>
     <string name="imagen_de_una_cara_sonriente">Imagen de una cara sonriente</string>
     <string name="repetir">Repetir</string>
+    <string name="lista_de_favoritos">lista de favoritos</string>
+    <string name="busca_palabras">Busca palabras...</string>
 </resources>

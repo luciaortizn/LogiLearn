@@ -35,25 +35,6 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         this.imageClickListener = listener
     }
 
-//1
-    /**
-    override fun onBindViewHolder(
-        holder: ViewHolderClass,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        //se configura la imagen y titulo en viewHolder
-       val folder = dataList[position]
-        holder.rvTitle.text = folder.dataTitle
-        holder.rvImage.setImageResource(folder.dataImage)
-
-        holder.rvImage.setOnClickListener{
-        view -> imageClickListener?.onImageClick(position,view)
-        }
-
-        super.onBindViewHolder(holder, position, payloads)
-    }**/
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.folder_list_item, parent, false)
         return ViewHolderClass(itemView)

@@ -17,6 +17,7 @@ import com.example.logilearnapp.R
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
+import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.firebase.database.DataSnapshot
@@ -47,7 +48,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //prueba
+
         layoutNoCards = view.findViewById(R.id.layout_no_cards_displayed)
         recyclerView = view.findViewById(R.id.recycler_view_card)
         val numCol = 1
@@ -103,6 +104,10 @@ class SearchFragment : Fragment() {
 
                 }
 
+                override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                   //no hago nada
+                }
+
             })
 
         }
@@ -115,8 +120,7 @@ class SearchFragment : Fragment() {
         val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getString("id", "")
         databaseReference = firebaseDatabase.reference.child("user").child(userId.toString()).child("cards")
-        //firebaseDatabase.reference.child("user").child("id").equalTo(userId).ref.child("cards")
-       //accedes a cards
+        //obtengo las cards
         databaseReference.addValueEventListener(object: ValueEventListener{
             @SuppressLint("NotifyDataSetChanged")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -157,13 +161,6 @@ class SearchFragment : Fragment() {
             //no hago nada para folder de momento
 
         }
-    }
-
-    fun getData(cardList:ArrayList<Card>?){
-
-        val cardAdapter = CardAdapter(cardList, requireContext())
-        recyclerView.adapter= cardAdapter
-
     }
 
 }

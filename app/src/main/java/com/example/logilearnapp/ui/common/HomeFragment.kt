@@ -174,11 +174,9 @@ private lateinit var dictInfoBtn: MaterialButton
                } ?: run {
                    relatedWordsText.text = " "
                }
-
            }
            viewModel.getExamples( apiKey, text.trim()){ examplesObject ->
                examplesObject?.let { ex ->
-
                    val firstExample: String = ex.examples[1].text
                    examplesText.text = removeBracketsAndContent(firstExample)
 
@@ -201,10 +199,8 @@ private lateinit var dictInfoBtn: MaterialButton
 
         val fab : FloatingActionButton = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener {
-            // Respond to FAB click
-            //abre una ventana emergente CardCreate
             val intent = Intent(activity, EmptyEditableCard::class.java)
-            // Iniciar la otra actividad
+
             startActivity(intent)
         }
         //navegación de topmenu
@@ -212,18 +208,11 @@ private lateinit var dictInfoBtn: MaterialButton
         topBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
             R.id.navigation_favorites -> {
-                //requireContext() en fragments
-
-                Toast.makeText(requireContext(), "favoritos", Toast.LENGTH_SHORT).show()
                replaceFragment(requireActivity(), FavoritesFragment())
-
                 true
             }
             R.id.navigation_profile -> {
-                // Handle favorite icon press
-                Toast.makeText(requireContext(), "perfil", Toast.LENGTH_SHORT).show()
                replaceFragment(requireActivity(), ProfileFragment())
-                //añadir etiqueta
                 true
             }
             else -> false

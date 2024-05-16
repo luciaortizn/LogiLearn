@@ -1,14 +1,23 @@
 package com.example.logilearnapp.ui.folder
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.database.FirebaseCallback
+import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.ui.card.Card
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,7 +30,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 private lateinit var  recyclerView: RecyclerView
-private lateinit var folderList:ArrayList<Folder>
 lateinit var imageList:Array<String>
 lateinit var titleList:Array<String>
 lateinit var idCardList:ArrayList<ArrayList<String>>
@@ -53,11 +61,9 @@ class CardViewFragment : Fragment() {
         return root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        /*
         imageList = arrayOf("true", "false", "true", "false" , "true")
 
          idCardList  = arrayListOf(
@@ -77,27 +83,45 @@ class CardViewFragment : Fragment() {
             "Vocab1",
             "Phrasal verbs",
             "Vocab2"
-        )
+        )*/
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
+       // folderListFake = arrayListOf<Folder>()
+        var folderAdapter :FolderAdapter
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val folders = FolderDao()
+        val userId = folders.getUserIdSharedPreferences(requireContext())
+       activity?.runOnUiThread {
+           folders.getFoldersByUser(object : FirebaseCallback {
+               override fun onCallback(cardList: ArrayList<Card>) {
+                   //no hago nada
+               }
+               @SuppressLint("NotifyDataSetChanged")
+               override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                   //set background for empty folders
+                   val context = context
+                   if (context != null) {
+                       setBackgroundForEmptyFolders(folderList)
+                       folderAdapter = FolderAdapter(folderList,context)
+                       //manejo de favoritos
+                       folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
+                           override fun onImageClick(position: Int, view: View) {
+                               //cambia de imagen y por tanto también de la lista favoritos
+                               cambiarImagen(position, folderList, folders, userId!!, context, firebaseDatabase.reference)
+                               //reinicia el fragmento
+                              // requireActivity().recreate()
+                           }
+                       } )
 
-        folderList = arrayListOf<Folder>()
-        getData()
+                       recyclerView.adapter = folderAdapter
+                       recyclerView.adapter?.notifyDataSetChanged()
+                   }
 
 
-        val adapter = FolderAdapter(folderList, requireContext())
-        adapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
-            override fun onImageClick(position: Int, view: View) {
-                //cambia de imagen y por tanto también de la lista favoritos
-                Toast.makeText(context,"Se ha hecho click",Toast.LENGTH_SHORT).show()
-                cambiarImagen(position)
-                //reinicia el fragmento
-                requireActivity().recreate()
-            }
-        } )
-
-
+               }
+           },firebaseDatabase.reference, userId!!)
+       }
     }
     companion object {
         /**
@@ -119,14 +143,15 @@ class CardViewFragment : Fragment() {
             }
     }
     //Se obtienen los datos que se van a mostrar en el recyclerview y recorren y añaden a la lista que tiene un array para cada elemento
+   /**
     private fun getData() {
         for (i in imageList.indices){
             val folder= Folder(idFolderList[i],imageList[i] , titleList[i], idCardList[i])
             folderList.add(folder)
         }
         recyclerView.adapter = FolderAdapter(folderList, requireContext())
-    }
-    private fun cambiarImagen(position: Int) {
+    }*/
+    private fun cambiarImagen(position: Int, folderList :ArrayList<Folder>, folderDao: FolderDao,userId:String ,context: Context, databaseReference: DatabaseReference, ) {
         val folder = folderList[position]
         var isFav = folder.isFavorite
         val nuevaImagen = if (isFav == "false") {
@@ -136,11 +161,20 @@ class CardViewFragment : Fragment() {
             R.drawable.baseline_favorite_border_24
            isFav = "false"
         }
-
         // Actualiza la lista con la nueva imagen
         folderList[position] = Folder("" , isFav, folder.dataTitle,folder.cardId )
-        Toast.makeText(context,"Se ha modificado",Toast.LENGTH_SHORT).show()
+        folderDao.updateIsFavorite( databaseReference,userId ,isFav,folder.id,context )
         // Notifica al adaptador sobre el cambio
         recyclerView.adapter?.notifyItemChanged(position)
+    }
+    private fun setBackgroundForEmptyFolders(list:ArrayList<Folder>?){
+
+        if(list!!.isEmpty()){
+          //  layoutNoCards.visibility = LinearLayout.VISIBLE
+
+        }else{
+            //layoutNoCards.visibility = LinearLayout.GONE
+        }
+
     }
 }

@@ -1,16 +1,27 @@
 package com.example.logilearnapp.ui.favorites
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.database.FirebaseCallback
+import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.ui.card.Card
+import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.ui.folder.FolderAdapter
 import com.example.logilearnapp.viewmodel.EmptyEditableCardViewModel
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +38,7 @@ class FavoritesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var  recyclerView: RecyclerView
+
     lateinit var layoutNoFavoriteFolders: LinearLayout
 
 
@@ -75,5 +87,68 @@ class FavoritesFragment : Fragment() {
         val layoutManager = GridLayoutManager(context, numCol)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
+        //configurar rv
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        var folderAdapter :FolderAdapter
+        val folders = FolderDao()
+        val userId = folders.getUserIdSharedPreferences(requireContext())
+        activity?.runOnUiThread {
+            folders.getFoldersByUser(object : FirebaseCallback {
+                override fun onCallback(cardList: ArrayList<Card>) {
+                    //no hago nada
+                }
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                    folderList.removeIf { folder -> folder.isFavorite == "false" }
+                    //Log.d("verificar ", "${folderList.size} ")
+                    //set background for empty folders
+                    val context = context
+                    if (context != null) {
+                        setBackgroundForEmptyFolders(folderList)
+                        folderAdapter = FolderAdapter(folderList,context)
+                        //manejo de favoritos
+                        folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
+                            override fun onImageClick(position: Int, view: View) {
+                                //cambia de imagen y por tanto también de la lista favoritos
+                                cambiarImagen(position, folderList, folders, userId!!, context, firebaseDatabase.reference)
+                                //reinicia el fragmento
+                                //requireActivity().recreate()
+                            }
+                        } )
+
+                        recyclerView.adapter = folderAdapter
+                       recyclerView.adapter?.notifyDataSetChanged()
+                    }
+
+
+                }
+            },firebaseDatabase.reference, userId!!)
+        }
+
+    }
+    fun setBackgroundForEmptyFolders(list:ArrayList<Folder>?){
+        if(list!!.isEmpty()){
+            layoutNoFavoriteFolders.visibility = LinearLayout.VISIBLE
+
+        }else{
+            layoutNoFavoriteFolders.visibility = LinearLayout.GONE
+
+        }
+    }
+    private fun cambiarImagen(position: Int, folderList :ArrayList<Folder>, folderDao: FolderDao, userId:String, context: Context, databaseReference: DatabaseReference, ) {
+        val folder = folderList[position]
+        var isFav = folder.isFavorite
+        val nuevaImagen = if (isFav == "false") {
+            R.drawable.baseline_favorite_24
+            isFav = "true"
+        } else {
+            R.drawable.baseline_favorite_border_24
+            isFav = "false"
+        }
+        // Actualiza la lista con la nueva imagen
+        folderList[position] = Folder("" , isFav, folder.dataTitle,folder.cardId )
+        folderDao.updateIsFavorite( databaseReference,userId ,isFav,folder.id,context )
+        // Notifica al adaptador sobre el cambio
+        recyclerView.adapter?.notifyItemChanged(position)
     }
 }

@@ -4,12 +4,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="70dp"
+    android:paddingTop="20dp"
     tools:context=".ui.favorites.FavoritesFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Carpetas favoritas"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="30sp">
 
+    </TextView>
     <!-- TODO: Update blank fragment layout -->
    <androidx.core.widget.NestedScrollView
        android:layout_width="match_parent"
+       android:contentDescription="@string/lista_de_favoritos"
        android:layout_height="match_parent">
 
        <!--cuando haya contenido hacer la visibilidad invisible-->
@@ -17,6 +26,7 @@
            android:id="@+id/noFavoriteFoldersLayout"
            android:layout_width="match_parent"
            android:orientation="vertical"
+           android:visibility="gone"
            android:layout_gravity="center"
 
            android:layout_height="match_parent">
@@ -42,7 +52,7 @@
         android:id="@+id/recycler_view_favorites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1">
