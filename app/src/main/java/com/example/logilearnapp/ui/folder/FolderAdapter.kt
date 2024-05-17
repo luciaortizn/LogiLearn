@@ -1,11 +1,13 @@
 package com.example.logilearnapp.ui.folder
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -24,12 +26,17 @@ import com.google.firebase.database.FirebaseDatabase
 class FolderAdapter(private val dataList:ArrayList<Folder>, private val context: Context):RecyclerView.Adapter<FolderAdapter.ViewHolderClass>() {
    //para poder manejar los clicks
     interface OnImageClickListener{
-
         fun onImageClick(position: Int, view: View)
-
     }
+
+
     //referencia al listener
     private var imageClickListener: OnImageClickListener? = null
+
+    // TODO: empezar modo estudio en el adapter:
+    /*para el modo estudio:
+
+    * */
     //establecer el listener
     fun setImageClickListener(listener: OnImageClickListener){
         this.imageClickListener = listener
@@ -57,11 +64,14 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
         holder.rvTitle.setOnClickListener{
             // se cambia de fragmento
-            replaceFragment(holder.itemView.context as FragmentActivity, StudyFragment())
+            replaceFragment(holder.itemView.context as FragmentActivity, StudyFragment(), currentItem)
         }
 
         holder.rvImage.setOnClickListener{
-                view -> imageClickListener?.onImageClick(position,view)
+            holder.rvImage.isClickable = false
+            // Llamar al método del listener de la imagen
+            imageClickListener?.onImageClick(position, it)
+            // view -> imageClickListener?.onImageClick(position,view)
 
         }
 
@@ -78,6 +88,9 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                 }
                 else -> false
             }
+        }.also {
+            // Restablecer el OnClickListener de la imagen después de que se haya cerrado el menú
+            (context as AppCompatActivity).registerForContextMenu(holder.rvImage)
         }
     }
     class ViewHolderClass(itemView: View):RecyclerView.ViewHolder(itemView){
@@ -118,7 +131,12 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
             }.create().show()
 
     }
-    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment) {
+    private fun replaceFragment(activity: FragmentActivity, fragment: Fragment, folder:Folder) {
+        // Pasa el objeto Folder al fragmento usando un Bundle
+        val bundle = Bundle()
+        bundle.putParcelable("folder", folder)
+        fragment.arguments = bundle
+
         //necesita el activity actual para poder acceder a su contenido
         val fragmentManager: FragmentManager = activity.supportFragmentManager
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()

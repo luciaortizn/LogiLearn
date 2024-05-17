@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase
 
 class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Context):RecyclerView.Adapter<CardAdapter.ViewHolderClass>() {
    private var onClickListener: OnClickListener?=null
+    private var isDialogShowing = false
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderClass {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cards_list_item, parent, false)
         return ViewHolderClass(itemView)
@@ -119,6 +120,9 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
     }
     private fun showFolderSelectionDialog( currentItem: Card?) {
         //obtener una lista de base de datos
+        if(isDialogShowing){
+            return
+        }
         val folderdao = FolderDao()
         val id =  folderdao.getUserIdSharedPreferences(context)!!
         // folderdao.getAllFolderTitles() pasar a array creo y pasarle ARGS
@@ -165,48 +169,16 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                         val nombre = selectedItem.toString()
                         val currentId =  currentItem!!.id
                     }
-                        /**
-                    .setPositiveButton("Guardar cambios") { dialog, which ->
-
-                        // Handle positive button click
-                        if (selectedItem != -1 && name.editText!!.text.isEmpty() ) {
-                            // Seleccionar carpeta y añadir a folder EXISTENTE
-                            var selectedFolder = folders[selectedItem]
-                            var selectedFolderId :String  = ""
-                            for (folder in folderList ){
-                                if(folder.dataTitle == selectedFolderText){
-                                    selectedFolderId = folder.id
-                                    //se añade a la lista de folders ya creados
-                                    folderdao.addNewCardIdValue(firebaseDatabase.reference,id, currentItem!!.id,selectedFolderId, context)
-                                    dialog.cancel()
-                                    dialog.dismiss()
-                                }
-                            }
-                           // Toast.makeText(context, "Se ha añadido la tarjeta", Toast.LENGTH_SHORT).show()
-                        }else if(name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected){
-                            val listToAdd  = ArrayList<String>() //lista para el folder NUEVO
-                            listToAdd.add(currentItem!!.id)
-                            //add new folder
-                            val folderToAdd = Folder("","false", name.editText!!.text.toString(), listToAdd)
-                            folderdao.addFolder(firebaseDatabase.reference, id,folderToAdd, context)
-                            //seleccionar carpeta nueva
-                            textNoFolders.text =""
-                            dialog.cancel()
-                            dialog.dismiss()
-
-                        }else{
-                            //si no se ha seleccionado una carpeta ni introducido un nombre
-                            Toast.makeText(context, "No has introducido un nombre", Toast.LENGTH_SHORT).show()
-
-                        }
-                    }**/
                     .setPositiveButton("Guardar cambios") { dialog, which ->
                         // Handle positive button click
                         if (selectedItem != -1) {
                             val selectedFolder = folders[selectedItem].toString()
                             val selectedFolderId = folderList[selectedItem].id
                             folderdao.addNewCardIdValue(firebaseDatabase.reference, id, currentItem!!.id, selectedFolderId, context)
-                            //se supone que dialog.dismiss()
+                            //se supone que
+                            dialog.dismiss()
+                            dialog.cancel()
+                            isDialogShowing = false
 
                         } else if (name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected) {
                             val listToAdd = ArrayList<String>()
@@ -214,22 +186,25 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                             val folderToAdd = Folder("", "false", name.editText!!.text.toString(), listToAdd)
                             folderdao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)
                             textNoFolders.text = ""
-
+                            dialog.dismiss()
+                            dialog.cancel()
+                            isDialogShowing = false
 
                         } else {
                             Toast.makeText(context, "No has seleccionado una carpeta ni introducido un nombre", Toast.LENGTH_SHORT).show()
+                            isDialogShowing = false
                         }
                     }
                     .setNegativeButton("Cancelar") { dialog, which ->
                         dialog.cancel()
+                        dialog.dismiss()
+                        isDialogShowing = false
                     }
                     .show()
             }
         },firebaseDatabase.reference,id)
-      //  val folderTitles = folderdao.getAllFolderTitles(firebaseDatabase.reference, id).toTypedArray()
 
-        // Lista de carpetas
-
+        isDialogShowing = true
     }
 
 }

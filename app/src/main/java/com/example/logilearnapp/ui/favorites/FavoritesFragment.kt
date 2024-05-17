@@ -40,9 +40,6 @@ class FavoritesFragment : Fragment() {
     private lateinit var  recyclerView: RecyclerView
 
     lateinit var layoutNoFavoriteFolders: LinearLayout
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
