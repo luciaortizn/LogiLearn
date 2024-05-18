@@ -2,6 +2,7 @@ package com.example.logilearnapp.database
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.widget.Toast
 import com.example.logilearnapp.ui.card.Card
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -19,17 +20,12 @@ class CardDao {
             override fun onDataChange(snapshot: DataSnapshot) {
                cardListDB.clear()
                 for (cardId in cardIdList) {
-                    // Buscar la tarjeta correspondiente en la base de datos
                     val cardSnapshot = snapshot.child(cardId)
-                    // Verificar si la tarjeta existe en la base de datos
                     if (cardSnapshot.exists()) {
-                        // Obtener los datos de la tarjeta
                         val id = cardSnapshot.child("id").getValue(String::class.java)
                         val input = cardSnapshot.child("input").getValue(String::class.java)
                         val result = cardSnapshot.child("result").getValue(String::class.java)
                         val title = cardSnapshot.child("title").getValue(String::class.java)
-
-                        // Crear el objeto Card y agregarlo a la lista
                         cardListDB.add(Card(id.toString(), title.toString(), input.toString(), result.toString()))
                     }
                 }
@@ -42,24 +38,23 @@ class CardDao {
         })
 
     }
-    fun editCard(databaseReference: DatabaseReference, card: Card){
-        // TODO: terminar función 
+    fun updateCard(databaseReference: DatabaseReference, card: Card, userId:String, context: Context){
+        val cardReference  = databaseReference.child("user").child(userId).child("cards").child(card.id)
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                
-                for (childSnapshot in dataSnapshot.children) {
-                    // la referencia al hijo específico
-                    val childNodeReference = databaseReference.child(childSnapshot.key!!)
-                    //childNodeReference.child().setValue(value)
-                    //movidas 
-                    
+                if (dataSnapshot.exists()) {
+                    cardReference.child("title").setValue(card.title)
+                    cardReference.child("input").setValue(card.input)
+                    cardReference.child("result").setValue(card.result)
+                    Toast.makeText(context, "Valores actualizados", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
-                // Maneja errores de lectura de datos
+
             }
+
         })
+
     }
     //referencia directa al id, uso id para accedder a su chu
     fun deleteCard(databaseReference :DatabaseReference ){

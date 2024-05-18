@@ -189,20 +189,16 @@ class FolderDao {
 
         })
     }
-    fun updateFolder(databaseReference: DatabaseReference, folder:Folder){
+    fun updateFolder(databaseReference: DatabaseReference,userId:String, folder:Folder, context: Context){
+        val folderReference  = databaseReference.child("user").child(userId).child("folders").child(folder.id)
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (childSnapshot in dataSnapshot.children) {
-                    // la referencia al hijo específico
-                    val childNodeReference = databaseReference.child(childSnapshot.key!!)
-                    //childNodeReference.child().setValue(value)
-                    //movidas
-
+                if (dataSnapshot.exists())
+                   folderReference.child("dataTitle").setValue(folder.dataTitle)
+                  Toast.makeText(context, "Carpeta actualizada", Toast.LENGTH_SHORT).show()
                 }
-            }
+            override fun onCancelled(error: DatabaseError) {
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Maneja errores de lectura de datos
             }
         })
 

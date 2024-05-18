@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,7 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
     }
 
     override fun onBindViewHolder(holder: ViewHolderClass, position: Int) {
+        val cardDao = CardDao()
         val currentItem = dataList?.get(position)
         holder.rvInput.text = currentItem?.input
         holder.rvResult.text = currentItem?.result
@@ -45,6 +47,14 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                 }
                 R.id.item_edit_card -> {
                     val dialogView = LayoutInflater.from(context).inflate(R.layout.edit_card_layout, null)
+                    val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_edit)
+                    val dialogInput = dialogView.findViewById<TextInputLayout>(R.id.input_edit)
+                    val dialogResult = dialogView.findViewById<TextInputLayout>(R.id.result_edit)
+                    val firebaseDatabase = FirebaseDatabase.getInstance()
+                    val userId = cardDao.getUserIdSharedPreferences(context)
+                    dialogTitle.editText!!.setText(currentItem!!.title)
+                    dialogInput.editText!!.setText(currentItem.input)
+                    dialogResult.editText!!.setText(currentItem.result)
                     MaterialAlertDialogBuilder(context)
                         .setTitle("Editar card")
                         .setView(dialogView)
@@ -56,7 +66,10 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                             // Respond to negative button press
                         }
                         .setPositiveButton("Guardar cambios") { dialog, which ->
-                            // cardDao.editCard
+                            // cardDao.editCar
+                            val card = Card(currentItem.id, dialogTitle.editText!!.text.toString(), dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
+                            cardDao.updateCard(firebaseDatabase.reference,card, userId!!, context )
+                            Toast.makeText(context, "Tarjeta actualizada", Toast.LENGTH_SHORT).show()
                             /**
                             val editText1 = dialogView.findViewById<EditText>(R.id.editText1)
                             val editText2 = dialogView.findViewById<EditText>(R.id.editText2)
@@ -200,7 +213,7 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                         dialog.dismiss()
                         isDialogShowing = false
                     }
-                    .show()
+                    .create().show()
             }
         },firebaseDatabase.reference,id)
 

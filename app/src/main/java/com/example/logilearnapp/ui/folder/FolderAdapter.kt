@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -20,6 +21,7 @@ import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.study.StudyFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -32,6 +34,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
     //referencia al listener
     private var imageClickListener: OnImageClickListener? = null
+    private val folderDao = FolderDao()
 
     // TODO: empezar modo estudio en el adapter:
     /*para el modo estudio:
@@ -80,6 +83,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
             when (menuItem.itemId) {
                 R.id.item_edit_folder -> {
                     showEditFolderDialog("Editar Carpeta",dialogView, "Guardar cambios", "Cancelar" ,currentItem)
+
                     true
                 }
                 R.id.item_delete_folder -> {
@@ -100,7 +104,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
     }
     private fun deleteFolder(item: Folder) {
         //eliminar de bd
-        val folderDao = FolderDao()
+
         //refactorizar
         val  firebaseDatabase = FirebaseDatabase.getInstance()
         //obtengo la referencia hasta el id de la card
@@ -117,10 +121,16 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         }
     }
     private fun showEditFolderDialog(title:String, dialogView:View,positiveButton:String,negativeButton:String, currentItem: Folder){
+        val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_folder_edit)
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val userId = folderDao.getUserIdSharedPreferences(context)
+        dialogTitle.editText!!.setText(currentItem!!.dataTitle)
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(dialogView)
             .setPositiveButton(positiveButton) { dialog, which ->
+                val folder = Folder(currentItem.id,currentItem.isFavorite,dialogTitle.editText!!.text.toString(), currentItem.cardId )
+                folderDao.updateFolder(firebaseDatabase.reference, userId!!, folder, context)
                 dialog.cancel()
                 dialog.dismiss()
             }
@@ -129,7 +139,6 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                 dialog.dismiss()
 
             }.create().show()
-
     }
     private fun replaceFragment(activity: FragmentActivity, fragment: Fragment, folder:Folder) {
         // Pasa el objeto Folder al fragmento usando un Bundle
