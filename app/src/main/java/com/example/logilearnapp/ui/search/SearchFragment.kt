@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.UserData
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
@@ -102,6 +103,9 @@ class SearchFragment : Fragment() {
                     recyclerView.adapter = cardAdapter
                     recyclerView.adapter?.notifyDataSetChanged()
 
+                }
+
+                override fun onSingleUserCallback(user: UserData) {
                 }
 
                 override fun onFolderCallback(folderList: ArrayList<Folder>) {

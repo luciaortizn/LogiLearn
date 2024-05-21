@@ -1,4 +1,4 @@
-package com.example.logilearnapp
+package com.example.logilearnapp.ui.profile
 
 import android.content.Context
 import android.os.Bundle
@@ -8,16 +8,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.set
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.logilearnapp.R
+import com.example.logilearnapp.UserData
+import com.example.logilearnapp.database.FirebaseCallback
+import com.example.logilearnapp.database.UserDao
+import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.common.HomeFragment
+import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
@@ -37,6 +44,12 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    lateinit var editName : TextInputLayout
+    lateinit var editEmail : TextInputLayout
+    lateinit var editSurname : TextInputLayout
+    lateinit var editPassword : TextInputLayout
+    lateinit var deleteAccountBtn:MaterialButton
+    lateinit var logoutBtn:MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +77,27 @@ class ProfileFragment : Fragment() {
 
            replaceFragment(requireActivity(), HomeFragment())
         }
+        val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("id", "")
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        val userDao = UserDao()
+        editPassword = view.findViewById(R.id.edit_password_layout)
+        editSurname = view.findViewById(R.id.edit_surname_layout)
+        editEmail = view.findViewById(R.id.edit_email_layout)
+        editName= view.findViewById(R.id.edit_name_layout)
+        getUserData(userDao, databaseReference, userId.toString())
+        
+        logoutBtn = view.findViewById(R.id.logout_btn)
+        deleteAccountBtn = view.findViewById(R.id.delete_account_btn)
+        logoutBtn.setOnClickListener{
+            // TODO: implementar logout 
+        }
+        //implementado
+        deleteAccountBtn.setOnClickListener{
+            userDao.deleteUser(databaseReference, userId.toString())
+        }
+       
+        
     }
 
 
@@ -94,39 +128,25 @@ class ProfileFragment : Fragment() {
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
     }
-    private fun getUserData(name_input: TextInputEditText,surname_input: TextInputEditText, email_input: TextInputEditText,password_input: TextInputEditText ) {
-        val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-        val userId = sharedPreferences.getString("id", "")
+    private fun getUserData(userDao:UserDao, databaseReference: DatabaseReference, userId:String ) {
+      
+        userDao.getUser(object : FirebaseCallback{
+            override fun onCallback(cardList: ArrayList<Card>) {
 
-        val userRef = FirebaseDatabase.getInstance().reference.child("user").child(userId!!)
-
-        userRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val name = snapshot.child("name").getValue(String::class.java)
-                var surname = snapshot.child("surname").getValue(String::class.java)
-                var email = snapshot.child("email").getValue(String::class.java)
-                var password = snapshot.child("password").getValue(String::class.java)
-
-                if (name != null && surname != null) {
-                    var new_editable  = Editable.Factory.getInstance().newEditable(name)
-                    name_input.text = new_editable
-                    new_editable = Editable.Factory.getInstance().newEditable(surname)
-                    surname_input.text = new_editable
-                    new_editable = Editable.Factory.getInstance().newEditable(email)
-                    email_input.text = new_editable
-                    new_editable = Editable.Factory.getInstance().newEditable(password)
-                    password_input.text = new_editable
-
-                    //aquí muestro los datos que ya están
-                  //  binding.textFirstName.text = firstName
-                  //  binding.textUsername.text = formattedUsername
-                }
+            }
+            override fun onSingleUserCallback(user: UserData) {
+                editName.editText!!.setText(user.name)
+                editSurname.editText!!.setText(user.surname)
+                editEmail.editText!!.setText(user.email)
+                editPassword.editText!!.setText(user.password)
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("DatabaseError", "Error: ${error.message}")
+            override fun onFolderCallback(folderList: ArrayList<Folder>) {
+
             }
-        })
+
+        },databaseReference, userId!!)
+
     }
 
     override fun onDestroyView() {

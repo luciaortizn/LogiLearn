@@ -4,46 +4,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".ui.folder.CardViewFragment">
 
     <TextView
+        android:textColor="@color/blue_light"
         android:padding="10dp"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_gravity="center_horizontal"
         android:text="Carpetas"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textStyle="bold" />
     <!--layout para los chips de que filtran la carpeta-->
+
     <LinearLayout
-        android:layout_margin="5dp"
-        android:paddingBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="Reciente"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/chipFlashcard"
-            android:text="Reciente">
-        </com.google.android.material.chip.Chip>
+            app:layout_constraintStart_toStartOf="parent"></com.google.android.material.chip.Chip>
 
         <androidx.legacy.widget.Space
             android:id="@+id/space1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.1" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipImage"
             android:layout_width="wrap_content"
@@ -101,16 +105,19 @@
 
 -->
 
- <androidx.recyclerview.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="10dp"
         android:id="@+id/recycler_view"
+        android:background="@color/colorPrimaryDark"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="1">
- </androidx.recyclerview.widget.RecyclerView>
-       <!-- tools:layout="@layout/folder_list_item"-->
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <!-- tools:layout="@layout/folder_list_item"-->
 
 
     <!--span count es el nª de elementos por fila -->

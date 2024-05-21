@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/colorPrimaryDark"
     android:theme="@style/Base.Theme.LogiLearnApp"
     tools:context=".EmptyEditableCard">
 
@@ -34,6 +35,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:padding="20dp"
             tools:context=".EmptyEditableCard">
 
             <EditText
@@ -59,7 +62,7 @@
                 android:id="@+id/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/input"
+                android:hint="Parte delantera de la tarjeta"
                 android:gravity="start"
                 android:inputType="text"
                 android:minHeight="200dp"
@@ -88,26 +91,30 @@
                     android:layout_gravity="left"
                     android:id="@+id/Translate"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="120dp"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:padding="15dp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:textColor="@color/blue_light"
                     android:text="@string/traducir"
                     android:textSize="16dp"
                    />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/menu"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-                    android:layout_width="240dp"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="220dp"
                     android:layout_gravity="right"
                     android:layout_height="wrap_content"
-                     android:contentDescription="Idiomas a elegir">
+                    android:contentDescription="Idiomas a elegir">
 
                     <AutoCompleteTextView
-                        android:layout_width="match_parent"
+                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="Selecciona un idioma"
+                        android:hint="Selecciona idioma"
+                        android:textSize="14dp"
                         android:inputType="none"
                         app:simpleItems="@array/simple_items" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -120,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="start"
-                android:hint="@string/resultado"
+                android:hint="Parte trasera de la tarjeta"
                 android:inputType="text"
                 android:minHeight="200dp"
                 android:singleLine="false"

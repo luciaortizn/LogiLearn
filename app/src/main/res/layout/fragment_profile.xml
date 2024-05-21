@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:backgroundTint="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment">
     <!--aquí hay un menú para volver atrás poner el nombre y poco guardar-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -111,6 +112,9 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/logout_btn"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/blue_light"
             android:layout_width="150dp"
             android:layout_height="60dp"
             android:text="Cerrar sesión">
@@ -120,6 +124,9 @@
             android:layout_width="16dp"
             android:layout_height="match_parent"/>
         <com.google.android.material.button.MaterialButton
+           android:id="@+id/delete_account_btn"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:textColor="@color/blue_light"
             android:layout_width="150dp"
             android:layout_height="60dp"
             android:text="Eliminar cuenta">

@@ -2,12 +2,22 @@
 <resources>
     <string-array name="simple_items">
         <item name="DE">Alemán (DE)</item>
+        <item name="AR">Arábe (AR)</item>
+        <item name="ZH">Chino (ZH)</item>
         <item name="KO">Coreano (KO)</item>
+        <item name="DA">Danés (DA)</item>
+        <item name="GR">Griego (GR)</item>
         <item name="ES">Español (ES)</item>
+        <item name="FI">Finlandés (FI)</item>
         <item name="FR">Francés (FR)</item>
+        <item name="HU">Húngaro (HU)</item>
         <item name="EN-GB"> Inglés (EN-GB) </item>
         <item name="EN-US"> Inglés (EN-US) </item>
         <item name="IT">Italiano (IT)</item>
+        <item name="PL">Polaco (PL)</item>
+        <item name="RO">Rumano (RO)</item>
+        <item name="RU">Ruso (RU)</item>
+        <item name="UK">Ucraniano (UK)</item>
         <item name="JA">Japonés (JA)</item>
     </string-array>
 </resources>

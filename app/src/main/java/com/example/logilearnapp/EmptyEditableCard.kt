@@ -150,8 +150,7 @@ class EmptyEditableCard : AppCompatActivity() {
         }
         viewModel = ViewModelProvider(this)[EmptyEditableCardViewModel::class.java]
         val textInputLayout: TextInputLayout = findViewById(R.id.menu)
-        val autoCompleteTextView: AutoCompleteTextView =
-            textInputLayout.editText as AutoCompleteTextView
+        val autoCompleteTextView: AutoCompleteTextView = textInputLayout.editText as AutoCompleteTextView
         autoCompleteTextView.setOnItemClickListener { parent, view, position, id ->
             // Obtén el texto del elemento seleccionado
             val selectedItem = parent.getItemAtPosition(position).toString()

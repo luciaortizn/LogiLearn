@@ -21,7 +21,9 @@ class FolderDao {
         val folderListDB: ArrayList<Folder> = arrayListOf()
         val folderReference =  databaseReference.child("user").child(userId).child("folders")
 
-       folderReference.addValueEventListener(object : ValueEventListener {
+        //ojo addValueEventListener
+       folderReference.addListenerForSingleValueEvent(object : ValueEventListener {
+
             override fun onDataChange(snapshot: DataSnapshot) {
                 // Limpiar la lista antes de agregar nuevas carpetas
                 folderListDB.clear()
@@ -33,16 +35,12 @@ class FolderDao {
                     val folderIsFavorite = folder.child("isFavorite").getValue(String::class.java)
                     //nuevo
                     val folderCardId = folder.child("cardId").getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
-                    // Crear la carpeta y agregarla a la lista
                     folderListDB.add(Folder(folderId.toString(), folderIsFavorite.toString(), folderTitle.toString(), folderCardId))
                 }
-                // Llamar al callback con la lista de carpetas obtenida
                 callback.onFolderCallback(folderListDB)
             }
-
             override fun onCancelled(error: DatabaseError) {
-                // Manejar errores de cancelación
-
+                // databaseError.getCode() == DatabaseError.DISCONNECTED || databaseError.getCode() == DatabaseError.NETWORK_ERROR
             }
         })
     }
@@ -51,8 +49,13 @@ class FolderDao {
         getFoldersByUser(object : FirebaseCallback {
 
             override fun onCallback(cardList: ArrayList<Card>) {
-                //se añaden
+
             }
+
+            override fun onSingleUserCallback(user: com.example.logilearnapp.UserData) {
+
+            }
+
             override fun onFolderCallback(folderList: ArrayList<Folder>) {
                 Log.d("verificar", "La lista de carpetas tiene ${folderList.size} elementos.")
                 for (folder in folderList ){
@@ -76,6 +79,7 @@ class FolderDao {
                     if (existingFolderTitle == folderTitle) {
                         // Ya existe una carpeta con el mismo nombre
                         isFolderTitleDuplicate = true
+                        Toast.makeText(context, "Ya existe una carpeta con ese nombre",Toast.LENGTH_SHORT).show()
                         break
                     }
                 }
@@ -93,13 +97,11 @@ class FolderDao {
                         if (task.isSuccessful) {
                            Toast.makeText(context, "Carpeta guardada",Toast.LENGTH_SHORT).show()
                         } else {
-                            // Hubo un problema al crear la carpeta
-                            // Aquí puedes mostrar un mensaje de error
+                            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
                         }
                     }
-                } else {
-                   Toast.makeText(context, "Ya existe una carpeta con ese nombre",Toast.LENGTH_SHORT).show()
                 }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -193,10 +195,11 @@ class FolderDao {
         val folderReference  = databaseReference.child("user").child(userId).child("folders").child(folder.id)
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (dataSnapshot.exists())
+                if (dataSnapshot.exists()){
                    folderReference.child("dataTitle").setValue(folder.dataTitle)
                   Toast.makeText(context, "Carpeta actualizada", Toast.LENGTH_SHORT).show()
                 }
+            }
             override fun onCancelled(error: DatabaseError) {
 
             }
