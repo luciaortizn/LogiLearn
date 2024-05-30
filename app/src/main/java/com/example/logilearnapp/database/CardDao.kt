@@ -46,7 +46,7 @@ class CardDao {
                     cardReference.child("title").setValue(card.title)
                     cardReference.child("input").setValue(card.input)
                     cardReference.child("result").setValue(card.result)
-                    Toast.makeText(context, "Valores actualizados", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Tarjeta actualizada", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {

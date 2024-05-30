@@ -207,6 +207,7 @@ class FolderDao {
 
     }
     fun deleteFolder(databaseReference: DatabaseReference){
+       // val folderRef = databaseReference.child("user").child(userId).child("folders").child(folderId)
         databaseReference.removeValue().addOnSuccessListener {
         }
     }

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/item_imagen"
+        android:id="@+id/item_save"
         android:enabled="true"
         android:title="guardar"
         android:titleCondensed="Guardar"

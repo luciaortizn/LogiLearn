@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.UserData
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
@@ -94,6 +95,11 @@ class FavoritesFragment : Fragment() {
                 override fun onCallback(cardList: ArrayList<Card>) {
                     //no hago nada
                 }
+
+                override fun onSingleUserCallback(user: UserData) {
+                    TODO("Not yet implemented")
+                }
+
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onFolderCallback(folderList: ArrayList<Folder>) {
                     folderList.removeIf { folder -> folder.isFavorite == "false" }

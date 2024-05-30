@@ -3,11 +3,15 @@ package com.example.logilearnapp.ui.auth
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.logilearnapp.databinding.ActivityRegisterBinding
+import com.example.logilearnapp.util.Validator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,17 +37,97 @@ class Register : AppCompatActivity() {
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("user")
         mAuth = FirebaseAuth.getInstance()
+        val editEmail = binding.emailField
+        val editName = binding.nameField
+        val editSurname  = binding.surnameField
+        val editPassword = binding.passField
+        val editRepeatPassword = binding.rePassField
 
+        //validaciones dinámicas:
+        editEmail.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val mail = s.toString()
+                if (editEmail.editText?.text.toString().isBlank()) {
+                    editEmail.error = "Campo vacío"
+                }else if(!Validator.isValidEmail(mail)) {
+                    editEmail.error = "Correo no válido"
+                }else{
+                    editEmail.error = null
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        editName.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val name = s.toString()
+                if (editName.editText?.text.toString().isBlank()) {
+                    editName.error = "Campo vacío"
+                }else if(!Validator.isValidName(name)) {
+                    editName.error = "Nombre no válido"
+                }else{
+                    editName.error = null
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        editSurname.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val surname = s.toString()
+                if (editSurname.editText?.text.toString().isBlank()) {
+                    editSurname.error = "Campo vacío"
+                }else if(!Validator.isValidSurname(surname)){
+                    editSurname.error = "Apellido no válido"
+                }else{
+                    editSurname.error = null
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        editPassword.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (editPassword.editText?.text.toString().isBlank()) {
+                    editPassword.error = "Campo vacío"
+                }else if(!Validator.isValidPassword(editPassword.editText!!.text.toString())){
+                    editPassword.error = "Contraseña no válida"
+                }else{
+                    editPassword.error = null
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        editRepeatPassword.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (editRepeatPassword.editText?.text.toString().isBlank()) {
+                    editRepeatPassword.error = "Campo vacío"
+                } else if (editPassword.editText!!.text.toString() != editRepeatPassword.editText!!.text.toString()) {
+                    editRepeatPassword.error = "Las contraseñas no coinciden"
+                } else {
+                    editRepeatPassword.error = null
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
 
         binding.registerBtn.setOnClickListener{
+            if(editEmail.error.isNullOrBlank() && editName.error.isNullOrBlank() && editSurname.error.isNullOrBlank() && editPassword.error.isNullOrBlank() && editRepeatPassword.error.isNullOrBlank()){
+                registerUser(editEmail.editText?.text.toString(), editName.editText?.text.toString(), editSurname.editText?.text.toString(), editPassword.editText?.text.toString(), editRepeatPassword.editText?.text.toString())
+            }else{
+                MaterialAlertDialogBuilder(this)
+                    //hacer validaciones en editar perfil
+                    .setTitle("Campos inválidos")
+                    .setMessage("No puedes registrarte hasta que no rellenes correctamente los campos")
+                    .setPositiveButton("De acuerdo") { dialog, which ->
+                        dialog.dismiss()
 
-            val email = binding.emailField.editText?.text.toString()
-            val name = binding.nameField.editText?.text.toString()
-            val surname  = binding.surnameField.editText?.text.toString()
-            val password = binding.passField.editText?.text.toString()
-            val confirmPassword = binding.rePassField.editText?.text.toString()
-            registerUser(email, name, surname, password, confirmPassword)
-
+                    }.create().apply {
+                        show()
+                    }
+            }
         }
         /**
         binding.registerBtn.setOnClickListener {
@@ -55,10 +139,7 @@ class Register : AppCompatActivity() {
         }*/
     }
     fun registerUser(email:String, name:String,surname:String ,password: String, rePassword: String){
-         val validationResult =validateFields(email, name, surname, password, rePassword)
-        if (validationResult == ValidationResult.SUCCESS) {
 
-            //ingresar los datos del usuario
             databaseReference.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -69,13 +150,14 @@ class Register : AppCompatActivity() {
 
                         databaseReference.child(id!!).setValue(userData)
 
-                        Toast.makeText(this@Register, "SingUp Successfull", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@Register, "Te has registrado", Toast.LENGTH_SHORT).show()
 
                         val intent = Intent(this@Register, Login::class.java)
                         startActivity(intent)
                         finish()
 
                     } else {
+                        //lo dejo
                         showUserExistsAlert()
                     }
                 }
@@ -85,98 +167,14 @@ class Register : AppCompatActivity() {
                 }
 
             })
-
-        } else {
-            showInvalidFieldsAlert(validationResult)
-        }
-    }
-    private fun validateFields(email:String, name:String, surname:String, password: String, rePassword: String ):Any{
-        return when {
-            isAnyFieldEmpty(email, name, surname, password, rePassword) -> ValidationResult.EMPTY_FIELD
-            containsWhiteSpace(email, name, password, rePassword) -> ValidationResult.WHITESPACE_IN_FIELD
-            !isEmailValid(email) -> ValidationResult.INVALID_EMAIL
-            containsNumbers(name, surname) -> ValidationResult.INVALID_NAME_OR_LASTNAME
-            !doPasswordsMatch(password, rePassword) -> ValidationResult.PASSWORDS_NOT_MATCH
-            !isPasswordStrongEnough(password) -> ValidationResult.WEAK_PASSWORD
-            else -> ValidationResult.SUCCESS
-        }
-    }
-
-    private fun containsWhiteSpace(vararg fields: String): Boolean {
-        return fields.any { it.contains(" ") }
-    }
-    private fun isEmailValid(email: String): Boolean {
-        val emailPattern = Patterns.EMAIL_ADDRESS
-        return emailPattern.matcher(email).matches()
-    }
-    private fun isAnyFieldEmpty(vararg fields: String): Boolean {
-        return fields.any { it.isBlank() }
-    }
-    private fun containsNumbers(vararg fields: String): Boolean {
-        val regex = Regex("\\d")
-        return fields.any { field ->
-            regex.containsMatchIn(field)
-        }
-    }
-    private fun doPasswordsMatch(password: String, repeatPassword: String): Boolean {
-        return password == repeatPassword
-    }
-
-    private fun isPasswordStrongEnough(password: String): Boolean {
-        val digitRegex = Regex("\\d")
-        val upperCaseRegex = Regex("[A-Z]")
-        val lowerCaseRegex = Regex("[a-z]")
-        val specialCharacterRegex = Regex("[^A-Za-z0-9]")
-
-        return password.length >= 8 &&
-                digitRegex.containsMatchIn(password) &&
-                upperCaseRegex.containsMatchIn(password) &&
-                lowerCaseRegex.containsMatchIn(password) &&
-                specialCharacterRegex.containsMatchIn(password) &&
-                !password.contains(" ")
-    }
-    private fun showInvalidFieldsAlert(validationResult: Any) {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Invalid Fields")
-
-        val errorMessage = when (validationResult) {
-            ValidationResult.EMPTY_FIELD -> "Please fill in all fields."
-            ValidationResult.INVALID_EMAIL -> "Please enter a valid email address."
-            ValidationResult.INVALID_NAME_OR_LASTNAME -> "Please enter a valid name/lastname."
-            ValidationResult.PASSWORDS_NOT_MATCH -> "Passwords do not match."
-            ValidationResult.WEAK_PASSWORD -> "Password does not meet the minimum requirements."
-
-            //aquí hay que ver cuál es
-            else -> "There is space between one of your fields"
-        }
-
-        alertDialogBuilder.setMessage(errorMessage)
-        alertDialogBuilder.setPositiveButton("OK") { _, _ ->
-            // Dismiss the alert dialog if OK is pressed
-        }
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
     }
     private fun showUserExistsAlert() {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("User Exists")
-        alertDialogBuilder.setMessage("User already exists")
+        alertDialogBuilder.setTitle("Usuario en uso")
+        alertDialogBuilder.setMessage("Este usuario ya ha sido creado")
         alertDialogBuilder.setPositiveButton("OK") { _, _ ->
-
         }
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
     }
-    enum class ValidationResult {
-        SUCCESS,
-        INVALID_EMAIL,
-        EMPTY_FIELD,
-        INVALID_NAME_OR_LASTNAME,
-        PASSWORDS_NOT_MATCH,
-        WEAK_PASSWORD,
-        WHITESPACE_IN_FIELD
-    }
-
-
-
 }

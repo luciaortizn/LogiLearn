@@ -14,4 +14,18 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
+    <style name="DividerStyle">
+        <item name="android:background">#000000</item>
+    </style>
+
+    <style name="AppBarStyle">
+        <item name="android:background">@color/black</item> <!-- Fondo oscuro para modo oscuro -->
+        <item name="android:elevation">4dp</item> <!-- Elevación opcional -->
+        <item name="android:theme">@style/AppBarTextStyle.Dark</item> <!-- Tema oscuro para contenido del AppBar -->
+    </style>
+
+    <style name="AppBarTextStyle.Dark" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColor">@color/blue_light</item>
+        <item name="android:tint">@color/blue_light</item> <!-- Color de los iconos -->
+    </style>
 </resources>

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.UserData
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
@@ -63,31 +64,9 @@ class CardViewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*
-        imageList = arrayOf("true", "false", "true", "false" , "true")
-
-         idCardList  = arrayListOf(
-            arrayListOf("", "", "", "", ""),
-            arrayListOf("", "", "", "", ""),
-            arrayListOf("", "", "", "", ""),
-            arrayListOf("", "", "", "", ""),
-            arrayListOf("", "", "", "", "")
-        )
-
-        idFolderList = arrayOf(
-            "", "", "", "", ""
-        )
-        titleList = arrayOf(
-            "Verbs",
-            "Synonyms",
-            "Vocab1",
-            "Phrasal verbs",
-            "Vocab2"
-        )*/
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
-       // folderListFake = arrayListOf<Folder>()
         var folderAdapter :FolderAdapter
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val folders = FolderDao()
@@ -97,6 +76,10 @@ class CardViewFragment : Fragment() {
                override fun onCallback(cardList: ArrayList<Card>) {
                    //no hago nada
                }
+
+               override fun onSingleUserCallback(user: UserData) {
+               }
+
                @SuppressLint("NotifyDataSetChanged")
                override fun onFolderCallback(folderList: ArrayList<Folder>) {
                    //set background for empty folders
@@ -162,10 +145,15 @@ class CardViewFragment : Fragment() {
            isFav = "false"
         }
         // Actualiza la lista con la nueva imagen
-        folderList[position] = Folder("" , isFav, folder.dataTitle,folder.cardId )
-        folderDao.updateIsFavorite( databaseReference,userId ,isFav,folder.id,context )
-        // Notifica al adaptador sobre el cambio
-        recyclerView.adapter?.notifyItemChanged(position)
+        folderList[position] = Folder(folder.id, isFav, folder.dataTitle,folder.cardId )
+       //   (databaseReference: DatabaseReference, userId: String, newIsFavoriteValue: String, folderId: String, context: Context) {
+       Log.d("folder", "id: ${folder.id.toString()} solo id")
+       if(folder.id.toString().isNotBlank()){
+           folderDao.updateIsFavorite( databaseReference,userId ,isFav,folder.id.toString(),context )
+           recyclerView.post {
+               recyclerView.adapter?.notifyItemChanged(position)
+           }
+       }
     }
     private fun setBackgroundForEmptyFolders(list:ArrayList<Folder>?){
 

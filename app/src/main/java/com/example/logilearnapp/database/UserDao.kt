@@ -30,23 +30,26 @@ class UserDao {
 
         })
     }
-    fun updateUser(databaseReference: DatabaseReference,userId :String ){
+    fun updateUser(databaseReference: DatabaseReference,userId :String, user:UserData ){
        val userRef = databaseReference.child("user").child(userId)
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // Obtener los datos del DataSnapshot
-
-                val id = dataSnapshot.child("id").getValue(String::class.java)
-                val name = dataSnapshot.child("name").getValue(String::class.java)
-                val surname = dataSnapshot.child("surname").getValue(String::class.java)
-                val email = dataSnapshot.child("email").getValue(String::class.java)
-                val password = dataSnapshot.child("password").getValue(String::class.java)
-                val user = UserData(id, email, name, surname, password)
+        // Crear un mapa con los valores del objeto UserData
+        val userUpdates = mapOf(
+            "id" to user.id,
+            "name" to user.name,
+            "surname" to user.surname,
+            "email" to user.email,
+            "password" to user.password
+        )
+        // Actualizar los valores en la base de datos
+        userRef.updateChildren(userUpdates).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // La actualización fue exitosa
+                println("User updated successfully.")
+            } else {
+                // La actualización falló
+                println("Failed to update user: ${task.exception}")
             }
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        })
+        }
 
     }
     fun deleteUser(databaseReference: DatabaseReference, userId: String){

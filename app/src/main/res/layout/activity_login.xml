@@ -6,18 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.Login">
-
-    <!--
-     <androidx.fragment.app.FragmentContainerView android:name="com.example.logilearnapp.ui.auth.LoginFragment"
-        android:id="@+id/viewer"
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_login" />
-    -->
     <ImageView
         android:id="@+id/logo_register"
         android:layout_marginTop="20dp"
@@ -29,7 +17,8 @@
         android:src="@drawable/logo_logilearn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/imagen_del_logo_de_la_aplicaci_n" />
     <TextView
         android:id="@+id/loginTitle"
         android:layout_width="300dp"
@@ -47,6 +36,7 @@
 
      <com.google.android.gms.common.SignInButton
          android:id="@+id/sign_in_button"
+         android:id="@+id/sign_in_button"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +53,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:hint="Email"
+        app:errorEnabled="true"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +70,8 @@
         android:id="@+id/passField"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
+        android:hint="@string/contrase_a"
+        app:errorEnabled="true"
         android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -102,22 +94,25 @@
         android:layout_marginTop="40dp"
         android:onClick="switchToMainP"
         android:padding="20dp"
+        android:width="200dp"
         android:text="Iniciar sesión"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/passField" />
 
-    <TextView
-        android:id="@+id/textoRegistrarse"
-        android:layout_marginTop="80dp"
-        android:layout_width="200dp"
-        android:gravity="center"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="wrap_content"
+        android:width="200dp"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="554dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="40dp"
+        android:padding="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/loginBtn"
         android:textStyle="bold"
         android:text="@string/puente_a_registro"/>

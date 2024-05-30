@@ -46,9 +46,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:padding="20dp"
-        style="?attr/textInputFilledStyle"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
         android:id="@+id/edit_name_layout"
         android:layout_width="match_parent"
+        app:errorEnabled="true"
         android:layout_height="wrap_content"
         android:hint="Nombre">
 
@@ -61,7 +62,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:padding="20dp"
-        style="?attr/textInputFilledStyle"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
+        app:errorEnabled="true"
         android:id="@+id/edit_surname_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -76,14 +78,14 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:padding="20dp"
-        style="?attr/textInputFilledStyle"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
+        app:errorEnabled="true"
         android:id="@+id/edit_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Correo">
 
         <com.google.android.material.textfield.TextInputEditText
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="lucia1225@gmail.com"
@@ -92,11 +94,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:padding="20dp"
-        style="?attr/textInputFilledStyle"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
         android:id="@+id/edit_password_layout"
+        app:errorEnabled="true"
         android:layout_width="match_parent"
+        app:endIconMode="password_toggle"
         android:layout_height="wrap_content"
-        android:hint="Contraseña">
+        android:hint="@string/contrase_a">
 
         <com.google.android.material.textfield.TextInputEditText
             android:inputType="textPassword"
@@ -109,6 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        app:errorEnabled="true"
         android:layout_gravity="center"
         android:orientation="horizontal">
         <com.google.android.material.button.MaterialButton

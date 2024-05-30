@@ -1,13 +1,17 @@
 package com.example.logilearnapp.ui.profile
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -18,8 +22,10 @@ import com.example.logilearnapp.database.UserDao
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.common.HomeFragment
 import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.util.Validator
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DataSnapshot
@@ -73,20 +79,122 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val topBar: MaterialToolbar = view.findViewById(R.id.topAppBarCard_profile)
-        topBar.setNavigationOnClickListener {
-
-           replaceFragment(requireActivity(), HomeFragment())
-        }
         val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getString("id", "")
-        val databaseReference = FirebaseDatabase.getInstance().reference
-        val userDao = UserDao()
         editPassword = view.findViewById(R.id.edit_password_layout)
         editSurname = view.findViewById(R.id.edit_surname_layout)
         editEmail = view.findViewById(R.id.edit_email_layout)
         editName= view.findViewById(R.id.edit_name_layout)
+
+
+        val databaseReference = FirebaseDatabase.getInstance().reference
+        topBar.setNavigationOnClickListener {
+
+           replaceFragment(requireActivity(), HomeFragment())
+        }
+        val saveOption = topBar.menu?.findItem(R.id.item_save)
+
+        val userDao = UserDao()
+
         getUserData(userDao, databaseReference, userId.toString())
-        
+
+        // aquí hago validaciones no dependen de botones:
+        editEmail.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val email = s.toString()
+                if (!Validator.isValidEmail(email)) {
+                    editEmail.error = "Email incorrecto"
+
+                } else {
+                    editEmail.error = null // Remueve el error si el email es válido
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        editName.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val name = s.toString()
+                if (!Validator.isValidName(name)) {
+                    editName.error = "Nombre no válido"
+                }else {
+                    editName.error = null // Remueve el error si el email es válido
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        editSurname.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val surname = s.toString()
+                if (!Validator.isValidSurname(surname)) {
+                    editSurname.error = "Apellido no válido"
+                }else {
+                    editSurname.error = null // Remueve el error si el email es válido
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+        editPassword.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                val password = s.toString()
+                if (!Validator.isValidPassword(password)) {
+                    editPassword.error = "Contraseña no válida"
+                }else {
+                    editPassword.error = null
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        saveOption?.setOnMenuItemClickListener {
+            val userRepo = UserDao()
+            //dialog
+            if(editEmail.error.isNullOrBlank() && editName.error.isNullOrBlank() && editPassword.error.isNullOrBlank() && editSurname.error.isNullOrBlank()){
+                val user = UserData(userId,editEmail.editText!!.text.toString(),editName.editText!!.text.toString(), editSurname.editText!!.text.toString(), editPassword.editText!!.text.toString())
+                MaterialAlertDialogBuilder(requireContext())
+                    //hacer validaciones en editar perfil
+                    .setTitle("Actualizar perfil")
+                    .setMessage("¿Deseas modificar tu información personal?")
+                    .setPositiveButton("Guardar cambios") { dialog, which ->
+
+                        userRepo.updateUser(databaseReference, userId!!, user)
+                        dialog.dismiss()
+                        Toast.makeText(requireContext(), "Información actualizada", Toast.LENGTH_SHORT).show()
+                        replaceFragment(requireActivity(), HomeFragment())
+                    }
+                    .setNegativeButton("Cancelar") { dialog, which ->
+                        Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                        dialog.cancel()
+
+                    }.create().apply {
+
+                        show()
+                    }
+
+            }else{
+                MaterialAlertDialogBuilder(requireContext())
+                    //hacer validaciones en editar perfil
+                    .setTitle("Campos no válidos")
+                    .setMessage("Tienes campos incorrectos, rellénalos para poder guardar los cambios")
+                    .setPositiveButton("De acuerdo") { dialog, which ->
+                        dialog.dismiss()
+
+                    }.create().apply {
+                show()
+            }
+            }
+
+            true
+        }
         logoutBtn = view.findViewById(R.id.logout_btn)
         deleteAccountBtn = view.findViewById(R.id.delete_account_btn)
         logoutBtn.setOnClickListener{
@@ -129,7 +237,7 @@ class ProfileFragment : Fragment() {
         fragmentTransaction.commit()
     }
     private fun getUserData(userDao:UserDao, databaseReference: DatabaseReference, userId:String ) {
-      
+
         userDao.getUser(object : FirebaseCallback{
             override fun onCallback(cardList: ArrayList<Card>) {
 
@@ -145,12 +253,14 @@ class ProfileFragment : Fragment() {
 
             }
 
-        },databaseReference, userId!!)
+        },databaseReference, userId)
 
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
 
     }
+
 }

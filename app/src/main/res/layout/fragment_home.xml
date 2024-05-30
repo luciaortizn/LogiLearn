@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:theme="@style/Base.Theme.LogiLearnApp"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/colorPrimaryDark"
     android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.common.HomeFragment">
@@ -51,7 +50,7 @@
             android:layout_gravity="center"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/blue_light"
+            android:textColor="@color/blue"
             android:textAlignment="center"
             android:paddingStart="27dp"
             android:textSize="35sp">
@@ -273,6 +272,7 @@
             </com.google.android.material.search.SearchView>
             <!--debería poner una barra de búsqueda de resultados que no tengan por qué guardarse-->
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <LinearLayout
         android:id="@+id/layout_other_content_home"
         android:layout_width="match_parent"
@@ -297,7 +297,7 @@
         </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -310,8 +310,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
         tools:ignore="NotSibling"
+        app:icon="@drawable/baseline_add_24"
+        android:text="Añadir tarjeta"
         android:src="@drawable/baseline_add_24"
         android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.search.SearchBar
 
 
@@ -195,7 +195,7 @@ private lateinit var dictInfoBtn: MaterialButton
            true
        }
 
-        val fab : FloatingActionButton = view.findViewById(R.id.floating_action_button)
+        val fab : ExtendedFloatingActionButton = view.findViewById(R.id.floating_action_button)
         fab.setOnClickListener {
             val intent = Intent(activity, EmptyEditableCard::class.java)
 

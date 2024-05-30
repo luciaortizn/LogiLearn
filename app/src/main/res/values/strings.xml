@@ -144,4 +144,14 @@
     <string name="repetir">Repetir</string>
     <string name="lista_de_favoritos">lista de favoritos</string>
     <string name="busca_palabras">Busca palabras...</string>
+    <string name="crear_tarjeta">Crear Tarjeta</string>
+    <string name="nueva_carpeta">Nueva carpeta</string>
+    <string name="imagen_del_logo_de_la_aplicaci_n">imagen del logo de la aplicación</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="repetir_contrase_a">Repetir contraseña</string>
+    <string name="email">Email</string>
+    <string name="apellido">Apellido</string>
+    <string name="nombre">Nombre</string>
+    <string name="registro">Registro</string>
 </resources>

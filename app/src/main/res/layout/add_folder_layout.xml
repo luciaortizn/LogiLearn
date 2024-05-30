@@ -13,23 +13,23 @@
         android:textSize="19sp"
         android:layout_height="wrap_content">
     </TextView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:textSize="18sp"
-        android:text="Añade una aquí:"
-        android:layout_height="wrap_content">
-
-    </TextView>
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerInsetStart="16dp"
+        android:layout_marginBottom="10dp"
+        app:dividerInsetEnd="16dp"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayoutAddFolder"
         android:layout_width="match_parent"
-        android:layout_gravity="start"
+        android:layout_gravity="center"
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="200dp"
-            android:layout_gravity="start"
+            android:layout_width="220dp"
+            android:layout_gravity="center"
             android:layout_height="48dp"
-            android:hint="Nombre">
+            app:errorEnabled="true"
+            android:hint="@string/nueva_carpeta">
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

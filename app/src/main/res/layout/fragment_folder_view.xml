@@ -4,12 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
     tools:context=".ui.folder.CardViewFragment">
 
     <TextView
-        android:textColor="@color/blue_light"
+        android:textColor="@color/blue"
         android:padding="10dp"
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -23,7 +22,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
@@ -108,8 +106,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:paddingTop="10dp"
         android:id="@+id/recycler_view"
-        android:background="@color/colorPrimaryDark"
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"

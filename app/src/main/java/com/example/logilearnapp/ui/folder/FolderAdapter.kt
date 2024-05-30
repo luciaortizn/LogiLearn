@@ -110,7 +110,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         //obtengo la referencia hasta el id de la card
         val  databaseReference : DatabaseReference = firebaseDatabase.reference.child("user").child(
             folderDao.getUserIdSharedPreferences(context)!!
-        ).child("folders").child(item.id)
+        ).child("folders").child(item.id.toString())
         //obtengo id y referencia para eliminar en bd, la referencia es directa al id
         folderDao.deleteFolder(databaseReference)
         //esto lo elimina de la lista

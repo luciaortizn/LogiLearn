@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +17,6 @@ import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
@@ -76,7 +74,6 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                             // cardDao.editCar
                             val card = Card(currentItem.id, dialogTitle.editText!!.text.toString(), dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
                             cardDao.updateCard(firebaseDatabase.reference,card, userId!!, context )
-                            Toast.makeText(context, "Tarjeta actualizada", Toast.LENGTH_SHORT).show()
                             dialog.dismiss()
                             holder.rvMenu.menu.close()
                         }
@@ -207,7 +204,10 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                     val listToAdd = ArrayList<String>()
                     listToAdd.add(currentItem!!.id)
                     val folderToAdd = Folder("", "false", name.editText!!.text.toString(), listToAdd)
-                    folderDao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)
+                    if(folderToAdd.dataTitle.toString().isNotEmpty()){
+                        folderDao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)
+                    }
+
                     textNoFolders.text = ""
                 } else {
 
