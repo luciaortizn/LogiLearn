@@ -8,29 +8,20 @@
     android:theme="@style/Base.Theme.LogiLearnApp"
     tools:context=".ui.search.SearchFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.google.android.material.search.SearchBar
-                android:id="@+id/search_bar"
-                android:layout_marginTop="0dp"
-                android:isScrollContainer="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/busca_tarjetas" />
-        </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.search.SearchView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Busca tarjetas"
-            android:isScrollContainer="false"
-            app:layout_anchor="@id/search_bar"
-            android:id="@+id/search_view">
-            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+    <SearchView
+        android:layout_marginTop="0dp"
+        android:id="@+id/search_view_cards"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
 
-        </com.google.android.material.search.SearchView>
-    <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
+        android:layout_height="wrap_content"
+        android:queryHint="Busca tarjetas..."
+        app:layout_constraintTop_toTopOf="parent">
+
+    </SearchView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_card"
             android:layout_width="match_parent"

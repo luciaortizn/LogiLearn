@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Context):RecyclerView.Adapter<CardAdapter.ViewHolderClass>() {
+class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Context):RecyclerView.Adapter<CardAdapter.ViewHolderClass>() {
    private var onClickListener: OnClickListener?=null
     private var isDialogShowing = false
     private val folderDao = FolderDao()
@@ -52,16 +52,14 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                 R.id.item_edit_card -> {
                     holder.rvMenu.menu.close()
                     val dialogView = LayoutInflater.from(context).inflate(R.layout.edit_card_layout, null)
-                    val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_edit)
                     val dialogInput = dialogView.findViewById<TextInputLayout>(R.id.input_edit)
                     val dialogResult = dialogView.findViewById<TextInputLayout>(R.id.result_edit)
                     val firebaseDatabase = FirebaseDatabase.getInstance()
                     val userId = cardDao.getUserIdSharedPreferences(context)
-                    dialogTitle.editText!!.setText(currentItem!!.title)
-                    dialogInput.editText!!.setText(currentItem.input)
+                    dialogInput.editText!!.setText(currentItem!!.input)
                     dialogResult.editText!!.setText(currentItem.result)
                     MaterialAlertDialogBuilder(context)
-                        .setTitle("Editar card")
+                        .setTitle("Editar tarjeta")
                         .setView(dialogView)
                         .setNegativeButton("Cancelar") { dialog, which ->
                             //alogView.rem
@@ -72,7 +70,7 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                         }
                         .setPositiveButton("Guardar cambios") { dialog, which ->
                             // cardDao.editCar
-                            val card = Card(currentItem.id, dialogTitle.editText!!.text.toString(), dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
+                            val card = Card(currentItem.id, dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
                             cardDao.updateCard(firebaseDatabase.reference,card, userId!!, context )
                             dialog.dismiss()
                             holder.rvMenu.menu.close()
@@ -227,5 +225,10 @@ class CardAdapter(private val dataList:ArrayList<Card>?,private val context: Con
                     isDialogShowing = false
                 }
                 show() }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateCards(newCards: ArrayList<Card>) {
+        dataList = newCards
+        notifyDataSetChanged()
     }
 }

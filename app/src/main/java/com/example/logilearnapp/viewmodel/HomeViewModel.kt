@@ -7,6 +7,7 @@ import com.example.logilearnapp.data.Example
 import com.example.logilearnapp.data.Examples
 import com.example.logilearnapp.data.Pronunciation
 import com.example.logilearnapp.data.RelatedWord
+import com.example.logilearnapp.data.Word
 import com.example.logilearnapp.data.WordOfTheDayResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -106,6 +107,23 @@ class HomeViewModel: ViewModel() {
             }
         })
     }
+    fun getRandomWords(apiKey: String, callback: (List<Word>?)-> Unit){
+        val call = apiService.getRandomWords(apiKey)
+        call.enqueue(object : Callback<List<Word>> {
+            override fun onResponse(call: Call<List<Word>>, response: Response<List<Word>>) {
+                if (response.isSuccessful) {
+                    val definitions = response.body()
+                    callback(definitions)
+                } else {
+                    callback(null)                 }
+            }
+            override fun onFailure(call: Call<List<Word>>, t: Throwable) {
+                callback(null)
+            }
+        })
+    }
+
+
 }
 
 

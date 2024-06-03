@@ -3,13 +3,12 @@ package com.example.logilearnapp.ui.search
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +19,6 @@ import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.search.SearchBar
-import com.google.android.material.search.SearchView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -39,6 +37,8 @@ class SearchFragment : Fragment() {
     lateinit var inputList:Array<String>
     lateinit var resultList:Array<String>
     lateinit var layoutNoCards:LinearLayout
+    lateinit var sv: SearchView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,13 +52,12 @@ class SearchFragment : Fragment() {
 
         layoutNoCards = view.findViewById(R.id.layout_no_cards_displayed)
         recyclerView = view.findViewById(R.id.recycler_view_card)
+        sv = view.findViewById(R.id.search_view_cards)
         val numCol = 1
         val layoutManager = GridLayoutManager(context, numCol)
         recyclerView.layoutManager = layoutManager
         recyclerView.setHasFixedSize(true)
         //get Data (de bd)
-        val sv: SearchView = view.findViewById(R.id.search_view)
-        val sb: SearchBar = view.findViewById(R.id.search_bar)
         var cardAdapter :CardAdapter
         //obtengo to-do de una y se actualiza la interfaz
         activity?.runOnUiThread {
@@ -68,48 +67,49 @@ class SearchFragment : Fragment() {
                     //se añaden
                     setBackgroundForEmptyCards(cardList)
                     cardAdapter = CardAdapter(cardList, requireContext())
-                    //meto to-do el código?
-                    //aquí verifico si debo de mostrar el mensaje
-                    //com.google.android.material.search.SearchView
 
+                    //aquí
                     /**
-                    sv.editText.setOnEditorActionListener(object : TextView.OnEditorActionListener{
+                    sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            if (query != null) {
 
-                        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-                            val text = v?.text.toString()
-                            sv.hide()
-                            sb.setText(text)
-                            if(v?.text.isNullOrBlank()){
-                                cardList.clear()
-                                //metodo?
+                            }
+                            return true
+                        }
 
-                            }else {
-                                cardList.clear()
-                                val cardAdapte = CardAdapter(cardList, requireContext())
-                                cardAdapte.setOnClickListener(object :CardAdapter.OnClickListener {
-                                    override fun onClick(position: Int, model: Card) {
-                                        // val intent = Intent(context, CardEditView::class.java)
-                                        //intent.putExtra("cardID", model.id)
-                                        //startActivity(intent)
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            if (newText.isNullOrBlank()) {
+                                for(card in cardList){
+                                    if(card.input.contains(newText.toString()) || card.result.contains(newText.toString()) ){
+
                                     }
-                                })
-                                recyclerView.adapter= cardAdapte
+                                }
+                            }else{
 
                             }
                             return true
                         }
 
                     })**/
+
                     recyclerView.adapter = cardAdapter
                     recyclerView.adapter?.notifyDataSetChanged()
+                    /**
+                    var cardAdapter = CardAdapter(emptyList(), requireContext())
+                    recyclerView.adapter = cardAdapter
 
+                    setupSearch(cardAdapter)
+
+                    // Fetch data from the database and update the UI
+                    fetchAllCards(cardAdapter)
+**/
                 }
 
                 override fun onSingleUserCallback(user: UserData) {
                 }
 
                 override fun onFolderCallback(folderList: ArrayList<Folder>) {
-                   //no hago nada
                 }
 
             })
@@ -118,6 +118,7 @@ class SearchFragment : Fragment() {
 
     }
     //obtiene lista cards por usuario y usa shared preferences para obtener el id
+
     private fun getCardsByUser(callback: FirebaseCallback) {
         val cardListDB: ArrayList<Card> = arrayListOf()
         firebaseDatabase = FirebaseDatabase.getInstance()
@@ -132,11 +133,9 @@ class SearchFragment : Fragment() {
                 cardListDB.clear()
                 for (card in snapshot.children){
                     val id = card.child("id").getValue(String::class.java)
-                    val title = card.child("title").getValue(String::class.java)
                     val input = card.child("input").getValue(String::class.java)
                     val result = card.child("result").getValue(String::class.java)
-
-                    cardListDB.add(Card(id.toString(), title.toString(), input.toString(), result.toString()))
+                    cardListDB.add(Card(id.toString(), input.toString(), result.toString()))
 
                 }
                 callback.onCallback(cardListDB)
@@ -160,11 +159,66 @@ class SearchFragment : Fragment() {
         }
         //ver que pasa y ver si esto se mete o no en su campo del rv
         for(card in list){
-            val title = card.title
             val cardInput = card.input
             //no hago nada para folder de momento
 
         }
     }
+/**
+    //buscador
+    private fun setupSearch(cardAdapter: CardAdapter) {
+        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    performSearch(query, cardAdapter)
+                }
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    fetchAllCards(cardAdapter) // Reload all cards when search is cleared
+                } else {
+                    performSearch(newText, cardAdapter)
+                }
+                return true
+            }
+        })
+    }
+
+
+    private fun performSearch(query: String, cardAdapter: CardAdapter) {
+        activity?.runOnUiThread {
+            getFilteredCardsByUser(query, object : FirebaseCallback {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onCallback(cardList: ArrayList<Card>) {
+                    setBackgroundForEmptyCards(cardList)
+                    cardAdapter.updateCards(cardList)
+                }
+
+                override fun onSingleUserCallback(user: UserData) {}
+
+                override fun onFolderCallback(folderList: ArrayList<Folder>) {}
+            })
+        }
+    }
+
+    private fun fetchAllCards(cardAdapter: CardAdapter) {
+        activity?.runOnUiThread {
+            getCardsByUser(object : FirebaseCallback {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun onCallback(cardList: ArrayList<Card>) {
+                    setBackgroundForEmptyCards(cardList)
+                    cardAdapter.updateCards(cardList)
+                }
+
+                override fun onSingleUserCallback(user: UserData) {}
+
+                override fun onFolderCallback(folderList: ArrayList<Folder>) {}
+            })
+        }
+
+
+    }*/
 
 }

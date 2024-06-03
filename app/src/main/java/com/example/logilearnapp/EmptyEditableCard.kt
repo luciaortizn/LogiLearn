@@ -28,7 +28,6 @@ class EmptyEditableCard : AppCompatActivity() {
    private lateinit var save_btn: ExtendedFloatingActionButton
    private lateinit var input_text: EditText
    private lateinit var result_text: EditText
-   private lateinit var title_text: EditText
    private lateinit var translationBtn: MaterialButton
     private lateinit var viewModel : EmptyEditableCardViewModel
 
@@ -45,7 +44,6 @@ class EmptyEditableCard : AppCompatActivity() {
         }
         //gestión del botón de guardar y la llamada a la base de datos
         save_btn = findViewById(R.id.save_card_button)
-        title_text = findViewById(R.id.SetTitle)
         input_text = findViewById(R.id.Input)
         result_text = findViewById(R.id.Result)
         translationBtn = findViewById(R.id.Translate)
@@ -70,7 +68,7 @@ class EmptyEditableCard : AppCompatActivity() {
         }
 
         save_btn.setOnClickListener() {
-            if (title_text.text.isNotEmpty() && input_text.text.isNotEmpty() && result_text.text.isNotEmpty()) {
+            if ( input_text.text.isNotEmpty() && result_text.text.isNotEmpty()) {
                 firebaseDatabase = FirebaseDatabase.getInstance()
                 databaseReference = firebaseDatabase.reference.child("user")
                 val sharedPreferences = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
@@ -95,7 +93,6 @@ class EmptyEditableCard : AppCompatActivity() {
                                     if (userData != null) {
                                         val cardData = HashMap<String, Any>()
                                         cardData["id"] = id.toString()
-                                        cardData["title"] = title_text.text.toString()
                                         cardData["input"] = input_text.text.toString()
                                         cardData["result"] = result_text.text.toString()
                                         // Obtenemos una referencia al nodo del usuario actual
@@ -158,7 +155,6 @@ class EmptyEditableCard : AppCompatActivity() {
             //aquí obtengo el id del elemento de la lista de idiomas
             //(requestBody: TranslateRequest,callback: TranslationCallback, apiKey:String
             val requestBody = TranslateRequest(listOf<String>( input_text.text.toString()), itemCountry.toString())
-
             if(input_text.text.isNotEmpty()){
                 translationBtn.setOnClickListener(){
                     viewModel.postTranslation(requestBody, { it: String? ->

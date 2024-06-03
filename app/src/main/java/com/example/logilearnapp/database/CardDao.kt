@@ -25,8 +25,7 @@ class CardDao {
                         val id = cardSnapshot.child("id").getValue(String::class.java)
                         val input = cardSnapshot.child("input").getValue(String::class.java)
                         val result = cardSnapshot.child("result").getValue(String::class.java)
-                        val title = cardSnapshot.child("title").getValue(String::class.java)
-                        cardListDB.add(Card(id.toString(), title.toString(), input.toString(), result.toString()))
+                        cardListDB.add(Card(id.toString(), input.toString(), result.toString()))
                     }
                 }
                 callback.onCallback(cardListDB)
@@ -43,7 +42,6 @@ class CardDao {
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    cardReference.child("title").setValue(card.title)
                     cardReference.child("input").setValue(card.input)
                     cardReference.child("result").setValue(card.result)
                     Toast.makeText(context, "Tarjeta actualizada", Toast.LENGTH_SHORT).show()

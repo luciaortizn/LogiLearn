@@ -3,6 +3,7 @@ import com.example.logilearnapp.data.Definition
 import com.example.logilearnapp.data.Examples
 import com.example.logilearnapp.data.Pronunciation
 import com.example.logilearnapp.data.RelatedWord
+import com.example.logilearnapp.data.Word
 import com.example.logilearnapp.data.WordOfTheDayResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -27,6 +28,8 @@ interface ApiService {
     @GET("word.json/{word}/pronunciations?")
     fun getPronunciation(@Path("word") word: String, @Query("api_key")apiKey : String): Call <List<Pronunciation>>
 
+    @GET("words.json/randomWords?")
+    fun getRandomWords(@Query("api_key") apiKey: String): Call<List<Word>>
 
 
 

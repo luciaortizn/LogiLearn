@@ -122,8 +122,6 @@ class FavoritesFragment : Fragment() {
                         recyclerView.adapter = folderAdapter
                        recyclerView.adapter?.notifyDataSetChanged()
                     }
-
-
                 }
             },firebaseDatabase.reference, userId!!)
         }
