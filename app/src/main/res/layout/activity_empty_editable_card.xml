@@ -62,7 +62,7 @@
             <LinearLayout
                 android:id="@+id/layoutTranslate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -70,18 +70,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    android:layout_gravity="left"
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/Translate"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="110dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="Traduce tus palabras favoritas"
+                    style="@style/LargeButtonsCustom1"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_width="60dp"
+                    app:icon="@drawable/translate"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:padding="15dp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:textColor="@color/blue_light"
-                    android:text="@string/traducir"
-                    android:textSize="16dp"
                    />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -141,6 +141,6 @@
         android:text="Guardar"
         android:layout_marginBottom="40dp"
         app:icon="@drawable/outline_add_task_24"
-        android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton">
+        style="@style/ElevatedButtonCustom">
     </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

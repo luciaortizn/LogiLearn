@@ -4,6 +4,7 @@ import android.icu.text.CaseMap.Title
 import android.media.Image
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.logilearnapp.data.CardWithDifficulty
 
 /*
 class Folder (private var name:String, private var cardList: MutableList<Card>, private var label:Label) {
@@ -16,13 +17,13 @@ data class Folder
     (val id:String,
      var isFavorite:String,
      var dataTitle: String,
-     var cardId: ArrayList<String>)
+     var cardId: ArrayList<CardWithDifficulty>?)
     : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.createStringArrayList()!!
+        parcel.createTypedArrayList(CardWithDifficulty.CREATOR)!!
     )
 
     constructor() : this("","false", "", ArrayList())

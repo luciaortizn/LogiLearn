@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.CardWithDifficulty
+import com.example.logilearnapp.data.Difficulty
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
@@ -195,12 +197,14 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
                     //este código tiene relación con el getAllfolders supongo
                     val selectedFolder = folders[selectedItem].toString()
                     val selectedFolderId = folderList[selectedItem].id
-                    folderDao.addNewCardIdValue(firebaseDatabase.reference, id, currentItem!!.id, selectedFolderId, context)
-
+                    //cardWithDiff
+                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY)
+                    folderDao.addNewCardIdValue(firebaseDatabase.reference, id, currentCardId, selectedFolderId, context)
 
                 } else if (name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected) {
-                    val listToAdd = ArrayList<String>()
-                    listToAdd.add(currentItem!!.id)
+                    val listToAdd = ArrayList<CardWithDifficulty>()
+                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY)
+                    listToAdd.add(currentCardId)
                     val folderToAdd = Folder("", "false", name.editText!!.text.toString(), listToAdd)
                     if(folderToAdd.dataTitle.toString().isNotEmpty()){
                         folderDao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)

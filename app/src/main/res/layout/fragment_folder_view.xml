@@ -35,10 +35,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reciente"
+            style="@style/ChipCustom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/chipFlashcard"
-            app:layout_constraintStart_toStartOf="parent"></com.google.android.material.chip.Chip>
+            app:layout_constraintStart_toStartOf="parent">
+
+        </com.google.android.material.chip.Chip>
 
         <androidx.legacy.widget.Space
             android:id="@+id/space1"
@@ -51,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Traducciones"
+            style="@style/ChipCustom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintEnd_toStartOf="@id/chipImage"
@@ -68,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Flashcards"
+            style="@style/ChipCustom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.926"

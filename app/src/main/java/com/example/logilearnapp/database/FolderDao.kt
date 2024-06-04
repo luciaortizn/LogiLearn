@@ -4,6 +4,9 @@ import android.content.Context
 import android.service.autofill.UserData
 import android.util.Log
 import android.widget.Toast
+import com.example.logilearnapp.data.CardWithDifficulty
+import com.example.logilearnapp.data.Difficulty
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.firebase.database.DataSnapshot
@@ -34,7 +37,7 @@ class FolderDao {
                     val folderTitle = folder.child("dataTitle").getValue(String::class.java)
                     val folderIsFavorite = folder.child("isFavorite").getValue(String::class.java)
                     //nuevo
-                    val folderCardId = folder.child("cardId").getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
+                    val folderCardId = folder.child("cardId").getValue(object : GenericTypeIndicator<ArrayList<CardWithDifficulty>>() {}) ?: arrayListOf()
                     folderListDB.add(Folder(folderId.toString(), folderIsFavorite.toString(), folderTitle.toString(), folderCardId))
                 }
                 callback.onFolderCallback(folderListDB)
@@ -91,7 +94,7 @@ class FolderDao {
                     folderData["id"] = folderId.toString()
                     folderData["isFavorite"] = folder.isFavorite
                     folderData["dataTitle"] = folderTitle
-                    folderData["cardId"] = folder.cardId.toList()
+                    folderData["cardId"] = folder.cardId!!.toList()
 
                     userFoldersRef.child(folderId!!).setValue(folderData).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -110,16 +113,22 @@ class FolderDao {
             }
         })
     }
-    fun addNewCardIdValue(databaseReference: DatabaseReference, userId: String, newCardId: String,  folderId:String, context: Context) {
+    fun addNewCardIdValue(databaseReference: DatabaseReference, userId: String, newCardId: CardWithDifficulty,  folderId:String, context: Context) {
         val cardIdRef = databaseReference.child("user").child(userId).child("folders").child(folderId).child("cardId")
         // Verificar si el newCardId ya existe en la lista
         cardIdRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val currentCardIds: ArrayList<String> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
-                if (currentCardIds.contains(newCardId)) {
+                val currentCardIds: ArrayList<CardWithDifficulty> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<CardWithDifficulty>>() {}) ?: arrayListOf()
+                for (snapshot in dataSnapshot.children) {
+                    val card = snapshot.getValue(CardWithDifficulty::class.java)
+                    if (card != null) {
+                        currentCardIds.add(card)
+                    }
+                }
+
+                if (currentCardIds.any { it.cardId == newCardId.cardId }) {
                     Toast.makeText(context, "Ya existe esa tarjeta en la carpeta seleccionada", Toast.LENGTH_SHORT).show()
                 } else {
-
                     currentCardIds.add(newCardId)
                     cardIdRef.setValue(currentCardIds).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -129,15 +138,19 @@ class FolderDao {
                         }
                     }
                 }
-            }
 
+            }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Manejar error de cancelación
             }
         })
     }
 
-    fun deleteCardId(databaseReference: DatabaseReference, userId: String, cardIdToDelete: String) {
+    fun deleteCardId(
+        databaseReference: DatabaseReference,
+        userId: String,
+        cardIdToDelete: String
+    ) {
         val folderReference = databaseReference.child("user").child(userId).child("folders")
 
         folderReference.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -147,9 +160,17 @@ class FolderDao {
                     val cardIdsRef = folderReference.child(folderId!!).child("cardId") // Referencia a la lista de cardId de la carpeta actual
                     cardIdsRef.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(cardIdSnapshot: DataSnapshot) {
-                            val currentCardIds: ArrayList<String> = cardIdSnapshot.getValue(object : GenericTypeIndicator<ArrayList<String>>() {}) ?: arrayListOf()
-                            if (currentCardIds.contains(cardIdToDelete)) {
-                                currentCardIds.remove(cardIdToDelete) // Eliminar el cardId de la lista
+                            val currentCardIds: ArrayList<CardWithDifficulty> = arrayListOf()
+                            for (snapshot in cardIdSnapshot.children) {
+                                val card = snapshot.getValue(CardWithDifficulty::class.java)
+                                if (card != null) {
+                                    currentCardIds.add(card)
+                                }
+                            }
+                            // Buscar y eliminar el cardId que coincide
+                            val cardToRemove = currentCardIds.find { it.cardId == cardIdToDelete }
+                            if (cardToRemove != null) {
+                                currentCardIds.remove(cardToRemove)
                                 cardIdsRef.setValue(currentCardIds).addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
                                         // El cardId se eliminó con éxito
@@ -178,7 +199,6 @@ class FolderDao {
         folderReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val favoriteRef = folderReference.child("isFavorite")
-                // Referencia a la lista de cardId de la carpeta actual
                 favoriteRef.setValue(newIsFavoriteValue).addOnCompleteListener { task ->
                     if (!task.isSuccessful) {
                        Toast.makeText(context, "Ha habido un error", Toast.LENGTH_SHORT).show()
@@ -210,6 +230,66 @@ class FolderDao {
        // val folderRef = databaseReference.child("user").child(userId).child("folders").child(folderId)
         databaseReference.removeValue().addOnSuccessListener {
         }
+    }
+    fun addLabel(databaseReference: DatabaseReference, userId: String, folderId: String, label: String, context: Context) {
+        val labelsReference = databaseReference.child("user").child(userId).child("labels")
+        labelsReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val existingLabels = dataSnapshot.children.mapNotNull { it.getValue(Label::class.java) }.associateBy { it.name }
+                // Verificar si el label ya existe
+                if (existingLabels.containsKey(label)) {
+                    // El label ya existe, actualizar la lista de folderIds
+                    val existingLabel = existingLabels[label]!!
+                    val folderIds = existingLabel.folderIds
+                    if (!folderIds.contains(folderId)) {
+                        folderIds.add(folderId)
+                        labelsReference.child(label).child("folderIds").setValue(folderIds).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(context, "Label actualizado con éxito", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Error al actualizar el label", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                } else {
+                    // El label no existe, crear uno nuevo
+                    val newLabel = Label(label, arrayListOf(folderId))
+                    labelsReference.child(label).setValue(newLabel).addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "Label creado con éxito", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "Error al crear el label", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar error de cancelación
+                Toast.makeText(context, "Error de base de datos", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+    //labels tienen un arraylist de folderID : labels -> labelId ->
+    // name
+    // folders -> { id1, id2, id3}
+    fun getAllLabels(databaseReference: DatabaseReference, userId: String, context: Context) {
+        val labelsReference = databaseReference.child("user").child(userId).child("labels")
+
+        labelsReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val labelsList = dataSnapshot.children.mapNotNull { it.getValue(Label::class.java) }
+                // Aquí puedes hacer lo que necesites con la lista de labels obtenida
+                // Por ejemplo, mostrarlos en un RecyclerView, etc.
+                // Si deseas mostrar los nombres de los labels en un Toast para propósitos de prueba:
+                val labelsNames = labelsList.joinToString(", ") { it.name }
+                Toast.makeText(context, "Labels: $labelsNames", Toast.LENGTH_LONG).show()
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Manejar error de cancelación
+                Toast.makeText(context, "Error de base de datos", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     fun getUserIdSharedPreferences(context: Context):String?{

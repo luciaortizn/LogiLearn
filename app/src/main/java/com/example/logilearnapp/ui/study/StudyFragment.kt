@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
@@ -72,9 +73,10 @@ class StudyFragment : Fragment() {
         val viewItemEasy :View = itemEasy.actionView!!
 
         val folder = arguments?.getParcelable<Folder>("folder")
-        var cardIdList: ArrayList<String> = arrayListOf()
+        var cardIdList: ArrayList<CardWithDifficulty>? = arrayListOf()
         if (folder != null) {
-            cardIdList = folder.cardId
+
+            cardIdList = folder.cardId!!
         }
         val cardDao = CardDao()
         val firebaseDatabase = FirebaseDatabase.getInstance()
@@ -162,8 +164,8 @@ class StudyFragment : Fragment() {
                 //no hago nada
             }
         }, firebaseDatabase.reference,
-            userId!!, cardIdList)
-
+            userId!!, cardIdList!!
+        )
         topBar.setNavigationOnClickListener {
 
             replaceFragment(requireActivity(), CardViewFragment())

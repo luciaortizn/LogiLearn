@@ -7,9 +7,7 @@
     app:cardCornerRadius="5dp"
     android:layout_marginVertical="3dp"
     android:layout_marginHorizontal="10dp"
-    style="?attr/materialCardViewElevatedStyle"
-    android:backgroundTint="@color/white"
-
+    style="@style/CardsCustom1"
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +38,6 @@
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:scaleType="fitXY"
-                android:textColor="@color/black"
                 android:layout_marginStart="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

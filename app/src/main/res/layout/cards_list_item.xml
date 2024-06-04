@@ -10,8 +10,7 @@
     android:layout_gravity="center_horizontal"
     android:layout_marginVertical="3dp"
     android:layout_marginHorizontal="10dp"
-    style="?attr/materialCardViewElevatedStyle"
-    android:background="@color/blue_light"
+    style="@style/CardsCustom1"
     android:orientation="vertical">
 <LinearLayout
     android:layout_width="match_parent"

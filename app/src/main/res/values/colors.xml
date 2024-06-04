@@ -13,9 +13,12 @@
     <color name="blue">#59ABE0</color>
     <color name="blue_dark">#385a85</color>
     <color name="blue_light">#bbe5f7</color>
+    <color name="blue_card">#d0eaf5</color>
     <color name="red">#F35752</color>
     <color name="red_dark">#bc221d</color>
-    <color name="red_light">#ffced3</color>
-
+    <color name="red_light">#f58e92</color>
+    <color name="yellow_light">#ebf598</color>
+    <color name="yellow_neon">#caff1c</color>
+    <color name="yellow_dark">#a8c938</color>
     <color name="transparent_color">#80000000</color>
 </resources>

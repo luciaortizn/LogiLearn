@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:theme="@style/Base.Theme.LogiLearnApp"
     android:layout_height="match_parent"
-    android:background="@color/white"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.common.HomeFragment">
     <!--carousel de cards añadidas recietemente-->
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:backgroundTint="@color/blue_light"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="70dp">
@@ -19,6 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            style="@style/BackgroundColorsForAuth"
             app:layout_collapseMode="pin"
             app:menu="@menu/upper_navigation_menu">
             <TextView
@@ -313,7 +312,7 @@
         app:icon="@drawable/baseline_add_24"
         android:text="Añadir tarjeta"
         android:src="@drawable/baseline_add_24"
-        android:theme="@style/ThemeOverlay.Material3.Button.ElevatedButton">
+        android:theme="@style/ElevatedButtonCustom">
     </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

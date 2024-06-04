@@ -3,6 +3,7 @@ package com.example.logilearnapp.database
 import android.content.Context
 import android.content.SharedPreferences
 import android.widget.Toast
+import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.ui.card.Card
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -13,14 +14,14 @@ import com.google.protobuf.Value
 
 class CardDao {
     //referncia directa al id y voy iterando
-    fun getCardsByIdList(callback: FirebaseCallback,databaseReference: DatabaseReference, userId: String,cardIdList :ArrayList<String>){
+    fun getCardsByIdList(callback: FirebaseCallback,databaseReference: DatabaseReference, userId: String,cardIdList :ArrayList<CardWithDifficulty>){
         val cardListDB: ArrayList<Card> = arrayListOf()
          val cardsRef = databaseReference.child("user").child(userId).child("cards")
         cardsRef.addValueEventListener(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                cardListDB.clear()
                 for (cardId in cardIdList) {
-                    val cardSnapshot = snapshot.child(cardId)
+                    val cardSnapshot = snapshot.child(cardId.cardId)
                     if (cardSnapshot.exists()) {
                         val id = cardSnapshot.child("id").getValue(String::class.java)
                         val input = cardSnapshot.child("input").getValue(String::class.java)

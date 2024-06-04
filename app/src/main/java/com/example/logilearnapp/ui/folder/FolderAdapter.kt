@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
@@ -30,7 +31,6 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
     interface OnImageClickListener{
         fun onImageClick(position: Int, view: View)
     }
-
 
     //referencia al listener
     private var imageClickListener: OnImageClickListener? = null
@@ -90,6 +90,12 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                     deleteFolder(currentItem)
                     true
                 }
+                R.id.item_add_label -> {
+                    val labelView = LayoutInflater.from(context).inflate(R.layout.add_label_layout, null)
+                    showLabelDialog(folderDao,labelView,"Guardar", "Cancelar", currentItem )
+                    true
+                }
+
                 else -> false
             }
         }.also {
@@ -139,6 +145,27 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                 dialog.dismiss()
 
             }.create().show()
+    }
+    fun showLabelDialog(folderDao: FolderDao,dialogView:View,positiveButton:String,negativeButton:String, currentItem: Folder){
+
+        val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_label_add)
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val userId = folderDao.getUserIdSharedPreferences(context)
+        dialogTitle.editText!!.setText(currentItem!!.dataTitle)
+        MaterialAlertDialogBuilder(context)
+            .setTitle("Añadir etiquetas")
+            .setView(dialogView)
+            .setPositiveButton(positiveButton) { dialog, which ->
+                folderDao.addLabel(firebaseDatabase.reference, userId!!,currentItem.id,  dialogTitle.editText!!.text.toString() , context)
+                dialog.cancel()
+                dialog.dismiss()
+            }
+            .setNegativeButton(negativeButton){ dialog, which ->
+                dialog.cancel()
+                dialog.dismiss()
+
+            }.create().show()
+
     }
     private fun replaceFragment(activity: FragmentActivity, fragment: Fragment, folder:Folder) {
         // Pasa el objeto Folder al fragmento usando un Bundle

@@ -10,12 +10,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <SearchView
-        android:layout_marginTop="0dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="20dp"
         android:id="@+id/search_view_cards"
-        android:layout_width="match_parent"
+        android:layout_width="340dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-
+        style="@style/SearchViewCustom"
         android:layout_height="wrap_content"
         android:queryHint="Busca tarjetas..."
         app:layout_constraintTop_toTopOf="parent">

@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/blue_light"
+    style="@style/BackgroundColorsForAuth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.auth.Register">
     <TextView
         android:id="@+id/registerTitle"
         android:layout_width="200dp"
+        style="@style/TextViewCustomTitle1"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
         android:text="@string/registro"
@@ -24,12 +25,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/nombre"
         app:errorEnabled="true"
+        style="@style/TextInputEditTexCustom"
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/registerTitle"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        app:boxBackgroundColor="@color/white">
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ietName"
@@ -44,11 +45,11 @@
         android:hint="@string/apellido"
         android:layout_marginTop="100dp"
         app:errorEnabled="true"
+        style="@style/TextInputEditTexCustom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/nameField"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        app:boxBackgroundColor="@color/white">
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ietSurname"
@@ -63,11 +64,11 @@
         android:hint="@string/email"
         android:layout_marginTop="100dp"
         app:errorEnabled="true"
+        style="@style/TextInputEditTexCustom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/surnameField"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        app:boxBackgroundColor="@color/white">
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ietEmail"
@@ -87,9 +88,9 @@
         app:layout_constraintTop_toTopOf="@id/emailField"
         app:endIconMode="password_toggle"
         app:counterEnabled="true"
+        style="@style/TextInputEditTexCustom"
         app:counterMaxLength="16"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        app:boxBackgroundColor="@color/white">
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ietPassword"
             android:layout_width="match_parent"
@@ -108,8 +109,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/passField"
         app:endIconMode="password_toggle"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        app:boxBackgroundColor="@color/white">
+        style="@style/TextInputEditTexCustom"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ietRePassword"
             android:layout_width="match_parent"
@@ -120,7 +121,7 @@
 
     <Button
         android:id="@+id/registerBtn"
-        style="@style/Widget.Material3.Button.ElevatedButton"
+        style="@style/LargeButtonsCustom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
