@@ -3,8 +3,10 @@ package com.example.logilearnapp.ui.study
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -18,14 +20,19 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
 import com.example.logilearnapp.data.CardWithDifficulty
+import com.example.logilearnapp.data.Difficulty
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
+import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.folder.CardViewFragment
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -66,8 +73,8 @@ class StudyFragment : Fragment() {
         val cardResult:TextView = view.findViewById(R.id.back_card_result)
         val toolbarIcons: MaterialToolbar? = layoutIcons.findViewById(R.id.toolbar_icons)
         val itemAgain = toolbarIcons!!.menu.findItem(R.id.item_again)
-        val itemMeh = toolbarIcons!!.menu.findItem(R.id.item_meh)
-        val itemEasy = toolbarIcons!!.menu.findItem(R.id.item_easy)
+        val itemMeh = toolbarIcons.menu.findItem(R.id.item_meh)
+        val itemEasy = toolbarIcons.menu.findItem(R.id.item_easy)
         val viewItemAgain :View  = itemAgain.actionView!!
         val viewItemMeh :View = itemMeh.actionView!!
         val viewItemEasy :View = itemEasy.actionView!!
@@ -82,80 +89,142 @@ class StudyFragment : Fragment() {
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val userId = cardDao.getUserIdSharedPreferences(requireContext())
         val numCards : TextView = view.findViewById(R.id.numOfCardShowed)
+        val folderDao =  FolderDao()
+        //modo estudio:
+        /* obtengo el botón que se le da y el folder en el que se está
+        * */
+        resultBtn.setOnClickListener{
+            resultBtn.visibility = MaterialButton.GONE
+            cardResult.visibility = TextView.VISIBLE
+            layoutIcons.visibility = LinearLayout.VISIBLE
+
+        }
         cardDao.getCardsByIdList(object : FirebaseCallback{
+
             @SuppressLint("SetTextI18n")
             override fun onCallback(cardList: ArrayList<Card>) {
                 cardInput.text = cardList[cardIndex].input
                 cardResult.text = cardList[cardIndex].result
                 numCards.text = "${cardIndex + 1} / ${cardList.size}"
+                var currentCardWithDifficulty: CardWithDifficulty
+                //repito hasta que la lista no se vacíe
 
                 viewItemAgain.setOnClickListener { v ->
-                    onContextItemSelected(itemAgain)
-                    val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
-                    setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
-                    v.startAnimation(scaleAnimation)
-                    if((cardIndex+1)<cardList.size){
-                        cardIndex +=1
-                        cardInput.text = ""
-                        Handler().postDelayed({
-                            cardInput.text = cardList[cardIndex].input
-                        }, 309)
-                        cardResult.text = cardList[cardIndex].result
-                        cardResult.visibility = TextView.GONE
-                        numCards.text = "${cardIndex + 1} / ${cardList.size}"
-                    }else{
-                        Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
-                        replaceFragment(requireActivity(), CardViewFragment())
+                      onContextItemSelected(itemAgain)
+                      val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+                      setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
+                      v.startAnimation(scaleAnimation)
+                      if((cardIndex+1)<cardList.size){
+                          cardIndex +=1
+                          cardInput.text = ""
+                          Handler().postDelayed({
+                              cardInput.text = cardList[cardIndex].input
+                          }, 309)
+                          cardResult.text = cardList[cardIndex].result
+                          cardResult.visibility = TextView.GONE
+                          numCards.text = "${cardIndex + 1} / ${cardList.size}"
+                          //modo estudio
+                          //encuentro el elemento current
+                          for(idList in folder!!.cardId.orEmpty()){
+                              if(idList.cardId == cardList[cardIndex].id) {
+                                  currentCardWithDifficulty = idList
+                                  //algoritmon que suma y cambia de estado
+                                  studyAlgorithm(viewItemAgain,currentCardWithDifficulty,folderDao,
+                                      userId.toString(), firebaseDatabase.reference, folder.id )
+                                  //si ya lo ha repetido 3 veces paro
+                                  if(currentCardWithDifficulty.repeated>=3){
+                                      cardList.removeAt(cardIndex)
+                                  }
+                              }
+                          }
 
-                        //aquí se guardan las puntuaciones
-                    }
 
-                }
-                viewItemMeh.setOnClickListener { v ->
+                      }else if(cardList.isEmpty()){
+                          Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
+                          replaceFragment(requireActivity(), CardViewFragment())
 
-                    onContextItemSelected(itemMeh)
-                    val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
-                    setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
-                    v.startAnimation(scaleAnimation)
-                    if((cardIndex+1)<cardList.size){
-                        cardIndex +=1
-                        cardInput.text = ""
-                        Handler().postDelayed({
-                            cardInput.text = cardList[cardIndex].input
-                        }, 309)
-                        cardResult.text = cardList[cardIndex].result
-                        cardResult.visibility = TextView.GONE
-                        numCards.text = "${cardIndex + 1} / ${cardList.size}"
-                    }else{
-                        Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
-                        replaceFragment(requireActivity(), CardViewFragment())
-                        //aquí se guardan las puntuaciones
-                    }
-                }
-                viewItemEasy.setOnClickListener { v ->
+                      }
 
-                    onContextItemSelected(itemEasy)
-                    val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
-                    setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
-                    v.startAnimation(scaleAnimation)
-                    if((cardIndex+1)<cardList.size){
-                        cardIndex +=1
-                        cardInput.text = ""
-                        Handler().postDelayed({
-                            cardInput.text = cardList[cardIndex].input
-                        }, 309)
-                        cardResult.text = cardList[cardIndex].result
-                        cardResult.visibility = TextView.GONE
-                        numCards.text = "${cardIndex + 1} / ${cardList.size}"
+                  }
+                  viewItemMeh.setOnClickListener { v ->
 
-                    }else{
-                        Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
-                        replaceFragment(requireActivity(), CardViewFragment())
-                        //aquí se guardan las puntuaciones
-                    }
-                }
+                      onContextItemSelected(itemMeh)
+                      val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+                      setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
+                      v.startAnimation(scaleAnimation)
+                      if((cardIndex+1)<cardList.size){
+                          cardIndex +=1
+                          cardInput.text = ""
+                          Handler().postDelayed({
+                              cardInput.text = cardList[cardIndex].input
+                          }, 309)
+                          cardResult.text = cardList[cardIndex].result
+                          cardResult.visibility = TextView.GONE
+                          numCards.text = "${cardIndex + 1} / ${cardList.size}"
 
+                          //modo estudio
+                          //encuentro el elemento current
+                          for(idList in folder!!.cardId.orEmpty() ){
+                              if(idList.cardId == cardList[cardIndex].id) {
+                                  currentCardWithDifficulty = idList
+                                  //algoritmon que suma y cambia de estado
+                                  studyAlgorithm(viewItemMeh,currentCardWithDifficulty,folderDao,
+                                      userId.toString(), firebaseDatabase.reference, folder.id )
+                                  //si ya lo ha repetido 3 veces paro
+                                  if(currentCardWithDifficulty.repeated>=2){
+                                      cardList.removeAt(cardIndex)
+                                  }
+                              }
+                          }
+                      }else if( cardList.isEmpty()){
+                          Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
+                          replaceFragment(requireActivity(), CardViewFragment())
+                          //aquí se guardan las puntuaciones
+                      }
+                  }
+                  viewItemEasy.setOnClickListener { v ->
+
+                      onContextItemSelected(itemEasy)
+                      val scaleAnimation = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
+                      setIconAnimation( scaleAnimation,cardResult,layoutIcons,resultBtn)
+                      v.startAnimation(scaleAnimation)
+                      if((cardIndex+1)<cardList.size){
+                          cardIndex +=1
+                          cardInput.text = ""
+                          Handler().postDelayed({
+                              cardInput.text = cardList[cardIndex].input
+                          }, 309)
+                          cardResult.text = cardList[cardIndex].result
+                          cardResult.visibility = TextView.GONE
+                          numCards.text = "${cardIndex + 1} / ${cardList.size}"
+
+                          //modo estudio
+                          //encuentro el elemento current
+                          for(idList in folder!!.cardId.orEmpty()){
+                              if(idList.cardId == cardList[cardIndex].id) {
+                                  currentCardWithDifficulty = idList
+                                  //algoritmon que suma y cambia de estado
+                                  studyAlgorithm(viewItemEasy,currentCardWithDifficulty,folderDao,
+                                      userId.toString(), firebaseDatabase.reference, folder.id )
+                                  //si ya lo ha repetido 3 veces paro
+                                  if(currentCardWithDifficulty.repeated>=1){
+                                      cardIndex--
+                                      cardList.removeAt(cardIndex)
+                                  }
+                              }
+                          }
+                      }else if( cardList.isEmpty()){
+                          Toast.makeText(requireContext(), "Estudio finalizado", Toast.LENGTH_SHORT).show()
+                          replaceFragment(requireActivity(), CardViewFragment())
+
+                      }
+                  }
             }
+
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+                TODO("Not yet implemented")
+            }
+
             override fun onSingleUserCallback(user: UserData) {
 
             }
@@ -171,12 +240,7 @@ class StudyFragment : Fragment() {
             replaceFragment(requireActivity(), CardViewFragment())
         }
 
-        resultBtn.setOnClickListener{
-            resultBtn.visibility = MaterialButton.GONE
-            cardResult.visibility = TextView.VISIBLE
-            layoutIcons.visibility = LinearLayout.VISIBLE
 
-        }
     }
     companion object {
         /**
@@ -225,6 +289,30 @@ class StudyFragment : Fragment() {
         layoutIcons.visibility = LinearLayout.GONE
         resultBtn.visibility = MaterialButton.VISIBLE
     }
+    fun studyAlgorithm(item: View, currentCardWithDifficulty: CardWithDifficulty,  folderDao: FolderDao,userId :String, databaseReference: DatabaseReference, folderId :String){
+        Log.d("problema", "ID: ${item.id}?")
+        when (item.id) {
+            2131231419 -> {
+                currentCardWithDifficulty.difficulty  = Difficulty.HARD
+                currentCardWithDifficulty.repeated++
 
+            }
+            2131231418 -> {
+                currentCardWithDifficulty.difficulty  = Difficulty.REGULAR
+                currentCardWithDifficulty.repeated++
+
+
+            }
+            2131231414-> {
+                currentCardWithDifficulty.difficulty  = Difficulty.EASY
+                currentCardWithDifficulty.repeated++
+
+
+            }
+            else -> {}
+        }
+        folderDao.updateCardDifficulty(databaseReference, userId, folderId,currentCardWithDifficulty, requireContext())
+
+    }
 
 }

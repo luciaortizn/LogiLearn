@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
+import java.util.Collections
 
 class SearchFragment : Fragment() {
 
@@ -38,6 +40,8 @@ class SearchFragment : Fragment() {
     lateinit var resultList:Array<String>
     lateinit var layoutNoCards:LinearLayout
     lateinit var sv: SearchView
+    private lateinit var cardAdapter: CardAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,12 +65,16 @@ class SearchFragment : Fragment() {
         var cardAdapter :CardAdapter
         //obtengo to-do de una y se actualiza la interfaz
         activity?.runOnUiThread {
+            getCards()
+            /**
             getCardsByUser(object : FirebaseCallback {
                 @SuppressLint("NotifyDataSetChanged")
                 override fun onCallback(cardList: ArrayList<Card>) {
                     //se añaden
+                    val reversedCardList = ArrayList(cardList)
+                    reversedCardList.reverse()
                     setBackgroundForEmptyCards(cardList)
-                    cardAdapter = CardAdapter(cardList, requireContext())
+                    cardAdapter = CardAdapter(reversedCardList, requireContext())
 
                     //aquí
                     /**
@@ -74,6 +82,7 @@ class SearchFragment : Fragment() {
                         override fun onQueryTextSubmit(query: String?): Boolean {
                             if (query != null) {
 
+                            }
                             }
                             return true
                         }
@@ -90,11 +99,10 @@ class SearchFragment : Fragment() {
                             }
                             return true
                         }
-
                     })**/
-
+                    /**
                     recyclerView.adapter = cardAdapter
-                    recyclerView.adapter?.notifyDataSetChanged()
+                    recyclerView.adapter?.notifyDataSetChanged()**/
                     /**
                     var cardAdapter = CardAdapter(emptyList(), requireContext())
                     recyclerView.adapter = cardAdapter
@@ -105,6 +113,8 @@ class SearchFragment : Fragment() {
                     fetchAllCards(cardAdapter)
 **/
                 }
+                override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+                }
 
                 override fun onSingleUserCallback(user: UserData) {
                 }
@@ -112,7 +122,7 @@ class SearchFragment : Fragment() {
                 override fun onFolderCallback(folderList: ArrayList<Folder>) {
                 }
 
-            })
+            })**/
 
         }
 
@@ -157,68 +167,49 @@ class SearchFragment : Fragment() {
             layoutNoCards.visibility = LinearLayout.GONE
 
         }
-        //ver que pasa y ver si esto se mete o no en su campo del rv
-        for(card in list){
-            val cardInput = card.input
-            //no hago nada para folder de momento
-
-        }
     }
-/**
-    //buscador
-    private fun setupSearch(cardAdapter: CardAdapter) {
-        sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    performSearch(query, cardAdapter)
-                }
-                return true
-            }
+    private fun getCards() {
+        getCardsByUser(object : FirebaseCallback {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onCallback(cardList: ArrayList<Card>) {
+                val reversedCardList = ArrayList(cardList)
+                reversedCardList.reverse()
+                setBackgroundForEmptyCards(cardList)
+                cardAdapter = CardAdapter(reversedCardList, requireContext())
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    fetchAllCards(cardAdapter) // Reload all cards when search is cleared
-                } else {
-                    performSearch(newText, cardAdapter)
-                }
-                return true
+                recyclerView.adapter = cardAdapter
+                recyclerView.adapter?.notifyDataSetChanged()
+
+                sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (newText.isNullOrBlank()) {
+                            cardAdapter.updateList(reversedCardList)
+                            setBackgroundForEmptyCards(reversedCardList)
+                        } else {
+                            val filteredList = reversedCardList.filter {
+                                it.input.contains(newText, ignoreCase = true) || it.result.contains(newText, ignoreCase = true)
+                            }.toCollection(ArrayList())
+                            cardAdapter.updateList(filteredList)
+                            setBackgroundForEmptyCards(filteredList)
+                        }
+                        return true
+                    }
+                })
+
+            }
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+            }
+            override fun onSingleUserCallback(user: UserData) {
+            }
+            override fun onFolderCallback(folderList: ArrayList<Folder>) {
             }
         })
+
+
     }
-
-
-    private fun performSearch(query: String, cardAdapter: CardAdapter) {
-        activity?.runOnUiThread {
-            getFilteredCardsByUser(query, object : FirebaseCallback {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onCallback(cardList: ArrayList<Card>) {
-                    setBackgroundForEmptyCards(cardList)
-                    cardAdapter.updateCards(cardList)
-                }
-
-                override fun onSingleUserCallback(user: UserData) {}
-
-                override fun onFolderCallback(folderList: ArrayList<Folder>) {}
-            })
-        }
-    }
-
-    private fun fetchAllCards(cardAdapter: CardAdapter) {
-        activity?.runOnUiThread {
-            getCardsByUser(object : FirebaseCallback {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onCallback(cardList: ArrayList<Card>) {
-                    setBackgroundForEmptyCards(cardList)
-                    cardAdapter.updateCards(cardList)
-                }
-
-                override fun onSingleUserCallback(user: UserData) {}
-
-                override fun onFolderCallback(folderList: ArrayList<Folder>) {}
-            })
-        }
-
-
-    }*/
 
 }

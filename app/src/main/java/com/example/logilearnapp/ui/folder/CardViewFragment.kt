@@ -10,13 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.compose.ui.unit.dp
+import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
 import com.example.logilearnapp.ui.card.Card
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
@@ -35,6 +40,7 @@ lateinit var imageList:Array<String>
 lateinit var titleList:Array<String>
 lateinit var idCardList:ArrayList<ArrayList<String>>
 lateinit var idFolderList:Array<String>
+lateinit var layoutNoFolders: LinearLayout
 
 
 class CardViewFragment : Fragment() {
@@ -67,14 +73,19 @@ class CardViewFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.setHasFixedSize(true)
+        layoutNoFolders = view.findViewById(R.id.layout_no_folders)
         var folderAdapter :FolderAdapter
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val folders = FolderDao()
         val userId = folders.getUserIdSharedPreferences(requireContext())
+
+
        activity?.runOnUiThread {
            folders.getFoldersByUser(object : FirebaseCallback {
                override fun onCallback(cardList: ArrayList<Card>) {
-                   //no hago nada
+               }
+
+               override fun onLabelNameCallback(cardList: ArrayList<Label>) {
                }
 
                override fun onSingleUserCallback(user: UserData) {
@@ -82,25 +93,109 @@ class CardViewFragment : Fragment() {
 
                @SuppressLint("NotifyDataSetChanged")
                override fun onFolderCallback(folderList: ArrayList<Folder>) {
-                   //set background for empty folders
-                   val context = context
-                   if (context != null) {
-                       setBackgroundForEmptyFolders(folderList)
-                       folderAdapter = FolderAdapter(folderList,context)
-                       //manejo de favoritos
-                       folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
-                           override fun onImageClick(position: Int, view: View) {
-                               //cambia de imagen y por tanto también de la lista favoritos
-                               cambiarImagen(position, folderList, folders, userId!!, context, firebaseDatabase.reference)
-                               //reinicia el fragmento
-                              // requireActivity().recreate()
+
+                   //chips
+                   folders.getLabels(object : FirebaseCallback {
+                       override fun onLabelNameCallback(labels: ArrayList<Label>) {
+                           val chipsContainer = view.findViewById<ChipGroup>(R.id.chip_group)
+                           val chipList = mutableListOf<Chip>()
+                           // Itera sobre los nombres de las etiquetas y crea un Chip para cada uno
+                           for (labelChildren in labels) {
+                               var chip = Chip(context)
+                               chip.text = labelChildren.name
+                               chip.isClickable = true
+                               chip.isCheckable = true
+                               val context = context
+                               chipList.add(chip)
+                               chip.setOnCheckedChangeListener { buttonView, isChecked ->
+                                   // Cambiar el color de fondo del chip cuando se seleccione
+                                   if (isChecked) {
+                                       for (otherChip in chipList) {
+                                           if (otherChip != chip) {
+                                               otherChip.isChecked = false
+                                           }
+                                       }
+                                       var tempFolderList = ArrayList<Folder>()
+                                       chip.setChipBackgroundColorResource(R.color.blue_light)
+                                       chip.setTextColor(resources.getColor(R.color.black))
+                                       for(folderIdItem in  labelChildren.folderIds){
+                                           for(folderItem in folderList) {
+                                               if(folderIdItem == folderItem.id){
+                                                   tempFolderList.add(folderItem)
+                                               }
+                                           }
+
+                                       }
+                                       setBackgroundForEmptyFolders(tempFolderList)
+                                       folderAdapter = FolderAdapter(tempFolderList,context!!)
+                                       //manejo de favoritos
+                                       folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
+                                           override fun onImageClick(position: Int, view: View) {
+                                               //cambia de imagen y por tanto también de la lista favoritos
+                                               cambiarImagen(position, tempFolderList, folders, userId!!, context, firebaseDatabase.reference)
+                                               //reinicia el fragmento
+                                               // requireActivity().recreate()
+                                           }
+                                       } )
+
+                                       recyclerView.adapter = folderAdapter
+                                       recyclerView.adapter?.notifyDataSetChanged()
+                                       //modifico
+
+
+                                   } else {
+                                       chip.setTextColor(resources.getColor(R.color.white))
+                                       chip.setChipBackgroundColorResource(R.color.transparent_color)
+                                       //set background for empty folders
+                                       if (context != null) {
+                                           setBackgroundForEmptyFolders(folderList)
+                                           folderAdapter = FolderAdapter(folderList,context)
+                                           //manejo de favoritos
+                                           folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
+                                               override fun onImageClick(position: Int, view: View) {
+                                                   //cambia de imagen y por tanto también de la lista favoritos
+                                                   cambiarImagen(position, folderList, folders, userId!!, context, firebaseDatabase.reference)
+                                                   //reinicia el fragmento
+                                                   // requireActivity().recreate()
+                                               }
+                                           } )
+
+                                           recyclerView.adapter = folderAdapter
+                                           recyclerView.adapter?.notifyDataSetChanged()
+                                       }
+                                   }
+                               }
+                               if (context != null) {
+                                   setBackgroundForEmptyFolders(folderList)
+                                   folderAdapter = FolderAdapter(folderList,context)
+                                   //manejo de favoritos
+                                   folderAdapter.setImageClickListener(object: FolderAdapter.OnImageClickListener{
+                                       override fun onImageClick(position: Int, view: View) {
+                                           //cambia de imagen y por tanto también de la lista favoritos
+                                           cambiarImagen(position, folderList, folders, userId!!, context, firebaseDatabase.reference)
+                                           //reinicia el fragmento
+                                           // requireActivity().recreate()
+                                       }
+                                   } )
+
+                                   recyclerView.adapter = folderAdapter
+                                   recyclerView.adapter?.notifyDataSetChanged()
+                               }
+                               // chip.
+                               // chip.style = ChipDrawable.createFromAttributes(context, null, 0, R.style.ChipCustom)
+
+                               // Aquí puedes configurar otros atributos de Chip según tus necesidades
+                               // Agrega el Chip al contenedor
+                               chipsContainer.addView(chip)
                            }
-                       } )
-
-                       recyclerView.adapter = folderAdapter
-                       recyclerView.adapter?.notifyDataSetChanged()
-                   }
-
+                       }
+                       override fun onCallback(cardList: ArrayList<Card>) {
+                       }
+                       override fun onSingleUserCallback(user: UserData) {
+                       }
+                       override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                       }
+                   }, firebaseDatabase.reference, userId!!, requireContext())
 
                }
            },firebaseDatabase.reference, userId!!)
@@ -158,10 +253,10 @@ class CardViewFragment : Fragment() {
     private fun setBackgroundForEmptyFolders(list:ArrayList<Folder>?){
 
         if(list!!.isEmpty()){
-          //  layoutNoCards.visibility = LinearLayout.VISIBLE
+          layoutNoFolders.visibility = LinearLayout.VISIBLE
 
         }else{
-            //layoutNoCards.visibility = LinearLayout.GONE
+            layoutNoFolders.visibility = LinearLayout.GONE
         }
 
     }

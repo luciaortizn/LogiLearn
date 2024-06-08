@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
+import com.example.logilearnapp.data.Difficulty
 import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FolderDao
@@ -65,6 +66,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
         holder.rvTitle.text = currentItem.dataTitle
 
+        setCardDifficulty(currentItem,holder.rvEasyTextView, holder.rvRegularTextView, holder.rvHardTextView)
         holder.rvTitle.setOnClickListener{
             // se cambia de fragmento
             replaceFragment(holder.itemView.context as FragmentActivity, StudyFragment(), currentItem)
@@ -107,6 +109,9 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         val rvImage:ImageView = itemView.findViewById(R.id.imgFolder)
         val rvTitle:TextView = itemView.findViewById(R.id.titleFolder)
         val rvMenu: MaterialToolbar = itemView.findViewById(R.id.toolbar_folder)
+        val rvEasyTextView: TextView = itemView.findViewById(R.id.easy_card_number)
+        val rvRegularTextView: TextView = itemView.findViewById(R.id.regular_card_number)
+        val rvHardTextView: TextView = itemView.findViewById(R.id.hard_card_number)
     }
     private fun deleteFolder(item: Folder) {
         //eliminar de bd
@@ -178,5 +183,29 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
+    }
+     private fun setCardDifficulty(currentItem: Folder,rvEasyTextView: TextView, rvRegularTextView: TextView, rvHardTextView : TextView){
+        var easyCont=0
+        var regularCont=0
+        var hardCont = 0
+        for (cardsList in currentItem.cardId.orEmpty()) {
+            when (cardsList.difficulty) {
+                Difficulty.EASY -> {
+                    easyCont++
+                }
+                Difficulty.REGULAR -> {
+                    regularCont++
+                }
+                Difficulty.HARD -> {
+                    hardCont++
+                }
+
+                else -> {}
+            }
+
+        }
+        rvEasyTextView.text = easyCont.toString()
+        rvRegularTextView.text = regularCont.toString()
+        rvHardTextView.text = hardCont.toString()
     }
 }

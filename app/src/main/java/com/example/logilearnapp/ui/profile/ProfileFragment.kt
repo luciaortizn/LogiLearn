@@ -2,6 +2,7 @@ package com.example.logilearnapp.ui.profile
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,8 +18,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.UserDao
+import com.example.logilearnapp.ui.auth.Login
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.common.HomeFragment
 import com.example.logilearnapp.ui.folder.Folder
@@ -202,7 +205,17 @@ class ProfileFragment : Fragment() {
         }
         //implementado
         deleteAccountBtn.setOnClickListener{
+            sharedPreferences.edit().clear().apply()
+
             userDao.deleteUser(databaseReference, userId.toString())
+        }
+        logoutBtn.setOnClickListener {
+            sharedPreferences.edit().clear().apply()
+            val activity = requireActivity()
+            val intent = Intent(activity, Login::class.java)
+            startActivity(intent)
+            activity.supportFragmentManager.popBackStack()
+            activity.finish()
         }
        
         
@@ -242,6 +255,11 @@ class ProfileFragment : Fragment() {
             override fun onCallback(cardList: ArrayList<Card>) {
 
             }
+
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+
+            }
+
             override fun onSingleUserCallback(user: UserData) {
                 editName.editText!!.setText(user.name)
                 editSurname.editText!!.setText(user.surname)
@@ -262,5 +280,6 @@ class ProfileFragment : Fragment() {
         super.onDestroyView()
 
     }
+
 
 }

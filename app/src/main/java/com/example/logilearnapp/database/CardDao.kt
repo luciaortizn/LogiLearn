@@ -33,7 +33,7 @@ class CardDao {
             }
 
             override fun onCancelled(error: DatabaseError) {
-               //toast?
+
             }
         })
 

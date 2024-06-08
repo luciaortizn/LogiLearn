@@ -14,6 +14,7 @@ import com.example.logilearnapp.R
 import com.example.logilearnapp.UserData
 import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.data.Difficulty
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.database.FolderDao
@@ -101,6 +102,11 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
     override fun getItemCount(): Int {
         return dataList!!.size
     }
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateList(newList: ArrayList<Card>) {
+        dataList = newList
+        notifyDataSetChanged()
+    }
     //obtiene los elementos de la vista
     class ViewHolderClass(itemView: View):RecyclerView.ViewHolder(itemView){
         val rvResult :TextView = itemView.findViewById(R.id.result_card)
@@ -144,6 +150,10 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
 
         folderDao.getFoldersByUser(object : FirebaseCallback {
             override fun onCallback(cardList: ArrayList<Card>) {
+            }
+
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+
             }
 
             override fun onSingleUserCallback(user: UserData) {
@@ -194,25 +204,22 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
             .setPositiveButton("Guardar cambios") { dialog, which ->
                 // Handle positive button click
                 if (selectedItem != -1) {
-                    //este código tiene relación con el getAllfolders supongo
-                    val selectedFolder = folders[selectedItem].toString()
                     val selectedFolderId = folderList[selectedItem].id
                     //cardWithDiff
-                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY)
+                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY, 0)
                     folderDao.addNewCardIdValue(firebaseDatabase.reference, id, currentCardId, selectedFolderId, context)
 
                 } else if (name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected) {
                     val listToAdd = ArrayList<CardWithDifficulty>()
-                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY)
+                    val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY, 0)
                     listToAdd.add(currentCardId)
                     val folderToAdd = Folder("", "false", name.editText!!.text.toString(), listToAdd)
                     if(folderToAdd.dataTitle.toString().isNotEmpty()){
                         folderDao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)
                     }
-
                     textNoFolders.text = ""
-                } else {
 
+                } else {
                     Toast.makeText(context, "No has seleccionado una carpeta ni introducido un nombre", Toast.LENGTH_SHORT).show()
 
 

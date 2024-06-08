@@ -38,6 +38,7 @@
         android:layout_width="300dp"
         android:layout_gravity="center"
         android:textAlignment="center"
+        style="@style/CardsCustom1"
         android:outlineSpotShadowColor="@color/cardview_shadow_end_color"
         android:layout_height="300dp">
         <LinearLayout
@@ -99,6 +100,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:textSize="18dp"
+            style="@style/LargeButtonsCustom"
             android:contentDescription="Obtener resultado"
             android:padding="10dp"
             android:text="Resolver">

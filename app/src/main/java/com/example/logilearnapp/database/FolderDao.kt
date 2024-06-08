@@ -55,6 +55,10 @@ class FolderDao {
 
             }
 
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+                TODO("Not yet implemented")
+            }
+
             override fun onSingleUserCallback(user: com.example.logilearnapp.UserData) {
 
             }
@@ -107,6 +111,7 @@ class FolderDao {
 
             }
 
+
             override fun onCancelled(error: DatabaseError) {
                 // Manejar error de cancelación
                 // Por ejemplo, puedes mostrar un mensaje de error
@@ -118,14 +123,13 @@ class FolderDao {
         // Verificar si el newCardId ya existe en la lista
         cardIdRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val currentCardIds: ArrayList<CardWithDifficulty> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<CardWithDifficulty>>() {}) ?: arrayListOf()
+                val currentCardIds = arrayListOf<CardWithDifficulty>()
                 for (snapshot in dataSnapshot.children) {
                     val card = snapshot.getValue(CardWithDifficulty::class.java)
                     if (card != null) {
                         currentCardIds.add(card)
                     }
                 }
-
                 if (currentCardIds.any { it.cardId == newCardId.cardId }) {
                     Toast.makeText(context, "Ya existe esa tarjeta en la carpeta seleccionada", Toast.LENGTH_SHORT).show()
                 } else {
@@ -226,6 +230,37 @@ class FolderDao {
         })
 
     }
+    fun updateCardDifficulty(
+        databaseReference: DatabaseReference,
+        userId: String,
+        folderId: String,
+        currentCardWithDifficulty: CardWithDifficulty,
+        context: Context
+    ) {
+        val cardRef = databaseReference.child("user").child(userId).child("folders").child(folderId).child("cardId")
+
+        cardRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val currentCardIds: ArrayList<CardWithDifficulty> = dataSnapshot.getValue(object : GenericTypeIndicator<ArrayList<CardWithDifficulty>>() {}) ?: arrayListOf()
+                val updatedCardIds = currentCardIds.map { card ->
+                    if (card.cardId == currentCardWithDifficulty.cardId) {
+                        currentCardWithDifficulty
+                    } else {
+                        card
+                    }
+                }
+                cardRef.setValue(updatedCardIds).addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Toast.makeText(context, "Error al guardar los datos", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Toast.makeText(context, "Error al acceder a la base de datos", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     fun deleteFolder(databaseReference: DatabaseReference){
        // val folderRef = databaseReference.child("user").child(userId).child("folders").child(folderId)
         databaseReference.removeValue().addOnSuccessListener {
@@ -273,17 +308,17 @@ class FolderDao {
     //labels tienen un arraylist de folderID : labels -> labelId ->
     // name
     // folders -> { id1, id2, id3}
-    fun getAllLabels(databaseReference: DatabaseReference, userId: String, context: Context) {
+    fun getLabels(callback: FirebaseCallback, databaseReference: DatabaseReference, userId: String, context: Context) {
         val labelsReference = databaseReference.child("user").child(userId).child("labels")
 
         labelsReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val labelsList = dataSnapshot.children.mapNotNull { it.getValue(Label::class.java) }
-                // Aquí puedes hacer lo que necesites con la lista de labels obtenida
-                // Por ejemplo, mostrarlos en un RecyclerView, etc.
-                // Si deseas mostrar los nombres de los labels en un Toast para propósitos de prueba:
-                val labelsNames = labelsList.joinToString(", ") { it.name }
-                Toast.makeText(context, "Labels: $labelsNames", Toast.LENGTH_LONG).show()
+                val labelsList = ArrayList<Label>()
+                for (labelSnapshot in dataSnapshot.children) {
+                    val label = labelSnapshot.getValue(Label::class.java)
+                    label?.let { labelsList.add(it) }
+                }
+                callback.onLabelNameCallback(labelsList)
             }
             override fun onCancelled(databaseError: DatabaseError) {
                 // Manejar error de cancelación
