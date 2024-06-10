@@ -8,15 +8,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
-import com.example.logilearnapp.MainActivity
+import com.example.logilearnapp.ui.common.MainActivity
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
-import com.example.logilearnapp.util.Validator
-import com.example.logilearnapp.view.RegisterFragment
+import com.example.logilearnapp.data.UserData
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -44,7 +40,6 @@ class Login : AppCompatActivity() {
         editPassword = findViewById(R.id.passField)
         editEmail = findViewById(R.id.emailField)
 
-        val fragment = RegisterFragment()
         val toRegisterBtn :MaterialButton = findViewById(R.id.btnRegister)
         //lo meto en metodo param fragment, desde fragment accedo al metodo
        toRegisterBtn.setOnClickListener{
@@ -146,36 +141,6 @@ class Login : AppCompatActivity() {
                 Toast.makeText(this@Login, "Database Error: ${databaseError.message}", Toast.LENGTH_SHORT).show()
             }
         })
-    }
-    private fun showEmptyFieldsAlert() {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Empty Fields")
-        alertDialogBuilder.setMessage("Please fill in all fields.")
-        alertDialogBuilder.setPositiveButton("OK") { _, _ ->
-            // Dismiss the alert dialog if OK is pressed
-        }
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
-    }
-    private fun showInvalidPasswordAlert() {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Invalid Password")
-        alertDialogBuilder.setMessage("Invalid password.")
-        alertDialogBuilder.setPositiveButton("OK") { _, _ ->
-            // Dismiss the alert dialog if OK is pressed
-        }
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
-    }
-    private fun showInvalidUsernameAlert() {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Invalid Email")
-        alertDialogBuilder.setMessage("Invalid email.")
-        alertDialogBuilder.setPositiveButton("OK") { _, _ ->
-            // Dismiss the alert dialog if OK is pressed
-        }
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
     }
     private fun saveLoginState(isLogged: Boolean) {
         val sharedPreferences = getSharedPreferences("myPrefs",  Context.MODE_PRIVATE)

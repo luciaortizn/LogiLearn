@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.databinding.ActivityRegisterBinding
 import com.example.logilearnapp.util.Validator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -146,7 +145,7 @@ class Register : AppCompatActivity() {
                     if (!dataSnapshot.exists()){
                         val id = databaseReference.push().key
                         //falta encriptarla
-                        val userData = com.example.logilearnapp.UserData(id, email, name, surname,password)
+                        val userData = UserData(id, email, name, surname,password)
 
                         databaseReference.child(id!!).setValue(userData)
 

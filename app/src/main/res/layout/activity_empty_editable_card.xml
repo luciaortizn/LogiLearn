@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/colorPrimaryDark"
     android:theme="@style/Base.Theme.LogiLearnApp"
-    tools:context=".EmptyEditableCard">
+    tools:context=".ui.card.EmptyEditableCard">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -19,11 +19,9 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:title="@string/crear_tarjeta"
-            app:menu="@menu/menu_top_editable_card"
             app:navigationIcon="@drawable/outline_close_24" />
 
     </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,15 +31,39 @@
         <!-- Scrollable content -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:padding="20dp"
-            tools:context=".EmptyEditableCard">
-
-
+            android:padding="15dp"
+            tools:context=".ui.card.EmptyEditableCard">
+            <LinearLayout
+                android:id="@+id/chipLayout"
+                android:layout_width="match_parent"
+                android:padding="10dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/Input"
+                app:layout_constraintStart_toStartOf="parent">
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_reset"
+                        android:layout_width="wrap_content"
+                        android:text="Reset campos"
+                        app:chipIcon="@drawable/outline_redo_24"
+                        android:layout_height="wrap_content">
+                    </com.google.android.material.chip.Chip>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_folder"
+                        android:layout_width="wrap_content"
+                        android:text="Carpeta"
+                        app:chipIcon="@drawable/outline_folder_24"
+                        android:layout_height="wrap_content">
+                    </com.google.android.material.chip.Chip>
+                </com.google.android.material.chip.ChipGroup>
+            </LinearLayout>
 
             <EditText
-
+                android:layout_marginTop="20dp"
                 android:id="@+id/Input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,16 +77,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintBottom_toTopOf="@id/layoutTranslate"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/chipLayout"
                 android:autofillHints="">
 
             </EditText>
             <LinearLayout
                 android:id="@+id/layoutTranslate"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
                 android:orientation="horizontal"
-                android:gravity="center"
+                android:gravity="end"
+                android:baselineAligned="true"
+                android:foregroundGravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/Result"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -72,33 +96,41 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/Translate"
-                    android:layout_gravity="center"
-                    android:contentDescription="Traduce tus palabras favoritas"
-                    style="@style/LargeButtonsCustom1"
+                    android:layout_marginStart="20dp"
+                    android:layout_gravity="end"
+                    android:foregroundGravity="center_horizontal"
+                    android:contentDescription="@string/traduce_tus_palabras_favoritas"
+                    style="@style/LargeButtonsCustom"
                     android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_width="60dp"
+                    android:gravity="center|fill"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="120dp"
+                    android:text="@string/traducir"
+                    android:textSize="15sp"
                     app:icon="@drawable/translate"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="2dp"
+                    android:textAlignment="center"
+                    android:layout_marginEnd="10dp"
                     android:padding="15dp"
                    />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/menu"
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="220dp"
-                    android:layout_gravity="right"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="Idiomas a elegir">
+                    android:layout_gravity="end"
+                    android:contentDescription="Idiomas a elegir"
+                    android:gravity="end">
 
                     <AutoCompleteTextView
-                        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
+                        style="@style/SearchViewCustom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Selecciona idioma"
-                        android:textSize="14dp"
                         android:inputType="none"
+                        android:textSize="14sp"
                         app:simpleItems="@array/simple_items" />
                 </com.google.android.material.textfield.TextInputLayout>
 

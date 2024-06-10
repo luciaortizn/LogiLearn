@@ -9,16 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.compose.ui.unit.dp
-import androidx.core.view.marginLeft
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
-import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.card.Card
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -229,7 +226,7 @@ class CardViewFragment : Fragment() {
         }
         recyclerView.adapter = FolderAdapter(folderList, requireContext())
     }*/
-    private fun cambiarImagen(position: Int, folderList :ArrayList<Folder>, folderDao: FolderDao,userId:String ,context: Context, databaseReference: DatabaseReference, ) {
+    private fun cambiarImagen(position: Int, folderList :ArrayList<Folder>, folderDao: FolderDao, userId:String, context: Context, databaseReference: DatabaseReference, ) {
         val folder = folderList[position]
         var isFav = folder.isFavorite
         val nuevaImagen = if (isFav == "false") {

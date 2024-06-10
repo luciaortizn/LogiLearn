@@ -1,20 +1,18 @@
-package com.example.logilearnapp.database
+package com.example.logilearnapp.repository
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.widget.Toast
 import com.example.logilearnapp.data.CardWithDifficulty
+import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.protobuf.Value
 
 class CardDao {
     //referncia directa al id y voy iterando
-    fun getCardsByIdList(callback: FirebaseCallback,databaseReference: DatabaseReference, userId: String,cardIdList :ArrayList<CardWithDifficulty>){
+    fun getCardsByIdList(callback: FirebaseCallback, databaseReference: DatabaseReference, userId: String, cardIdList :ArrayList<CardWithDifficulty>){
         val cardListDB: ArrayList<Card> = arrayListOf()
          val cardsRef = databaseReference.child("user").child(userId).child("cards")
         cardsRef.addValueEventListener(object :ValueEventListener{

@@ -9,24 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
 import com.example.logilearnapp.ui.folder.Folder
-import com.google.android.material.search.SearchBar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
-import java.util.Collections
 
 class SearchFragment : Fragment() {
 
@@ -152,7 +150,7 @@ class SearchFragment : Fragment() {
                 recyclerView.adapter?.notifyDataSetChanged()
             }
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+               Toast.makeText(requireContext(), "Ha habido un error", Toast.LENGTH_SHORT).show()
             }
 
         })

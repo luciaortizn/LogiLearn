@@ -1,13 +1,12 @@
-package com.example.logilearnapp
+package com.example.logilearnapp.ui.common
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.logilearnapp.api.ConfigUtils
+import com.example.logilearnapp.R
 import com.example.logilearnapp.databinding.ActivityMainBinding
-import com.example.logilearnapp.ui.common.HomeFragment
 import com.example.logilearnapp.ui.folder.CardViewFragment
 import com.example.logilearnapp.ui.search.SearchFragment
 

@@ -1,26 +1,23 @@
 package com.example.logilearnapp.ui.profile
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isEmpty
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
-import com.example.logilearnapp.database.UserDao
+import com.example.logilearnapp.repository.UserDao
 import com.example.logilearnapp.ui.auth.Login
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.common.HomeFragment
@@ -29,13 +26,9 @@ import com.example.logilearnapp.util.Validator
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -249,7 +242,7 @@ class ProfileFragment : Fragment() {
         fragmentTransaction.replace(R.id.viewerFragment, fragment)
         fragmentTransaction.commit()
     }
-    private fun getUserData(userDao:UserDao, databaseReference: DatabaseReference, userId:String ) {
+    private fun getUserData(userDao: UserDao, databaseReference: DatabaseReference, userId:String ) {
 
         userDao.getUser(object : FirebaseCallback{
             override fun onCallback(cardList: ArrayList<Card>) {

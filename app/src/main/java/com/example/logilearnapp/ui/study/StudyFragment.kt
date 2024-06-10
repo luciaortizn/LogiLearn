@@ -6,7 +6,6 @@ import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -18,13 +17,13 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.data.Difficulty
 import com.example.logilearnapp.data.Label
-import com.example.logilearnapp.database.CardDao
+import com.example.logilearnapp.repository.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
-import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.folder.CardViewFragment
 import com.example.logilearnapp.ui.folder.Folder
@@ -32,7 +31,6 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -289,7 +287,7 @@ class StudyFragment : Fragment() {
         layoutIcons.visibility = LinearLayout.GONE
         resultBtn.visibility = MaterialButton.VISIBLE
     }
-    fun studyAlgorithm(item: View, currentCardWithDifficulty: CardWithDifficulty,  folderDao: FolderDao,userId :String, databaseReference: DatabaseReference, folderId :String){
+    fun studyAlgorithm(item: View, currentCardWithDifficulty: CardWithDifficulty, folderDao: FolderDao, userId :String, databaseReference: DatabaseReference, folderId :String){
         Log.d("problema", "ID: ${item.id}?")
         when (item.id) {
             2131231419 -> {

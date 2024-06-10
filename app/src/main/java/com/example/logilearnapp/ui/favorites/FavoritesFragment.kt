@@ -3,25 +3,21 @@ package com.example.logilearnapp.ui.favorites
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
-import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.folder.Folder
 import com.example.logilearnapp.ui.folder.FolderAdapter
-import com.example.logilearnapp.viewmodel.EmptyEditableCardViewModel
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 

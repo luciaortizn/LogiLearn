@@ -1,9 +1,8 @@
 package com.example.logilearnapp.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.logilearnapp.api.ApiClient
+import com.example.logilearnapp.api.WordnikApiClient
 import com.example.logilearnapp.data.Definition
-import com.example.logilearnapp.data.Example
 import com.example.logilearnapp.data.Examples
 import com.example.logilearnapp.data.Pronunciation
 import com.example.logilearnapp.data.RelatedWord
@@ -15,7 +14,7 @@ import retrofit2.Response
 
 class HomeViewModel: ViewModel() {
 
-    private val apiService = ApiClient.wordnikService
+    private val apiService = WordnikApiClient.wordnikService
 
 
     fun getDefinitions(apiKey: String, palabra: String, callback: (List<Definition>?) -> Unit) {

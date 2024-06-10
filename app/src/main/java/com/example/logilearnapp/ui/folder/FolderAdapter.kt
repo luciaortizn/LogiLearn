@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -16,10 +15,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.data.Difficulty
-import com.example.logilearnapp.data.Label
-import com.example.logilearnapp.database.CardDao
-import com.example.logilearnapp.database.FolderDao
-import com.example.logilearnapp.ui.card.Card
+import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.study.StudyFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -151,7 +147,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
             }.create().show()
     }
-    fun showLabelDialog(folderDao: FolderDao,dialogView:View,positiveButton:String,negativeButton:String, currentItem: Folder){
+    fun showLabelDialog(folderDao: FolderDao, dialogView:View, positiveButton:String, negativeButton:String, currentItem: Folder){
 
         val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_label_add)
         val firebaseDatabase = FirebaseDatabase.getInstance()

@@ -1,4 +1,4 @@
-package com.example.logilearnapp
+package com.example.logilearnapp.data
 
 data class UserData(
     val id: String? = null,

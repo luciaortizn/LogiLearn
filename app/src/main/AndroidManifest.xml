@@ -13,10 +13,10 @@
         android:theme="@style/Theme.LogiLearnApp"
         tools:targetApi="31">
         <activity
-            android:name=".EmptyEditableCard"
+            android:name=".ui.card.EmptyEditableCard"
             android:exported="false" />
         <activity
-            android:name=".ui.common.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,7 @@
             android:name=".ui.auth.Login"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.common.MainActivity"
             android:exported="false" />
 
         <meta-data

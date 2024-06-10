@@ -1,12 +1,11 @@
-package com.example.logilearnapp.database
+package com.example.logilearnapp.repository
 
 import android.content.Context
-import android.service.autofill.UserData
 import android.util.Log
 import android.widget.Toast
 import com.example.logilearnapp.data.CardWithDifficulty
-import com.example.logilearnapp.data.Difficulty
 import com.example.logilearnapp.data.Label
+import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.firebase.database.DataSnapshot
@@ -14,13 +13,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.GenericTypeIndicator
 import com.google.firebase.database.ValueEventListener
-import com.google.protobuf.Value
 
 class FolderDao {
     /**
      * reference: /
      */
-    fun getFoldersByUser(callback: FirebaseCallback,databaseReference: DatabaseReference, userId: String) {
+    fun getFoldersByUser(callback: FirebaseCallback, databaseReference: DatabaseReference, userId: String) {
         val folderListDB: ArrayList<Folder> = arrayListOf()
         val folderReference =  databaseReference.child("user").child(userId).child("folders")
 
@@ -59,7 +57,7 @@ class FolderDao {
                 TODO("Not yet implemented")
             }
 
-            override fun onSingleUserCallback(user: com.example.logilearnapp.UserData) {
+            override fun onSingleUserCallback(user: com.example.logilearnapp.data.UserData) {
 
             }
 

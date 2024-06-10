@@ -1,6 +1,7 @@
-package com.example.logilearnapp.database
+package com.example.logilearnapp.repository
 
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
+import com.example.logilearnapp.database.FirebaseCallback
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -10,7 +11,7 @@ class UserDao {
     fun addUser(databaseReference: DatabaseReference){
 
     }
-    fun getUser(callback: FirebaseCallback,databaseReference: DatabaseReference,userId :String){
+    fun getUser(callback: FirebaseCallback, databaseReference: DatabaseReference, userId :String){
         val userRef = databaseReference.child("user").child(userId)
         userRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -30,7 +31,7 @@ class UserDao {
 
         })
     }
-    fun updateUser(databaseReference: DatabaseReference,userId :String, user:UserData ){
+    fun updateUser(databaseReference: DatabaseReference,userId :String, user: UserData){
        val userRef = databaseReference.child("user").child(userId)
         // Crear un mapa con los valores del objeto UserData
         val userUpdates = mapOf(

@@ -10,7 +10,7 @@ import retrofit2.http.Query
 import retrofit2.Call
 import retrofit2.http.Path
 
-interface ApiService {
+interface WordnikApiService {
     //esta interfaz tiene métodos para cada llamada
 
     @GET("words.json/wordOfTheDay?")

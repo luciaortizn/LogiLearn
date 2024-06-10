@@ -1,4 +1,4 @@
-package com.example.logilearnapp.api
+package com.example.logilearnapp.util
 
 import android.content.Context
 import android.widget.Toast

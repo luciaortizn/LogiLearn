@@ -1,9 +1,6 @@
 package com.example.logilearnapp.ui.card
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.icu.text.CaseMap.Fold
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +8,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
-import com.example.logilearnapp.UserData
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.data.Difficulty
 import com.example.logilearnapp.data.Label
-import com.example.logilearnapp.database.CardDao
+import com.example.logilearnapp.repository.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
-import com.example.logilearnapp.database.FolderDao
+import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.folder.Folder
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

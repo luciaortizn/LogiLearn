@@ -8,10 +8,19 @@
     android:theme="@style/Base.Theme.LogiLearnApp"
     tools:context=".ui.search.SearchFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    <TextView
+        android:textColor="@color/blue"
+        android:padding="10dp"
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Tarjetas"
+        android:textSize="25sp"
+        android:textStyle="bold" />
     <SearchView
         android:layout_gravity="start"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:id="@+id/search_view_cards"
         android:layout_width="340dp"
         android:layout_marginLeft="10dp"
@@ -27,7 +36,7 @@
             android:id="@+id/recycler_view_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="120dp"
             android:scrollbars="vertical"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

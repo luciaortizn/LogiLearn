@@ -20,9 +20,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
-import com.example.logilearnapp.EmptyEditableCard
+import com.example.logilearnapp.ui.card.EmptyEditableCard
 import com.example.logilearnapp.R
-import com.example.logilearnapp.api.ConfigUtils
+import com.example.logilearnapp.util.ConfigUtils
 import com.example.logilearnapp.data.Definition
 import com.example.logilearnapp.data.TranslateRequest
 import com.example.logilearnapp.ui.favorites.FavoritesFragment

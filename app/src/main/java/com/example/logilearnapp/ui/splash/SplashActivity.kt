@@ -1,13 +1,13 @@
-package com.example.logilearnapp.ui.common
+package com.example.logilearnapp.ui.splash
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.logilearnapp.MainActivity
 import com.example.logilearnapp.R
 import com.example.logilearnapp.ui.auth.Login
+import com.example.logilearnapp.ui.common.MainActivity
 
 class SplashActivity : AppCompatActivity() {
 
