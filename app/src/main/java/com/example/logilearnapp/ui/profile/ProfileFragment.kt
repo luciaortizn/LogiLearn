@@ -49,9 +49,9 @@ class ProfileFragment : Fragment() {
     lateinit var editName : TextInputLayout
     lateinit var editEmail : TextInputLayout
     lateinit var editSurname : TextInputLayout
-    lateinit var editPassword : TextInputLayout
     lateinit var deleteAccountBtn:MaterialButton
     lateinit var logoutBtn:MaterialButton
+    lateinit var hashedPassword :String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,11 +77,10 @@ class ProfileFragment : Fragment() {
         val topBar: MaterialToolbar = view.findViewById(R.id.topAppBarCard_profile)
         val sharedPreferences = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getString("id", "")
-        editPassword = view.findViewById(R.id.edit_password_layout)
         editSurname = view.findViewById(R.id.edit_surname_layout)
         editEmail = view.findViewById(R.id.edit_email_layout)
         editName= view.findViewById(R.id.edit_name_layout)
-
+        hashedPassword = ""
 
         val databaseReference = FirebaseDatabase.getInstance().reference
         topBar.setNavigationOnClickListener {
@@ -137,24 +136,12 @@ class ProfileFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        editPassword.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val password = s.toString()
-                if (!Validator.isValidPassword(password)) {
-                    editPassword.error = "Contraseña no válida"
-                }else {
-                    editPassword.error = null
-                }
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
         saveOption?.setOnMenuItemClickListener {
             val userRepo = UserDao()
             //dialog
-            if(editEmail.error.isNullOrBlank() && editName.error.isNullOrBlank() && editPassword.error.isNullOrBlank() && editSurname.error.isNullOrBlank()){
-                val user = UserData(userId,editEmail.editText!!.text.toString(),editName.editText!!.text.toString(), editSurname.editText!!.text.toString(), editPassword.editText!!.text.toString())
+            if(editEmail.error.isNullOrBlank() && editName.error.isNullOrBlank() && editSurname.error.isNullOrBlank()){
+                val user = UserData(userId,editEmail.editText!!.text.toString(),editName.editText!!.text.toString(), editSurname.editText!!.text.toString(), hashedPassword)
                 MaterialAlertDialogBuilder(requireContext())
                     //hacer validaciones en editar perfil
                     .setTitle("Actualizar perfil")
@@ -257,7 +244,7 @@ class ProfileFragment : Fragment() {
                 editName.editText!!.setText(user.name)
                 editSurname.editText!!.setText(user.surname)
                 editEmail.editText!!.setText(user.email)
-                editPassword.editText!!.setText(user.password)
+                hashedPassword = user.password.toString()
             }
 
             override fun onFolderCallback(folderList: ArrayList<Folder>) {

@@ -99,25 +99,7 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:padding="15dp"
-        android:layout_gravity="center"
-        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
-        android:id="@+id/edit_password_layout"
-        style="@style/TextInputEditTexCustom"
-        app:errorEnabled="true"
-        android:layout_width="330dp"
-        app:endIconMode="password_toggle"
-        android:layout_height="wrap_content"
-        android:hint="@string/contrase_a">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:inputType="textPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="12345Ts#"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

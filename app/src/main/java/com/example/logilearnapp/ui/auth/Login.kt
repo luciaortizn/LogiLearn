@@ -7,12 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.logilearnapp.ui.common.MainActivity
 import com.example.logilearnapp.R
 import com.example.logilearnapp.data.UserData
+import com.example.logilearnapp.util.HashPassword
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -79,7 +81,9 @@ class Login : AppCompatActivity() {
         loginbtn.setOnClickListener {
             // Crear un Intent para la otra actividad
             if (editEmail.error.isNullOrBlank()) {
-                loginUser(editEmail.editText?.text.toString(), editPassword.editText?.text.toString())
+               val hashed = HashPassword.hashPassword(editPassword.editText?.text.toString())
+                Log.d("hash", hashed)
+                loginUser(editEmail.editText?.text.toString(),hashed)
             } else {
                 MaterialAlertDialogBuilder(this)
                     //hacer validaciones en editar perfil

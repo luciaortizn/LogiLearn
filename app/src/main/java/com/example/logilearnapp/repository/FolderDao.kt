@@ -52,9 +52,7 @@ class FolderDao {
             override fun onCallback(cardList: ArrayList<Card>) {
 
             }
-
             override fun onLabelNameCallback(cardList: ArrayList<Label>) {
-                TODO("Not yet implemented")
             }
 
             override fun onSingleUserCallback(user: com.example.logilearnapp.data.UserData) {
@@ -329,4 +327,5 @@ class FolderDao {
         val sharedPreferences =context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("id", "")
     }
+
 }

@@ -15,7 +15,11 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.example.logilearnapp.R
 import com.example.logilearnapp.data.Difficulty
+import com.example.logilearnapp.data.Label
+import com.example.logilearnapp.data.UserData
+import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.repository.FolderDao
+import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.study.StudyFragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,20 +68,19 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
 
         setCardDifficulty(currentItem,holder.rvEasyTextView, holder.rvRegularTextView, holder.rvHardTextView)
         holder.rvTitle.setOnClickListener{
-            // se cambia de fragmento
             replaceFragment(holder.itemView.context as FragmentActivity, StudyFragment(), currentItem)
         }
 
         holder.rvImage.setOnClickListener{
             holder.rvImage.isClickable = false
-            // Llamar al método del listener de la imagen
             imageClickListener?.onImageClick(position, it)
-            // view -> imageClickListener?.onImageClick(position,view)
 
         }
 
         holder.rvMenu.setOnMenuItemClickListener { menuItem ->
             val dialogView = LayoutInflater.from(context).inflate(R.layout.edit_folder_layout, null)
+            val  firebaseDatabase = FirebaseDatabase.getInstance()
+            val userId = folderDao.getUserIdSharedPreferences(context)
             when (menuItem.itemId) {
                 R.id.item_edit_folder -> {
                     showEditFolderDialog("Editar Carpeta",dialogView, "Guardar cambios", "Cancelar" ,currentItem)
@@ -89,8 +92,25 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                     true
                 }
                 R.id.item_add_label -> {
-                    val labelView = LayoutInflater.from(context).inflate(R.layout.add_label_layout, null)
-                    showLabelDialog(folderDao,labelView,"Guardar", "Cancelar", currentItem )
+                    folderDao.getLabels(object : FirebaseCallback {
+                        override fun onLabelNameCallback(labelList: ArrayList<Label>) {
+                            //lista
+                            val labelView = LayoutInflater.from(context).inflate(R.layout.add_label_layout, null)
+                            showLabelDialog(folderDao,labelList ,labelView,"Guardar", "Cancelar", currentItem )
+                        }
+                        override fun onSingleUserCallback(user: UserData) {
+
+                        }
+                        override fun onCallback(cardList: ArrayList<Card>) {
+                        }
+                        override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                        }
+                    },firebaseDatabase.reference,userId!!, context)
+
+                    /**
+                     *
+                     */
+
                     true
                 }
 
@@ -110,9 +130,7 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         val rvHardTextView: TextView = itemView.findViewById(R.id.hard_card_number)
     }
     private fun deleteFolder(item: Folder) {
-        //eliminar de bd
 
-        //refactorizar
         val  firebaseDatabase = FirebaseDatabase.getInstance()
         //obtengo la referencia hasta el id de la card
         val  databaseReference : DatabaseReference = firebaseDatabase.reference.child("user").child(
@@ -131,33 +149,56 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
         val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_folder_edit)
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val userId = folderDao.getUserIdSharedPreferences(context)
-        dialogTitle.editText!!.setText(currentItem!!.dataTitle)
+        dialogTitle.editText!!.setText(currentItem.dataTitle)
         MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(dialogView)
-            .setPositiveButton(positiveButton) { dialog, which ->
+            .setPositiveButton(positiveButton) { dialog, _ ->
                 val folder = Folder(currentItem.id,currentItem.isFavorite,dialogTitle.editText!!.text.toString(), currentItem.cardId )
                 folderDao.updateFolder(firebaseDatabase.reference, userId!!, folder, context)
                 dialog.cancel()
                 dialog.dismiss()
             }
-            .setNegativeButton(negativeButton){ dialog, which ->
+            .setNegativeButton(negativeButton){ dialog, _ ->
                 dialog.cancel()
                 dialog.dismiss()
 
             }.create().show()
     }
-    fun showLabelDialog(folderDao: FolderDao, dialogView:View, positiveButton:String, negativeButton:String, currentItem: Folder){
+    private fun showLabelDialog(folderDao: FolderDao, folderList: ArrayList<Label>, dialogView:View, positiveButton:String, negativeButton:String, currentItem: Folder){
+        val labelTitleList :ArrayList<String> = arrayListOf()
+        for (label in folderList ){
+            labelTitleList.add(label.name)
+        }
+        val  folders = arrayOfNulls<CharSequence>(labelTitleList.size)
+        labelTitleList.forEachIndexed { index, title ->
+            folders[index] = title
+        }
+        var selectedItem = -1
 
-        val dialogTitle = dialogView.findViewById<TextInputLayout>(R.id.title_label_add)
+        var selectedLabelText = ""
+        val name = dialogView.findViewById<TextInputLayout>(R.id.title_label_add)
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val userId = folderDao.getUserIdSharedPreferences(context)
-        dialogTitle.editText!!.setText(currentItem!!.dataTitle)
+       name.editText!!.setText(currentItem!!.dataTitle)
         MaterialAlertDialogBuilder(context)
             .setTitle("Añadir etiquetas")
+            .setSingleChoiceItems(folders, selectedItem) { dialog, which ->
+                selectedItem = which
+
+                selectedLabelText = folders[which].toString()
+                //si folder existe
+            }
             .setView(dialogView)
             .setPositiveButton(positiveButton) { dialog, which ->
-                folderDao.addLabel(firebaseDatabase.reference, userId!!,currentItem.id,  dialogTitle.editText!!.text.toString() , context)
+
+                if (selectedItem != -1) {
+                    val selectedLabelName = folderList[selectedItem].name
+
+                }else if(name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected){
+                    folderDao.addLabel(firebaseDatabase.reference, userId!!,currentItem.id, name.editText!!.text.toString() , context)
+                }
+
                 dialog.cancel()
                 dialog.dismiss()
             }
@@ -195,7 +236,6 @@ class FolderAdapter(private val dataList:ArrayList<Folder>, private val context:
                 Difficulty.HARD -> {
                     hardCont++
                 }
-
                 else -> {}
             }
 

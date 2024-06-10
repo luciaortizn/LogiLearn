@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.databinding.ActivityRegisterBinding
+import com.example.logilearnapp.util.HashPassword
 import com.example.logilearnapp.util.Validator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -128,14 +130,6 @@ class Register : AppCompatActivity() {
                     }
             }
         }
-        /**
-        binding.registerBtn.setOnClickListener {
-            val intent = Intent(this@Register, Login::class.java)
-            startActivity(intent)
-           // overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-            finish()
-
-        }*/
     }
     fun registerUser(email:String, name:String,surname:String ,password: String, rePassword: String){
 
@@ -144,8 +138,9 @@ class Register : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()){
                         val id = databaseReference.push().key
-                        //falta encriptarla
-                        val userData = UserData(id, email, name, surname,password)
+
+                        val hashed = HashPassword.hashPassword(password)
+                        val userData = UserData(id, email, name, surname,hashed)
 
                         databaseReference.child(id!!).setValue(userData)
 

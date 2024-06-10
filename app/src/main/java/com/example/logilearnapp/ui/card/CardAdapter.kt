@@ -104,7 +104,6 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
         dataList = newList
         notifyDataSetChanged()
     }
-    //obtiene los elementos de la vista
     class ViewHolderClass(itemView: View):RecyclerView.ViewHolder(itemView){
         val rvResult :TextView = itemView.findViewById(R.id.result_card)
         val rvInput: TextView = itemView.findViewById(R.id.input_card)
@@ -116,12 +115,9 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
     //métodos de RV
     private fun deleteItem(item: Card?) {
         val folderDao = FolderDao()
-        //eliminar de bd
         val cardDao = CardDao()
         val userId = cardDao.getUserIdSharedPreferences(context)
-        //refactorizar
         val  firebaseDatabase = FirebaseDatabase.getInstance()
-        //obtengo la referencia hasta el id de la card
         val  databaseReference :DatabaseReference = firebaseDatabase.reference.child("user").child(
             userId!!
         ).child("cards").child(item!!.id)
@@ -140,7 +136,6 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
         if(isDialogShowing){
             return
         }
-
         isDialogShowing = true
         val id =  folderDao.getUserIdSharedPreferences(context)!!
         val  firebaseDatabase = FirebaseDatabase.getInstance()
