@@ -9,17 +9,17 @@ En desarrollo
 ## Instalación
 
 1. Clona el repositorio.
-2. Ejecuta `npm install` para instalar las dependencias.
+2. Obtén las api keys 
+3. Comprueba tus dependencias con la versión de Android Studio
 
 ## Uso
 
 1. Crea una cuenta con correo y contraseña.
 2. Busca traducciones, definiciones, sinónimos y añádelos a tus carpetas favoritas, edítalo a tu manera.
-3. Adicionalmente, puedes añadir imágenes y PDFs al tus creaciones.
+3. Adicionalmente, puedes usar el modo estudio, o agitando tu móvil podrás ver las palabras del día!
 
 ## Contacto
 
-- Correo Electrónico: luciaortiznunez@gmail.com
 - LinkedIn: [@Enlace](https://www.linkedin.com/in/luc%C3%ADa-ortiz-n%C3%BA%C3%B1ez-multiplataforma-java/)
 
 
