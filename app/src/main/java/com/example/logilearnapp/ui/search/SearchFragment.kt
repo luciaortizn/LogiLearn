@@ -19,7 +19,7 @@ import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.card.CardAdapter
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -64,69 +64,13 @@ class SearchFragment : Fragment() {
         //obtengo to-do de una y se actualiza la interfaz
         activity?.runOnUiThread {
             getCards()
-            /**
-            getCardsByUser(object : FirebaseCallback {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onCallback(cardList: ArrayList<Card>) {
-                    //se añaden
-                    val reversedCardList = ArrayList(cardList)
-                    reversedCardList.reverse()
-                    setBackgroundForEmptyCards(cardList)
-                    cardAdapter = CardAdapter(reversedCardList, requireContext())
-
-                    //aquí
-                    /**
-                    sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                        override fun onQueryTextSubmit(query: String?): Boolean {
-                            if (query != null) {
-
-                            }
-                            }
-                            return true
-                        }
-
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            if (newText.isNullOrBlank()) {
-                                for(card in cardList){
-                                    if(card.input.contains(newText.toString()) || card.result.contains(newText.toString()) ){
-
-                                    }
-                                }
-                            }else{
-
-                            }
-                            return true
-                        }
-                    })**/
-                    /**
-                    recyclerView.adapter = cardAdapter
-                    recyclerView.adapter?.notifyDataSetChanged()**/
-                    /**
-                    var cardAdapter = CardAdapter(emptyList(), requireContext())
-                    recyclerView.adapter = cardAdapter
-
-                    setupSearch(cardAdapter)
-
-                    // Fetch data from the database and update the UI
-                    fetchAllCards(cardAdapter)
-**/
-                }
-                override fun onLabelNameCallback(cardList: ArrayList<Label>) {
-                }
-
-                override fun onSingleUserCallback(user: UserData) {
-                }
-
-                override fun onFolderCallback(folderList: ArrayList<Folder>) {
-                }
-
-            })**/
 
         }
 
     }
     //obtiene lista cards por usuario y usa shared preferences para obtener el id
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun getCardsByUser(callback: FirebaseCallback) {
         val cardListDB: ArrayList<Card> = arrayListOf()
         firebaseDatabase = FirebaseDatabase.getInstance()
@@ -154,7 +98,9 @@ class SearchFragment : Fragment() {
             }
 
         })
+        recyclerView.adapter?.notifyDataSetChanged()
     }
+
 
     private fun setBackgroundForEmptyCards(list:ArrayList<Card>?){
 
@@ -173,11 +119,11 @@ class SearchFragment : Fragment() {
                 val reversedCardList = ArrayList(cardList)
                 reversedCardList.reverse()
                 setBackgroundForEmptyCards(cardList)
+
                 cardAdapter = CardAdapter(reversedCardList, requireContext())
 
                 recyclerView.adapter = cardAdapter
                 recyclerView.adapter?.notifyDataSetChanged()
-
                 sv.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
                         return false
@@ -204,6 +150,9 @@ class SearchFragment : Fragment() {
             override fun onSingleUserCallback(user: UserData) {
             }
             override fun onFolderCallback(folderList: ArrayList<Folder>) {
+            }
+            override fun onUsersCallback(userList: ArrayList<UserData>) {
+
             }
         })
 

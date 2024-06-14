@@ -61,6 +61,8 @@ private val cardMap = mutableMapOf<String, MaterialCardView>()
 private lateinit var sv : com.google.android.material.search.SearchView
 private lateinit var otherLayout: LinearLayout
 private lateinit var dictInfoBtn: MaterialButton
+private lateinit var  titleInfoText: TextView
+
 private var sensorManager: SensorManager? = null
     private var acceleration = 0f
     private var currentAcceleration = 0f
@@ -94,7 +96,7 @@ private var sensorManager: SensorManager? = null
         otherLayout = view.findViewById(R.id.layout_other_content_home)
         dictInfoBtn = view.findViewById(R.id.dictInfo)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
+        titleInfoText = view.findViewById(R.id.dicTitle)
         val apiKey = "x9mi4zwbf3wkb7xx2n1pa26t8shz7v8bmtv1ojwnevuanb4dq"
         sv = view.findViewById(R.id.search_view)
         definitionsText= view.findViewById(R.id.definitions_text)
@@ -126,10 +128,12 @@ private var sensorManager: SensorManager? = null
 
        sv.editText
             .setOnEditorActionListener { v, actionId, event ->
+                //hide el título
                 sb.setText(sv.text)
                 sv.hide()
                 false
             }
+
         sv.setOnMenuItemClickListener{menuItem ->
             val title = menuItem.title.toString()
             // Ocultar la tarjeta correspondiente al ítem del menú seleccionado
@@ -210,7 +214,7 @@ private var sensorManager: SensorManager? = null
                    examplesText.text = removeBracketsAndContent(firstExample)
 
                } ?: run {
-                   examplesText.text = "Error"
+                   examplesText.text = ""
                }
            }
 
@@ -220,7 +224,7 @@ private var sensorManager: SensorManager? = null
                   pronunciationText.text = removeBracketsAndContent(firstExample)
 
                } ?: run {
-                  pronunciationText.text = "Error"
+                  pronunciationText.text = ""
                }
            }
            true

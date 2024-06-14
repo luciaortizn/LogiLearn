@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <TextView
+            android:id="@+id/dicTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Diccionario"
@@ -91,7 +92,7 @@
                     android:focusable="true"
 
                     app:menu="@menu/dictionary_search_menu"
-                    android:hint="@string/busca_algo"
+                    android:hint="@string/busca_palabras"
                     app:defaultMarginsEnabled="true"
                     />
 
@@ -103,13 +104,16 @@
                 android:hint="@string/busca_palabras"
                 app:animateMenuItems="true"
                 app:layout_anchor="@id/search_bar">
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
-                   android:scrollIndicators="right"
-                    android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbars="vertical"
-                    android:nestedScrollingEnabled="true"
                     android:layout_height="wrap_content">
+                    <!--
+                    android:scrollIndicators="right"
+                  android:scrollbarAlwaysDrawVerticalTrack="true"
+                  android:scrollbars="vertical"
+                  android:nestedScrollingEnabled="true"
+              -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -145,7 +149,7 @@
                                 android:autofillHints="..."
                                 android:backgroundTint="@color/fui_transparent"
                                 android:gravity="start"
-                                android:hint="definiciones..."
+                                android:hint="A system of symbols, letters, or words given certain arbitrary meanings, used for transmitting messages requiring secrecy or brevity; also, a set of rules or principles or laws."
                                 android:inputType="textMultiLine"
                                 android:minHeight="40dp"
                                 android:padding="20dp"
@@ -182,7 +186,7 @@
                                 android:gravity="start"
                                 android:layout_marginTop="25dp"
                                 android:minHeight="40dp"
-                                android:hint="ejemplos..."
+                                android:hint="He spent the weekend coding a new feature for the software project."
                                 android:inputType="textMultiLine"
                                 android:padding="20dp"
                                 android:singleLine="false"
@@ -221,7 +225,7 @@
                                 android:gravity="start"
                                 android:layout_marginTop="25dp"
                                 android:minHeight="40dp"
-                                android:hint="palabras similares"
+                                android:hint="Cipher, protocol, program."
                                 android:inputType="textMultiLine"
                                 android:padding="20dp"
                                 android:singleLine="false"
@@ -258,7 +262,7 @@
                                 android:gravity="start"
                                 android:layout_marginTop="25dp"
                                 android:minHeight="40dp"
-                                android:hint="pronunciación"
+                                android:hint="kohd"
                                 android:inputType="textMultiLine"
                                 android:padding="20dp"
                                 android:singleLine="false"
@@ -266,7 +270,7 @@
                                 android:typeface="normal" />
                         </com.google.android.material.card.MaterialCardView>
                     </LinearLayout>
-                </ScrollView>
+                </androidx.core.widget.NestedScrollView>
                 <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
             </com.google.android.material.search.SearchView>
             <!--debería poner una barra de búsqueda de resultados que no tengan por qué guardarse-->

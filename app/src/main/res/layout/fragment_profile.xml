@@ -12,38 +12,44 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:backgroundTint="@color/blue_light"
-        android:paddingBottom="50dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="30dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBarCard_profile"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
+            android:paddingTop="10dp"
             android:minHeight="?attr/actionBarSize"
             app:title="Editar Perfil"
             app:titleTextColor="@color/black"
             app:menu="@menu/menu_edit_profile"
             app:navigationIcon="@drawable/outline_arrow_back_24" />
-        <ImageView
-            android:background="@color/blue_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="100dp"
-            android:layout_gravity="center"
-            android:minHeight="100dp"
-            android:src="@drawable/round_person_24"
-            android:contentDescription="Es la imagen de perfil">
 
-        </ImageView>
     </com.google.android.material.appbar.AppBarLayout>
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
+    <TextView
+        android:id="@+id/idBienvenida"
+        android:layout_width="wrap_content"
+        android:textSize="30sp"
+        android:layout_gravity="center"
+        android:text=""
+        android:layout_height="wrap_content">
+    </TextView>
+    <TextView
+        android:id="@+id/idEditar"
+        android:layout_width="wrap_content"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:layout_gravity="center"
+        android:text="Edita tu información de usuario"
+        android:layout_marginBottom="40dp"
+        android:layout_height="wrap_content">
+    </TextView>
     <com.google.android.material.textfield.TextInputLayout
         android:padding="15dp"
         style="@style/TextInputEditTexCustom"
@@ -84,13 +90,13 @@
         android:padding="15dp"
         app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Large"
         app:errorEnabled="true"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="center"
         style="@style/TextInputEditTexCustom"
-
         android:id="@+id/edit_email_layout"
         android:layout_width="330dp"
         android:layout_height="wrap_content"
-        android:hint="Correo">
+        android:hint="@string/correo">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -105,16 +111,17 @@
         android:layout_height="wrap_content"
         android:padding="10dp"
         app:errorEnabled="true"
+        android:layout_marginBottom="30dp"
         android:gravity="center"
-        android:layout_marginBottom="150dp"
         android:layout_gravity="center"
         android:orientation="horizontal">
         <com.google.android.material.button.MaterialButton
             android:id="@+id/logout_btn"
             android:layout_width="150dp"
+            android:textAlignment="center"
             style="@style/LargeButtonsCustom"
             android:layout_height="60dp"
-            android:text="Cerrar sesión">
+            android:text="@string/cerrar_sesi_n">
 
         </com.google.android.material.button.MaterialButton>
         <View
@@ -126,12 +133,9 @@
             android:layout_width="150dp"
             android:textAlignment="center"
             android:layout_height="60dp"
-            android:text="Eliminar cuenta">
+            android:text="@string/eliminar_cuenta">
 
         </com.google.android.material.button.MaterialButton>
     </LinearLayout>
 </LinearLayout>
-</androidx.core.widget.NestedScrollView>
-
-
 </LinearLayout>

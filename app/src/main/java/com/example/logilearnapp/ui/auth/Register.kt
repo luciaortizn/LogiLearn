@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.data.UserData
+import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.databinding.ActivityRegisterBinding
+import com.example.logilearnapp.repository.UserDao
+import com.example.logilearnapp.ui.card.Card
+import com.example.logilearnapp.data.Folder
 import com.example.logilearnapp.util.HashPassword
 import com.example.logilearnapp.util.Validator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -43,22 +47,48 @@ class Register : AppCompatActivity() {
         val editSurname  = binding.surnameField
         val editPassword = binding.passField
         val editRepeatPassword = binding.rePassField
+        val userDao : UserDao = UserDao()
+        val databaseReference1 = firebaseDatabase.reference
 
-        //validaciones dinámicas:
-        editEmail.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val mail = s.toString()
-                if (editEmail.editText?.text.toString().isBlank()) {
-                    editEmail.error = "Campo vacío"
-                }else if(!Validator.isValidEmail(mail)) {
-                    editEmail.error = "Correo no válido"
-                }else{
-                    editEmail.error = null
-                }
+        userDao.getAllUsers(object : FirebaseCallback {
+            override fun onCallback(cardList: ArrayList<Card>) {
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+            override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+            }
+            override fun onSingleUserCallback(user: UserData) {
+            }
+            override fun onFolderCallback(folderList: ArrayList<Folder>) {
+            }
+            override fun onUsersCallback(userList: ArrayList<UserData>) {
+                val emailList: ArrayList<String> = arrayListOf()
+                for(userData in userList){
+                    userData.email?.let { emailList.add(it) }
+                }
+
+                //validaciones dinámicas:
+                editEmail.editText!!.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        val mail = s.toString()
+                        val isEmailRepeated: Boolean = emailList.contains(mail)
+                        if (editEmail.editText?.text.toString().isBlank()) {
+                            editEmail.error = "Campo vacío"
+                        }else if(!Validator.isValidEmail(mail)) {
+                            editEmail.error = "Correo no válido"
+                        }
+                         else if(isEmailRepeated){
+                             editEmail.error = "Email en uso"
+                        }
+                        else{
+                            editEmail.error = null
+                        }
+                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                })
+            } },databaseReference1)
+
+
+
         editName.editText!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 val name = s.toString()
@@ -133,7 +163,7 @@ class Register : AppCompatActivity() {
     }
     fun registerUser(email:String, name:String,surname:String ,password: String, rePassword: String){
 
-            databaseReference.orderByChild("name").equalTo(name).addListenerForSingleValueEvent(object :
+            databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()){
@@ -151,8 +181,7 @@ class Register : AppCompatActivity() {
                         finish()
 
                     } else {
-                        //lo dejo
-                        showUserExistsAlert()
+
                     }
                 }
 

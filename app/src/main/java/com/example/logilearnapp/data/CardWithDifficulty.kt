@@ -6,6 +6,7 @@ import android.os.Parcelable
 data class CardWithDifficulty(val cardId: String = "",
                               var difficulty: Difficulty = Difficulty.EASY,
                                 var repeated :Int = 0): Parcelable {
+    constructor() : this("", Difficulty.EASY, 0)
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readParcelable(Difficulty::class.java.classLoader)!!,

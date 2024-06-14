@@ -114,11 +114,11 @@ class Login : AppCompatActivity() {
                         val userData = userSnapshot.getValue(UserData::class.java)
                         // Si las credenciales son válidas, se inicia sesión y se almacenan datos del usuario
                         if (userData != null) {
-                            val password_db = userData.password
+                            val passwordDb = userData.password
                            // val enteredHash = PasswordEncrypt.hashPassword(password)
                             //println("Stored Hash: $storedHash")
                             //println("Entered Hash: $enteredHash")
-                            if (password_db == password) {
+                            if (passwordDb == password) {
                                 editPassword.error = null
                                 editEmail.error= null
                                 // Login successful
@@ -162,15 +162,6 @@ class Login : AppCompatActivity() {
         editor.putString("name", userData.name)
         editor.putString("surname", userData.surname)
         editor.putString("password", userData.password)
-
-        /*
-        *  if (userData.moviesLiked != null) {
-            // Convierte la lista a un String para almacenarla en Shared Preferences
-            val moviesLikedString = userData.moviesLiked.joinToString(",")
-            editor.putString("moviesLiked", moviesLikedString)
-        }
-        * */
-
         editor.apply()
     }
 }

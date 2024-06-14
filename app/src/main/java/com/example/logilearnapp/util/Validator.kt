@@ -1,6 +1,7 @@
 package com.example.logilearnapp.util
 
 object Validator {
+
     fun isValidEmail(email: String): Boolean {
         val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
         return email.matches(emailRegex.toRegex())
@@ -12,6 +13,15 @@ object Validator {
 
     fun isValidSurname(surname: String): Boolean {
         return surname.isNotEmpty() && surname.length in 2..20 && surname.all { it.isLetter() }
+    }
+    fun isValidCardText(cardText:String):Boolean{
+        return cardText.isNotEmpty() && cardText.length in 1..60 && cardText.all { it.isLetter() }
+    }
+    fun isValidFolderName(folderName:String):Boolean{
+        return folderName.isNotEmpty() && folderName.length in 1..15 && folderName.all { it.isLetter() }
+    }
+    fun isValidLabelName(labelName:String):Boolean{
+        return labelName.isNotEmpty() && labelName.length in 1..15 && labelName.all { it.isLetter() }
     }
 
     fun isValidPassword(password: String): Boolean {

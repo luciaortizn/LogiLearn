@@ -70,7 +70,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Aquí aparecerán todas las tarjetas">
+            android:text="@string/aqu_aparecer_n_todas_las_tarjetas">
         </TextView>
     </LinearLayout>
 

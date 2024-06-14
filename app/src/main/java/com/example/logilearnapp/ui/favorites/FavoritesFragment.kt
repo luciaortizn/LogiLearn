@@ -16,7 +16,7 @@ import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.repository.FolderDao
 import com.example.logilearnapp.ui.card.Card
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
 import com.example.logilearnapp.ui.folder.FolderAdapter
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -120,6 +120,8 @@ class FavoritesFragment : Fragment() {
                         recyclerView.adapter = folderAdapter
                        recyclerView.adapter?.notifyDataSetChanged()
                     }
+                }
+                override fun onUsersCallback(userList: ArrayList<UserData>) {
                 }
             },firebaseDatabase.reference, userId!!)
         }

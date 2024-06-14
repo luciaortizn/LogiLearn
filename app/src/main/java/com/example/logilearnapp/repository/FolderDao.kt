@@ -5,9 +5,10 @@ import android.util.Log
 import android.widget.Toast
 import com.example.logilearnapp.data.CardWithDifficulty
 import com.example.logilearnapp.data.Label
+import com.example.logilearnapp.data.UserData
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.ui.card.Card
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -26,11 +27,9 @@ class FolderDao {
        folderReference.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                // Limpiar la lista antes de agregar nuevas carpetas
                 folderListDB.clear()
-                // Iterar sobre cada carpeta en la base de datos
                 for (folder in snapshot.children) {
-                    // Obtener los datos de la carpeta
+
                     val folderId = folder.child("id").getValue(String::class.java)
                     val folderTitle = folder.child("dataTitle").getValue(String::class.java)
                     val folderIsFavorite = folder.child("isFavorite").getValue(String::class.java)
@@ -50,20 +49,19 @@ class FolderDao {
         getFoldersByUser(object : FirebaseCallback {
 
             override fun onCallback(cardList: ArrayList<Card>) {
-
             }
             override fun onLabelNameCallback(cardList: ArrayList<Label>) {
             }
-
             override fun onSingleUserCallback(user: com.example.logilearnapp.data.UserData) {
 
             }
-
             override fun onFolderCallback(folderList: ArrayList<Folder>) {
                 Log.d("verificar", "La lista de carpetas tiene ${folderList.size} elementos.")
                 for (folder in folderList ){
                     listTitles.add(folder.dataTitle)
                 }
+            }
+            override fun onUsersCallback(userList: ArrayList<UserData>) {
 
             }
         },databaseReference,userId)
@@ -75,8 +73,6 @@ class FolderDao {
         userFoldersRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 var isFolderTitleDuplicate = false
-
-                // Iterar sobre todas las carpetas del usuario
                 for (folderSnapshot in snapshot.children) {
                     val existingFolderTitle = folderSnapshot.child("dataTitle").getValue(String::class.java)
                     if (existingFolderTitle == folderTitle) {
@@ -211,13 +207,12 @@ class FolderDao {
 
         })
     }
-    fun updateFolder(databaseReference: DatabaseReference,userId:String, folder:Folder, context: Context){
+    fun updateFolder(databaseReference: DatabaseReference, userId:String, folder: Folder, context: Context){
         val folderReference  = databaseReference.child("user").child(userId).child("folders").child(folder.id)
         databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()){
                    folderReference.child("dataTitle").setValue(folder.dataTitle)
-                  Toast.makeText(context, "Carpeta actualizada", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -267,9 +262,9 @@ class FolderDao {
         labelsReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val existingLabels = dataSnapshot.children.mapNotNull { it.getValue(Label::class.java) }.associateBy { it.name }
-                // Verificar si el label ya existe
+
                 if (existingLabels.containsKey(label)) {
-                    // El label ya existe, actualizar la lista de folderIds
+                    //el label ya existe, actualizar la lista de folderIds
                     val existingLabel = existingLabels[label]!!
                     val folderIds = existingLabel.folderIds
                     if (!folderIds.contains(folderId)) {
@@ -322,6 +317,69 @@ class FolderDao {
             }
         })
     }
+    fun deleteLabel( databaseReference: DatabaseReference, userId: String, context: Context, name:String){
+        val labelsReference = databaseReference.child("user").child(userId).child("labels").child(name)
+        labelsReference.removeValue().addOnSuccessListener {
+        }
+
+    }
+    fun deleteFolderFromLabel( databaseReference: DatabaseReference, userId: String, context: Context, name:String, folderId:String){
+        val labelsReference = databaseReference.child("user").child(userId).child("labels").child(name).child("folderIds")
+        labelsReference.get().addOnSuccessListener { dataSnapshot ->
+            var valueFound = false
+            for (snapshot in dataSnapshot.children) {
+                val value = snapshot.getValue(String::class.java)
+                if (value == folderId) {
+                    snapshot.ref.removeValue().addOnSuccessListener {
+                    }.addOnFailureListener {
+                        Toast.makeText(context, "Error al eliminar la etiqueta $name de la carpeta", Toast.LENGTH_SHORT).show()
+                    }
+                    valueFound = true
+                    break
+                }
+            }
+            if (!valueFound) {
+                Toast.makeText(context, "No se encontró la etiqueta $name en la carpeta", Toast.LENGTH_SHORT).show()
+            }
+        }.addOnFailureListener {
+            Toast.makeText(context, "Error al obtener datos de etiquetas", Toast.LENGTH_SHORT).show()
+        }
+    }
+    fun updateLabel(databaseReference: DatabaseReference, userId: String, labelName: String, newName: String, context: Context) {
+        val labelsReference = databaseReference.child("user").child(userId).child("labels")
+
+        // Escuchar los cambios en los hijos de labels
+        labelsReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                snapshot.children.forEach { labelSnapshot ->
+                    val currentLabelName = labelSnapshot.child("name").getValue(String::class.java)
+
+                    if (currentLabelName == labelName) {
+                        val labelId = labelSnapshot.key ?: ""
+                        val updates = mapOf<String, Any>(
+                            "name" to newName
+                        )
+
+                        labelsReference.child(labelId).updateChildren(updates)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Etiqueta actualizada", Toast.LENGTH_SHORT).show()
+                            }.addOnFailureListener { exception ->
+                                Toast.makeText(context, "Failed to update label: ${exception.message}", Toast.LENGTH_SHORT).show()
+                            }
+
+                        return@forEach
+                    }
+                }
+
+                Toast.makeText(context, "Etiqueta no encontrada", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Cancelado", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 
     fun getUserIdSharedPreferences(context: Context):String?{
         val sharedPreferences =context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)

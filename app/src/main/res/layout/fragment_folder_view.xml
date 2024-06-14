@@ -40,55 +40,7 @@
                 android:orientation="horizontal">
 
             </com.google.android.material.chip.ChipGroup>
-            <!--
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reciente"
-                style="@style/ChipCustom"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/chipFlashcard"
-                app:layout_constraintStart_toStartOf="parent">
 
-            </com.google.android.material.chip.Chip>
-
-            <androidx.legacy.widget.Space
-                android:id="@+id/space1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Traducciones"
-                style="@style/ChipCustom"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/chipImage"
-                app:layout_constraintHorizontal_bias="0.891"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <androidx.legacy.widget.Space
-                android:id="@+id/space3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.1" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFlashcard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Flashcards"
-                style="@style/ChipCustom"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.926"
-                app:layout_constraintStart_toStartOf="parent" />
-                -->
         </LinearLayout>
 
     </HorizontalScrollView>
@@ -96,7 +48,7 @@
 
  <LinearLayout
         android:id="@+id/layout_no_folders"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="250dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

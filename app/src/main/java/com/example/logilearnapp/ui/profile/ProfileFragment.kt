@@ -1,5 +1,6 @@
 package com.example.logilearnapp.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -21,7 +23,7 @@ import com.example.logilearnapp.repository.UserDao
 import com.example.logilearnapp.ui.auth.Login
 import com.example.logilearnapp.ui.card.Card
 import com.example.logilearnapp.ui.common.HomeFragment
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
 import com.example.logilearnapp.util.Validator
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -52,6 +54,9 @@ class ProfileFragment : Fragment() {
     lateinit var deleteAccountBtn:MaterialButton
     lateinit var logoutBtn:MaterialButton
     lateinit var hashedPassword :String
+    lateinit var currentUser: UserData
+    lateinit var emailList: ArrayList<String>
+    lateinit var welcomeText : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +86,9 @@ class ProfileFragment : Fragment() {
         editEmail = view.findViewById(R.id.edit_email_layout)
         editName= view.findViewById(R.id.edit_name_layout)
         hashedPassword = ""
+        currentUser = UserData()
+        emailList = arrayListOf()
+        welcomeText = view.findViewById(R.id.idBienvenida)
 
         val databaseReference = FirebaseDatabase.getInstance().reference
         topBar.setNavigationOnClickListener {
@@ -93,75 +101,38 @@ class ProfileFragment : Fragment() {
 
         getUserData(userDao, databaseReference, userId.toString())
 
-        // aquí hago validaciones no dependen de botones:
-        editEmail.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val email = s.toString()
-                if (!Validator.isValidEmail(email)) {
-                    editEmail.error = "Email incorrecto"
-
-                } else {
-                    editEmail.error = null // Remueve el error si el email es válido
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-
-        editName.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val name = s.toString()
-                if (!Validator.isValidName(name)) {
-                    editName.error = "Nombre no válido"
-                }else {
-                    editName.error = null // Remueve el error si el email es válido
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        editSurname.editText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val surname = s.toString()
-                if (!Validator.isValidSurname(surname)) {
-                    editSurname.error = "Apellido no válido"
-                }else {
-                    editSurname.error = null // Remueve el error si el email es válido
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
 
 
         saveOption?.setOnMenuItemClickListener {
             val userRepo = UserDao()
             //dialog
             if(editEmail.error.isNullOrBlank() && editName.error.isNullOrBlank() && editSurname.error.isNullOrBlank()){
-                val user = UserData(userId,editEmail.editText!!.text.toString(),editName.editText!!.text.toString(), editSurname.editText!!.text.toString(), hashedPassword)
-                MaterialAlertDialogBuilder(requireContext())
-                    //hacer validaciones en editar perfil
-                    .setTitle("Actualizar perfil")
-                    .setMessage("¿Deseas modificar tu información personal?")
-                    .setPositiveButton("Guardar cambios") { dialog, which ->
+                if(currentUser.name.toString() != editName.editText!!.text.toString() || currentUser.email.toString() != editEmail.editText!!.text.toString() || currentUser.surname.toString() != editSurname.editText!!.text.toString() ){
+                    val user = UserData(userId,editEmail.editText!!.text.toString(),editName.editText!!.text.toString(), editSurname.editText!!.text.toString(), hashedPassword)
+                    MaterialAlertDialogBuilder(requireContext())
+                        //hacer validaciones en editar perfil
+                        .setTitle("Actualizar perfil")
+                        .setMessage("¿Deseas modificar tu información personal?")
+                        .setPositiveButton("Guardar cambios") { dialog, which ->
 
-                        userRepo.updateUser(databaseReference, userId!!, user)
-                        dialog.dismiss()
-                        Toast.makeText(requireContext(), "Información actualizada", Toast.LENGTH_SHORT).show()
-                        replaceFragment(requireActivity(), HomeFragment())
-                    }
-                    .setNegativeButton("Cancelar") { dialog, which ->
-                        Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
-                        dialog.dismiss()
-                        dialog.cancel()
+                            userRepo.updateUser(databaseReference, userId!!, user)
+                            dialog.dismiss()
+                            Toast.makeText(requireContext(), "Información actualizada", Toast.LENGTH_SHORT).show()
+                            replaceFragment(requireActivity(), HomeFragment())
+                        }
+                        .setNegativeButton("Cancelar") { dialog, which ->
+                            Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            dialog.cancel()
 
-                    }.create().apply {
+                        }.create().apply {
 
-                        show()
-                    }
+                            show()
+                        }
+                }else{
+                    replaceFragment(requireActivity(), HomeFragment())
+                }
+
 
             }else{
                 MaterialAlertDialogBuilder(requireContext())
@@ -180,27 +151,60 @@ class ProfileFragment : Fragment() {
         }
         logoutBtn = view.findViewById(R.id.logout_btn)
         deleteAccountBtn = view.findViewById(R.id.delete_account_btn)
-        logoutBtn.setOnClickListener{
-            // TODO: implementar logout 
-        }
         //implementado
         deleteAccountBtn.setOnClickListener{
-            sharedPreferences.edit().clear().apply()
+            MaterialAlertDialogBuilder(requireContext())
+                //hacer validaciones en editar perfil
+                .setTitle("Eliminar cuenta")
+                .setMessage("¿Deseas eliminar la cuenta? No podrás recuperarla")
+                .setPositiveButton("Continuar") { dialog, which ->
+                    sharedPreferences.edit().clear().apply()
+                    userDao.deleteUser(databaseReference, userId.toString())
+                   //acción
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "Cuenta eliminada", Toast.LENGTH_SHORT).show()
+                    replaceFragment(requireActivity(), HomeFragment())
+                }
+                .setNegativeButton("Cancelar") { dialog, which ->
+                    Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    dialog.cancel()
 
-            userDao.deleteUser(databaseReference, userId.toString())
+                }.create().apply {
+
+                    show()
+                }
         }
         logoutBtn.setOnClickListener {
-            sharedPreferences.edit().clear().apply()
-            val activity = requireActivity()
-            val intent = Intent(activity, Login::class.java)
-            startActivity(intent)
-            activity.supportFragmentManager.popBackStack()
-            activity.finish()
+            MaterialAlertDialogBuilder(requireContext())
+                //hacer validaciones en editar perfil
+                .setTitle("Cerrar sesión")
+                .setMessage("¿Deseas cerrar sesión?")
+                .setPositiveButton("Continuar") { dialog, which ->
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "Has cerrado sesión", Toast.LENGTH_SHORT).show()
+                    sharedPreferences.edit().clear().apply()
+                    val activity = requireActivity()
+                    val intent = Intent(activity, Login::class.java)
+                    startActivity(intent)
+                    activity.supportFragmentManager.popBackStack()
+                    activity.finish()
+                }
+                .setNegativeButton("Cancelar") { dialog, which ->
+                    Toast.makeText(requireContext(), "Cancelado", Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                    dialog.cancel()
+
+                }.create().apply {
+
+                    show()
+                }
+
+
         }
        
         
     }
-
 
     companion object {
         /**
@@ -233,22 +237,93 @@ class ProfileFragment : Fragment() {
 
         userDao.getUser(object : FirebaseCallback{
             override fun onCallback(cardList: ArrayList<Card>) {
-
             }
-
             override fun onLabelNameCallback(cardList: ArrayList<Label>) {
 
             }
-
+            @SuppressLint("SetTextI18n")
             override fun onSingleUserCallback(user: UserData) {
+
+                currentUser.id = user.id
+                currentUser.name = user.name
+                currentUser.email = user.email
+                currentUser.surname = user.surname
+
                 editName.editText!!.setText(user.name)
                 editSurname.editText!!.setText(user.surname)
                 editEmail.editText!!.setText(user.email)
                 hashedPassword = user.password.toString()
+                welcomeText.text = "¡Hola, ${user.name}!"
+
+
+                val emailList: ArrayList<String> = arrayListOf()
+                userDao.getAllUsers(object : FirebaseCallback {
+                        override fun onCallback(cardList: ArrayList<Card>) {
+                        }
+                        override fun onLabelNameCallback(cardList: ArrayList<Label>) {
+                        }
+                        override fun onSingleUserCallback(user: UserData) {
+                        }
+                        override fun onFolderCallback(folderList: ArrayList<Folder>) {
+                        }
+                        override fun onUsersCallback(userList: ArrayList<UserData>) {
+                            for(userData in userList){
+                                userData.email?.let { emailList.add(it) }
+                            }
+
+                            editEmail.editText!!.addTextChangedListener(object : TextWatcher {
+                                override fun afterTextChanged(s: Editable?) {
+                                    val email = s.toString()
+                                    var isEmailRepeated: Boolean = emailList.contains(email)
+                                    if (!Validator.isValidEmail(email)) {
+                                        editEmail.error = "Email incorrecto "
+                                        //si el usuario actual no cambia no verifico si está porque sí lo está (registro y aquí)
+                                    }else if((currentUser.email != email) && isEmailRepeated){
+                                        editEmail.error = "Email en uso"
+                                    } else {
+                                        editEmail.error = null
+                                    }
+                                }
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                            })
+
+                            editName.editText!!.addTextChangedListener(object : TextWatcher {
+                                override fun afterTextChanged(s: Editable?) {
+                                    val name = s.toString()
+                                    if (!Validator.isValidName(name)) {
+                                        editName.error = "Nombre no válido"
+                                    }else {
+                                        editName.error = null // Remueve el error si el email es válido
+                                    }
+                                }
+
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                            })
+                            editSurname.editText!!.addTextChangedListener(object : TextWatcher {
+                                override fun afterTextChanged(s: Editable?) {
+                                    val surname = s.toString()
+                                    if (!Validator.isValidSurname(surname)) {
+                                        editSurname.error = "Apellido no válido"
+                                    }else {
+                                        editSurname.error = null // Remueve el error si el email es válido
+                                    }
+                                }
+
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                            })
+
+
+                        } },databaseReference)
+
+
             }
 
             override fun onFolderCallback(folderList: ArrayList<Folder>) {
-
+            }
+            override fun onUsersCallback(userList: ArrayList<UserData>) {
             }
 
         },databaseReference, userId)

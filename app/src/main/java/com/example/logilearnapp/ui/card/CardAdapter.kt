@@ -1,6 +1,8 @@
 package com.example.logilearnapp.ui.card
 import android.annotation.SuppressLint
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,8 @@ import com.example.logilearnapp.data.Label
 import com.example.logilearnapp.repository.CardDao
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.repository.FolderDao
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
+import com.example.logilearnapp.util.Validator
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
@@ -56,6 +59,35 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
                     val dialogResult = dialogView.findViewById<TextInputLayout>(R.id.result_edit)
                     val firebaseDatabase = FirebaseDatabase.getInstance()
                     val userId = cardDao.getUserIdSharedPreferences(context)
+
+                    dialogInput.editText!!.addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable?) {
+                            val name = s.toString()
+                            if (!Validator.isValidCardText(name)) {
+                               dialogInput.error = "No es válido"
+                            }else {
+                                dialogInput.error = null // Remueve el error si el email es válido
+                            }
+                        }
+
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    })
+                    dialogResult.editText!!.addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable?) {
+                            val name = s.toString()
+                            if (!Validator.isValidCardText(name)) {
+                                dialogResult.error = "No es válido"
+                            }else {
+                                dialogResult.error = null // Remueve el error si el email es válido
+                            }
+                        }
+
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                    })
+
+
                     dialogInput.editText!!.setText(currentItem!!.input)
                     dialogResult.editText!!.setText(currentItem.result)
                     MaterialAlertDialogBuilder(context)
@@ -70,10 +102,13 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
                         }
                         .setPositiveButton("Guardar cambios") { dialog, which ->
                             // cardDao.editCar
-                            val card = Card(currentItem.id, dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
-                            cardDao.updateCard(firebaseDatabase.reference,card, userId!!, context )
-                            dialog.dismiss()
-                            holder.rvMenu.menu.close()
+                            if(dialogInput.error.isNullOrBlank() && dialogResult.error.isNullOrBlank()){
+                                val card = Card(currentItem.id, dialogInput.editText!!.text.toString(), dialogResult.editText!!.text.toString())
+                                cardDao.updateCard(firebaseDatabase.reference,card, userId!!, context )
+                                dialog.dismiss()
+                                holder.rvMenu.menu.close()
+                            }
+
                         }
                         .create().show()
                     true
@@ -143,18 +178,16 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
         folderDao.getFoldersByUser(object : FirebaseCallback {
             override fun onCallback(cardList: ArrayList<Card>) {
             }
-
             override fun onLabelNameCallback(cardList: ArrayList<Label>) {
-
             }
-
             override fun onSingleUserCallback(user: UserData) {
-
             }
-
             //llamo al callback y efectúo resto
             override fun onFolderCallback(folderList: ArrayList<Folder>) {
                 showAddFolderDialog(currentItem, folderList, id, firebaseDatabase)
+            }
+            override fun onUsersCallback(userList: ArrayList<UserData>) {
+
             }
         },firebaseDatabase.reference,id)
 
@@ -228,10 +261,5 @@ class CardAdapter(private var dataList:ArrayList<Card>?, private val context: Co
                     isDialogShowing = false
                 }
                 show() }
-    }
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateCards(newCards: ArrayList<Card>) {
-        dataList = newCards
-        notifyDataSetChanged()
     }
 }

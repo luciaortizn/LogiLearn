@@ -1,10 +1,7 @@
-package com.example.logilearnapp.ui.folder
+package com.example.logilearnapp.data
 
-import android.icu.text.CaseMap.Title
-import android.media.Image
 import android.os.Parcel
 import android.os.Parcelable
-import com.example.logilearnapp.data.CardWithDifficulty
 
 /*
 class Folder (private var name:String, private var cardList: MutableList<Card>, private var label:Label) {

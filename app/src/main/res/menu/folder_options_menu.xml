@@ -7,6 +7,11 @@
         android:title="@string/a_adir_etiqueta"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/item_delete_label_from_folder"
+        android:enabled="true"
+        android:title="Eliminar etiqueta"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/item_edit_folder"
         android:enabled="true"
         android:title="@string/editar"

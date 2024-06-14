@@ -1,10 +1,10 @@
 package com.example.logilearnapp.data
 
 data class UserData(
-    val id: String? = null,
-    val email: String? = null,
+    var id: String? = null,
+    var email: String? = null,
    // val username: String? = null,
-    val name: String? = null,
-    val surname: String? = null,
+    var name: String? = null,
+    var surname: String? = null,
     val password: String? = null
 )

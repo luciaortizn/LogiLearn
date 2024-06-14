@@ -1,7 +1,6 @@
 package com.example.logilearnapp.ui.card
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Icon
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import com.example.logilearnapp.ui.common.MainActivity
 import com.example.logilearnapp.R
@@ -21,12 +19,11 @@ import com.example.logilearnapp.util.ConfigUtils
 import com.example.logilearnapp.data.TranslateRequest
 import com.example.logilearnapp.database.FirebaseCallback
 import com.example.logilearnapp.repository.FolderDao
-import com.example.logilearnapp.ui.folder.Folder
+import com.example.logilearnapp.data.Folder
 import com.example.logilearnapp.viewmodel.EmptyEditableCardViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
@@ -35,6 +32,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlin.properties.Delegates
 
 class EmptyEditableCard : AppCompatActivity() {
     private lateinit var firebaseDatabase: FirebaseDatabase
@@ -49,6 +47,7 @@ class EmptyEditableCard : AppCompatActivity() {
     private lateinit var selectedFolder: Folder
     private lateinit var resetChip: Chip
     private lateinit var folderChip: Chip
+    private var isNewFolderSelected by Delegates.notNull<Boolean>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +73,7 @@ class EmptyEditableCard : AppCompatActivity() {
         val userId = sharedPreferences.getString("id", "")
         val databaseReference = FirebaseDatabase.getInstance().reference.child("user")
         folderDao = FolderDao()
-        val isNewFolderSelected = false
+         isNewFolderSelected = false
         //guardo esto
         selectedFolder = Folder()
         translationBtn.isEnabled = false
@@ -103,8 +102,15 @@ class EmptyEditableCard : AppCompatActivity() {
                     }
                     //llamo al callback y efectúo resto
                     override fun onFolderCallback(folderList: ArrayList<Folder>) {
-                        // no necesito current item
-                        showAddFolderDialog( folderList, userId!!, firebaseDatabase)
+
+                        showAddFolderDialog(folderList, userId!!, firebaseDatabase)
+
+                        //add all
+
+
+                    }
+
+                    override fun onUsersCallback(userList: ArrayList<UserData>) {
                     }
                 },firebaseDatabase.reference,userId!!)
             }
@@ -159,10 +165,14 @@ class EmptyEditableCard : AppCompatActivity() {
                                                     if(selectedFolder.dataTitle.isNotEmpty()){
                                                         //nuevo objeto folder
                                                         val currentCard =  CardWithDifficulty(id.toString(), Difficulty.EASY, 0)
+                                                        selectedFolder.cardId!!.add(currentCard)
                                                         if(isNewFolderSelected){
                                                             folderDao.addFolder(firebaseDatabase.reference, userId!!, selectedFolder, this@EmptyEditableCard)
+                                                          // folderDao.addNewCardIdValue(firebaseDatabase.reference,userId!!,currentCard,selectedFolder.id, this@EmptyEditableCard, )
+
                                                         }else{
-                                                            folderDao.addNewCardIdValue(firebaseDatabase.reference,userId!!,currentCard,selectedFolder.id, this@EmptyEditableCard, )
+
+                                                           folderDao.addNewCardIdValue(firebaseDatabase.reference,userId!!,currentCard,selectedFolder.id, this@EmptyEditableCard, )
                                                         }
                                                     }
 
@@ -259,9 +269,6 @@ class EmptyEditableCard : AppCompatActivity() {
         var selectedFolderText = ""
         if(folderTitleList.isEmpty()){
             textNoFolders.text = this.getString(R.string.vaya_todav_a_no_tienes_ning_na_carpeta)
-            //modifico la longitud del array ya que no tiene contenido
-
-
         }else{
             textNoFolders.text = ""
         }
@@ -277,23 +284,15 @@ class EmptyEditableCard : AppCompatActivity() {
                   selectedFolderText = folderList[selectedItem].dataTitle
                     selectedFolder = folderList[selectedItem]
                     folderChip.text = selectedFolder.dataTitle
-                    //cardWithDiff
-                    //val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY, 0)
-                    //folderDao.addNewCardIdValue(firebaseDatabase.reference, id, currentCardId, selectedFolderId, context)
+                    isNewFolderSelected = false
 
                 } else if (name.editText!!.text.isNotEmpty() && !name.editText!!.isActivated && !name.editText!!.isSelected) {
                     val listToAdd = ArrayList<CardWithDifficulty>()
                     selectedFolderText = name.editText!!.text.toString()
                     selectedFolder = Folder("", "false", name.editText!!.text.toString(), listToAdd)
                     folderChip.text =  name.editText!!.text.toString()
-                    /**
-                     val currentCardId =  CardWithDifficulty(currentItem!!.id, Difficulty.EASY, 0)
-                    listToAdd.add(currentCardId)
-                    val folderToAdd = Folder("", "false", name.editText!!.text.toString(), listToAdd)
-                    if(folderToAdd.dataTitle.toString().isNotEmpty()){
-                        folderDao.addFolder(firebaseDatabase.reference, id, folderToAdd, context)
-                    }
-                     **/
+                    isNewFolderSelected = true
+
                     selectedFolder = Folder("", "false", name.editText!!.text.toString(), listToAdd)
                     textNoFolders.text = ""
                 } else {
@@ -313,6 +312,4 @@ class EmptyEditableCard : AppCompatActivity() {
                 }
                 show() }
     }
-
 }
-
