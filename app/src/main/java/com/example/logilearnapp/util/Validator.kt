@@ -18,10 +18,10 @@ object Validator {
         return cardText.isNotEmpty() && cardText.length in 1..60 && cardText.all { it.isLetter() }
     }
     fun isValidFolderName(folderName:String):Boolean{
-        return folderName.isNotEmpty() && folderName.length in 1..15 && folderName.all { it.isLetter() }
+        return folderName.isNotEmpty() && folderName.length in 1..15
     }
     fun isValidLabelName(labelName:String):Boolean{
-        return labelName.isNotEmpty() && labelName.length in 1..15 && labelName.all { it.isLetter() }
+        return labelName.isNotEmpty() && labelName.length in 1..15
     }
 
     fun isValidPassword(password: String): Boolean {

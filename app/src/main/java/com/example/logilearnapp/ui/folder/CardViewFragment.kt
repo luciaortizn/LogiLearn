@@ -90,11 +90,13 @@ class CardViewFragment : Fragment() {
 
                @SuppressLint("NotifyDataSetChanged")
                override fun onFolderCallback(folderList: ArrayList<Folder>) {
-
+                 //  setBackgroundForEmptyFolders(folderList)
+                   Log.d("foldernum",folderList.size.toString())
+                   folderAdapter = FolderAdapter(folderList,context!!)
                    //chips
                    folders.getLabels(object : FirebaseCallback {
                        override fun onLabelNameCallback(labels: ArrayList<Label>) {
-                           setBackgroundForEmptyFolders(folderList)
+
                            val chipsContainer = view.findViewById<ChipGroup>(R.id.chip_group)
                            chipsContainer.setPadding(10,0,10,0)
                            val chipList = mutableListOf<Chip>()
@@ -236,6 +238,9 @@ class CardViewFragment : Fragment() {
 
                        }
                    }, firebaseDatabase.reference, userId!!, requireContext())
+
+                   recyclerView.adapter = folderAdapter
+                   recyclerView.adapter?.notifyDataSetChanged()
 
                }
                override fun onUsersCallback(userList: ArrayList<UserData>) {

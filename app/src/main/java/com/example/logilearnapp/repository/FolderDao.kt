@@ -282,7 +282,7 @@ class FolderDao {
                     val newLabel = Label(label, arrayListOf(folderId))
                     labelsReference.child(label).setValue(newLabel).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(context, "Label creado con éxito", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Etiqueta creada con éxito", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, "Error al crear el label", Toast.LENGTH_SHORT).show()
                         }
